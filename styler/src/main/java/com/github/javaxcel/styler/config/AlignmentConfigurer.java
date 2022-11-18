@@ -33,12 +33,12 @@ public final class AlignmentConfigurer {
     }
 
     public AlignmentConfigurer horizontal(HorizontalAlignment horizontal) {
-        Alignments.horizontal(this.cellStyle, horizontal);
+        Alignments.setHorizontal(this.cellStyle, horizontal);
         return this;
     }
 
     public AlignmentConfigurer vertical(VerticalAlignment vertical) {
-        Alignments.vertical(this.cellStyle, vertical);
+        Alignments.setVertical(this.cellStyle, vertical);
         return this;
     }
 

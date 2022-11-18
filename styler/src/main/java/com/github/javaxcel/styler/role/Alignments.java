@@ -26,11 +26,11 @@ public final class Alignments {
         throw new UnsupportedOperationException(getClass().getName() + " is not allowed to instantiate");
     }
 
-    public static void horizontal(CellStyle cellStyle, HorizontalAlignment alignment) {
+    public static void setHorizontal(CellStyle cellStyle, HorizontalAlignment alignment) {
         cellStyle.setAlignment(alignment);
     }
 
-    public static void vertical(CellStyle cellStyle, VerticalAlignment alignment) {
+    public static void setVertical(CellStyle cellStyle, VerticalAlignment alignment) {
         cellStyle.setVerticalAlignment(alignment);
     }
 
