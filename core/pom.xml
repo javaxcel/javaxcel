@@ -1,0 +1,140 @@
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.github.javaxcel</groupId>
+        <artifactId>javaxcel</artifactId>
+        <version>0.8.2</version>
+    </parent>
+
+    <artifactId>javaxcel-core</artifactId>
+    <version>${parent.version}</version>
+    <packaging>jar</packaging>
+
+    <name>Javaxcel Core</name>
+    <description>Supporter for export and import of Excel file</description>
+    <url>https://github.com/javaxcel/core</url>
+
+    <dependencies>
+        <!-- Referenced modules -->
+        <dependency>
+            <groupId>com.github.javaxcel</groupId>
+            <artifactId>javaxcel-styler</artifactId>
+        </dependency>
+
+        <!-- Transitive dependencies -->
+        <dependency>
+            <groupId>io.github.imsejin</groupId>
+            <artifactId>common-utils</artifactId>
+        </dependency>
+
+        <!-- Shaded dependencies -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+        </dependency>
+
+        <!-- Provided dependencies -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
+
+        <!-- Provided and intransitive dependencies -->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-random-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.pjfanning</groupId>
+            <artifactId>excel-streaming-reader</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--
+                Javaxcel needs 'spring-expression' as a dependency. If javaxcel exposes the dependency to outside,
+                a user's application will be strongly coupled with the dependency version that it uses.
+                There is also potential conflict, even if javaxcel makes the dependency provided
+                when other version of the dependency is used by user. To avoid these problems, javaxcel use this plugin.
+                The plugin can repackage dependencies in other words, it can rename package to package name of javaxcel.
+                See Uber-JAR(Fat JAR).
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <minimizeJar>true</minimizeJar>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <keepDependenciesWithProvidedScope>false</keepDependenciesWithProvidedScope>
+                            <!-- Specifies artifacts to repackage and others will be exposed to outside. -->
+                            <artifactSet>
+                                <includes>
+                                    <include>org.springframework:spring-expression</include>
+                                    <include>org.springframework:spring-core</include>
+                                    <include>org.springframework:spring-jcl</include>
+                                </includes>
+                            </artifactSet>
+
+                            <!-- Repackaging -->
+                            <relocations>
+                                <!-- spring-core, spring-expression -->
+                                <relocation>
+                                    <pattern>org.springframework</pattern>
+                                    <shadedPattern>${project.groupId}.internal.springframework</shadedPattern>
+                                </relocation>
+                                <!-- spring-jcl -->
+                                <relocation>
+                                    <pattern>org.apache.commons.logging</pattern>
+                                    <shadedPattern>${project.groupId}.internal.springframework.jcl</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

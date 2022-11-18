@@ -5,13 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.javaxcel</groupId>
-    <artifactId>javaxcel-core</artifactId>
+    <artifactId>javaxcel</artifactId>
     <version>0.8.2</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
-    <name>Javaxcel Core</name>
+    <modules>
+        <module>core</module>
+    </modules>
+
+    <name>Javaxcel</name>
     <description>Supporter for export and import of Excel file</description>
-    <url>https://github.com/javaxcel/javaxcel-core</url>
+    <url>https://github.com/javaxcel/javaxcel</url>
 
     <licenses>
         <license>
@@ -80,142 +84,144 @@
         </repository>
     </repositories>
 
-    <dependencies>
-        <!-- Common Utils -->
-        <dependency>
-            <groupId>io.github.imsejin</groupId>
-            <artifactId>common-utils</artifactId>
-            <version>${common-utils.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.code.gson</groupId>
-                    <artifactId>gson</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.ini4j</groupId>
-                    <artifactId>ini4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+    <dependencyManagement>
+        <dependencies>
+            <!-- Common Utils -->
+            <dependency>
+                <groupId>io.github.imsejin</groupId>
+                <artifactId>common-utils</artifactId>
+                <version>${common-utils.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.google.code.gson</groupId>
+                        <artifactId>gson</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.ini4j</groupId>
+                        <artifactId>ini4j</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
 
-        <!--
-            Apache POI
+            <!--
+                Apache POI
 
-            It is a core dependency.
-        -->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>${apache-poi.version}</version>
-            <scope>provided</scope>
-        </dependency>
+                It is a core dependency.
+            -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${apache-poi.version}</version>
+                <scope>provided</scope>
+            </dependency>
 
-        <!--
-            SpEL(Spring Expression Language)
+            <!--
+                SpEL(Spring Expression Language)
 
-            It is intransitive dependency.
-        -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-expression</artifactId>
-            <version>${spring-expression.version}</version>
-            <optional>true</optional>
-        </dependency>
+                It is intransitive dependency.
+            -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-expression</artifactId>
+                <version>${spring-expression.version}</version>
+                <optional>true</optional>
+            </dependency>
 
-        <!-- Javaxcel Styler -->
-        <dependency>
-            <groupId>com.github.javaxcel</groupId>
-            <artifactId>javaxcel-styler</artifactId>
-            <version>${javaxcel-styler.version}</version>
-        </dependency>
+            <!-- Javaxcel Styler -->
+            <dependency>
+                <groupId>com.github.javaxcel</groupId>
+                <artifactId>javaxcel-styler</artifactId>
+                <version>${javaxcel-styler.version}</version>
+            </dependency>
 
-        <!-- Jetbrains Annotations -->
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>${jetbrains-annotations.version}</version>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
+            <!-- Jetbrains Annotations -->
+            <dependency>
+                <groupId>org.jetbrains</groupId>
+                <artifactId>annotations</artifactId>
+                <version>${jetbrains-annotations.version}</version>
+                <scope>provided</scope>
+                <optional>true</optional>
+            </dependency>
 
-        <!--
-            Easy generator of object with random value
+            <!--
+                Easy generator of object with random value
 
-            DO NOT UPGRADE THIS LIBRARY.
-            EASY-RANDOM IS BASED ON JDK 11 SINCE 5.0.0.
-        -->
-        <dependency>
-            <groupId>org.jeasy</groupId>
-            <artifactId>easy-random-core</artifactId>
-            <version>${easy-random.version}</version>
-            <scope>test</scope>
-        </dependency>
+                DO NOT UPGRADE THIS LIBRARY.
+                EASY-RANDOM IS BASED ON JDK 11 SINCE 5.0.0.
+            -->
+            <dependency>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-random-core</artifactId>
+                <version>${easy-random.version}</version>
+                <scope>test</scope>
+            </dependency>
 
-        <!-- Byte Buddy -->
-        <dependency>
-            <groupId>net.bytebuddy</groupId>
-            <artifactId>byte-buddy</artifactId>
-            <version>${byte-buddy.version}</version>
-            <scope>test</scope>
-        </dependency>
+            <!-- Byte Buddy -->
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+                <version>${byte-buddy.version}</version>
+                <scope>test</scope>
+            </dependency>
 
-        <!-- Excel Streaming Reader -->
-        <dependency>
-            <groupId>com.github.pjfanning</groupId>
-            <artifactId>excel-streaming-reader</artifactId>
-            <version>${excel-streaming-reader.version}</version>
-            <scope>test</scope>
-        </dependency>
+            <!-- Excel Streaming Reader -->
+            <dependency>
+                <groupId>com.github.pjfanning</groupId>
+                <artifactId>excel-streaming-reader</artifactId>
+                <version>${excel-streaming-reader.version}</version>
+                <scope>test</scope>
+            </dependency>
 
-        <!-- Junit 5 -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit5.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit5.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit5.version}</version>
-            <scope>test</scope>
-        </dependency>
+            <!-- Junit 5 -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit5.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit5.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>${junit5.version}</version>
+                <scope>test</scope>
+            </dependency>
 
-        <!-- AssertJ -->
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>${assertj.version}</version>
-            <scope>test</scope>
-        </dependency>
+            <!-- AssertJ -->
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>${assertj.version}</version>
+                <scope>test</scope>
+            </dependency>
 
-        <!--
-            Spock Framework
+            <!--
+                Spock Framework
 
-            Mandatory dependencies for using Spock.
-            This starts to support 'maven-surefire' since 2.0.
-        -->
-        <dependency>
-            <groupId>org.spockframework</groupId>
-            <artifactId>spock-core</artifactId>
-            <version>${spock.version}</version>
-            <scope>test</scope>
-        </dependency>
+                Mandatory dependencies for using Spock.
+                This starts to support 'maven-surefire' since 2.0.
+            -->
+            <dependency>
+                <groupId>org.spockframework</groupId>
+                <artifactId>spock-core</artifactId>
+                <version>${spock.version}</version>
+                <scope>test</scope>
+            </dependency>
 
-        <!-- Lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+            <!-- Lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <profiles>
         <!--
@@ -291,6 +297,7 @@
 
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -379,57 +386,17 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--
-                Plugin to hide dependencies highly vulnerable to conflict.
-
-                Javaxcel needs 'spring-expression' as a dependency. If javaxcel exposes the dependency to outside,
-                a user's application will be strongly coupled with the dependency version that it uses.
-                There is also potential conflict, even if javaxcel makes the dependency provided
-                when other version of the dependency is used by user. To avoid these problems, javaxcel use this plugin.
-                The plugin can repackage dependencies in other words, it can rename package to package name of javaxcel.
-                See Uber-JAR(Fat JAR).
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.4.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <minimizeJar>true</minimizeJar>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <keepDependenciesWithProvidedScope>false</keepDependenciesWithProvidedScope>
-                            <!-- Specifies artifacts to repackage and others will be exposed to outside. -->
-                            <artifactSet>
-                                <includes>
-                                    <include>org.springframework:spring-expression</include>
-                                    <include>org.springframework:spring-core</include>
-                                    <include>org.springframework:spring-jcl</include>
-                                </includes>
-                            </artifactSet>
-
-                            <!-- Repackaging -->
-                            <relocations>
-                                <!-- spring-core, spring-expression -->
-                                <relocation>
-                                    <pattern>org.springframework</pattern>
-                                    <shadedPattern>${project.groupId}.internal.springframework</shadedPattern>
-                                </relocation>
-                                <!-- spring-jcl -->
-                                <relocation>
-                                    <pattern>org.apache.commons.logging</pattern>
-                                    <shadedPattern>${project.groupId}.internal.springframework.jcl</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <!-- Plugin to hide dependencies highly vulnerable to conflict. -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>3.4.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>

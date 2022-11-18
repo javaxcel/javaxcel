@@ -81,16 +81,16 @@
 
 - 🔥 Remove: useless type variable in `ExcelWriteConverter`
 - 🔥 Remove: method `toMap(Object)` in `FieldUtils`
-- 🚚 Move: package of classes from `com.github.javaxcel.out.strategy.ExcelWriteStrategy.*`
-  to `com.github.javaxcel.out.strategy.impl.*`
-- 🚚 Move: package of classes from `com.github.javaxcel.in.strategy.ExcelWriteStrategy.*`
-  to `com.github.javaxcel.in.strategy.impl.*`
+- 🚚 Move: package of classes from `com.github.javaxcel.core.out.strategy.ExcelWriteStrategy.*`
+  to `com.github.javaxcel.core.out.strategy.impl.*`
+- 🚚 Move: package of classes from `com.github.javaxcel.core.in.strategy.ExcelWriteStrategy.*`
+  to `com.github.javaxcel.core.in.strategy.impl.*`
 - ♻️ Increase: access privileges to `AbstractExcelWriteStrategy`, `AbstractExcelReadStrategy`
-- ⚡️ Modify: `com.github.javaxcel.out.strategy.impl.Filter` to freeze header
+- ⚡️ Modify: `com.github.javaxcel.core.out.strategy.impl.Filter` to freeze header
 
 ### Troubleshooting
 
-- 🐞 Fix: wrong import (`java.util.logging.Filter` => `com.github.javaxcel.out.strategy.impl.Filter`) in `ModelWriter`
+- 🐞 Fix: wrong import (`java.util.logging.Filter` => `com.github.javaxcel.core.out.strategy.impl.Filter`) in `ModelWriter`
   , `MapWriter`
 - 🐞 Fix: compile error on jdk 9+ by using internal package `sun.util.locale.*` in `LocaleTypeHandler`
 
@@ -142,7 +142,7 @@
 ### Dependencies
 
 - ♻️ Make: dependency `poi-ooxml` provided
-- ➕ Add: dependency `spring-expression` (shaded in `com.github.javaxcel.internal.springframework`)
+- ➕ Add: dependency `spring-expression` (shaded in `com.github.javaxcel.core.internal.springframework`)
 - ➕ Add: test dependency `spock-core`
 - ➕ Add: test dependency `excel-streaming-reader`
 - ➕ Add: build dependency `maven-shade-plugin`
@@ -332,8 +332,8 @@
 ### Modification
 
 - ⚡️ Prevent: `ExcelReader` from reading other sheets when number of rows read reach limit
-- 🚚 Move: `*WritingConverter` to `com.github.javaxcel.converter.out`
-- 🚚 Move: `*ReadingConverter` to `com.github.javaxcel.converter.in`
+- 🚚 Move: `*WritingConverter` to `com.github.javaxcel.core.converter.out`
+- 🚚 Move: `*ReadingConverter` to `com.github.javaxcel.core.converter.in`
 - 🔥 Remove: type parameter from `*ReadingConverter`
 - ♻️ Refactor: `*WritingConverter`
 - ♻️ Refactor: `*ReadingConverter`

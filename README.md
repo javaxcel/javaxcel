@@ -733,7 +733,7 @@ class Product {
 @ExcelModel(includeSuper = true)
 class EducationalProduct extends Product {
     // Custom converter method
-    @ExcelReadExpression("T(com.github.javaxcel.Converter).toPowerIntArray(#targetAges.split(', ')")
+    @ExcelReadExpression("T(com.github.javaxcel.core.Converter).toPowerIntArray(#targetAges.split(', ')")
     private int[] targetAges;
 
     // Fixed value
@@ -751,7 +751,7 @@ class EducationalProduct extends Product {
     private LocalDateTime dateTime;
 }
 
-// com.github.javaxcel.Converter
+// com.github.javaxcel.core.Converter
 public class Converter {
     public static int[] toPowerIntArray(String[] str) {
         return Arrays.stream(str).mapToInt(Integer::parseInt).map(i -> i + 1).toArray();
