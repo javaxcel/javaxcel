@@ -42,12 +42,6 @@ public final class Borders {
         cellStyle.setBorderLeft(border);
     }
 
-    public static void drawAll(CellStyle cellStyle, BorderStyle border) {
-        cellStyle.setBorderTop(border);
-        cellStyle.setBorderRight(border);
-        cellStyle.setBorderBottom(border);
-        cellStyle.setBorderLeft(border);
-    }
     public static void setTopColor(CellStyle cellStyle, IndexedColors color) {
         cellStyle.setTopBorderColor(color.getIndex());
     }
@@ -61,13 +55,6 @@ public final class Borders {
     }
 
     public static void setLeftColor(CellStyle cellStyle, IndexedColors color) {
-        cellStyle.setLeftBorderColor(color.getIndex());
-    }
-
-    public static void dyeAll(CellStyle cellStyle, IndexedColors color) {
-        cellStyle.setTopBorderColor(color.getIndex());
-        cellStyle.setRightBorderColor(color.getIndex());
-        cellStyle.setBottomBorderColor(color.getIndex());
         cellStyle.setLeftBorderColor(color.getIndex());
     }
 
