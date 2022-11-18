@@ -21,8 +21,8 @@ import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 
-import static com.github.javaxcel.styler.role.Backgrounds.drawPattern;
-import static com.github.javaxcel.styler.role.Backgrounds.dye;
+import static com.github.javaxcel.styler.role.Backgrounds.setPattern;
+import static com.github.javaxcel.styler.role.Backgrounds.setColor;
 
 public class Configurer {
 
@@ -57,8 +57,8 @@ public class Configurer {
      * @return configurer
      */
     public Configurer background(FillPatternType pattern, IndexedColors color) {
-        drawPattern(cellStyle, pattern);
-        dye(cellStyle, color);
+        setPattern(cellStyle, pattern);
+        setColor(cellStyle, color);
         return this;
     }
 

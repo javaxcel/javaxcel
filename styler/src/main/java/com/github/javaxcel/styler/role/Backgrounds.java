@@ -16,22 +16,24 @@
 
 package com.github.javaxcel.styler.role;
 
+import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 
 public final class Backgrounds {
 
+    @ExcludeFromGeneratedJacocoReport
     private Backgrounds() {
         throw new UnsupportedOperationException(getClass().getName() + " is not allowed to instantiate");
     }
 
-    public static void drawPattern(CellStyle cellStyle, FillPatternType pattern) {
-        cellStyle.setFillPattern(pattern);
+    public static void setColor(CellStyle cellStyle, IndexedColors color) {
+        cellStyle.setFillForegroundColor(color.getIndex());
     }
 
-    public static void dye(CellStyle cellStyle, IndexedColors color) {
-        cellStyle.setFillForegroundColor(color.getIndex());
+    public static void setPattern(CellStyle cellStyle, FillPatternType pattern) {
+        cellStyle.setFillPattern(pattern);
     }
 
 }
