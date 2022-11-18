@@ -16,6 +16,7 @@
 
 package com.github.javaxcel.styler.config;
 
+import io.github.imsejin.common.assertion.Asserts;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
@@ -33,8 +34,12 @@ public class Configurer {
     final Font font;
 
     public Configurer(CellStyle cellStyle, Font font) {
-        if (cellStyle == null) throw new IllegalArgumentException("Configurer.cellStyle is not allowed to be null");
-        if (font == null) throw new IllegalArgumentException("Configurer.font is not allowed to be null");
+        Asserts.that(cellStyle)
+                .describedAs("Configurer.cellStyle is not allowed to be null")
+                .isNotNull();
+        Asserts.that(font)
+                .describedAs("Configurer.font is not allowed to be null")
+                .isNotNull();
 
         this.cellStyle = cellStyle;
         this.font = font;

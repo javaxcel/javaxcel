@@ -16,12 +16,14 @@
 
 package com.github.javaxcel.styler.role;
 
+import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 
 public final class Borders {
 
+    @ExcludeFromGeneratedJacocoReport
     private Borders() {
         throw new UnsupportedOperationException(getClass().getName() + " is not allowed to instantiate");
     }

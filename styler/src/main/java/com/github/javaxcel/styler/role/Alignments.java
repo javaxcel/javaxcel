@@ -16,12 +16,14 @@
 
 package com.github.javaxcel.styler.role;
 
+import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 
 public final class Alignments {
 
+    @ExcludeFromGeneratedJacocoReport
     private Alignments() {
         throw new UnsupportedOperationException(getClass().getName() + " is not allowed to instantiate");
     }

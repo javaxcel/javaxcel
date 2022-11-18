@@ -16,12 +16,14 @@
 
 package com.github.javaxcel.styler.role;
 
+import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 
 public final class Fonts {
 
+    @ExcludeFromGeneratedJacocoReport
     private Fonts() {
         throw new UnsupportedOperationException(getClass().getName() + " is not allowed to instantiate");
     }
