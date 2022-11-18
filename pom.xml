@@ -11,6 +11,7 @@
 
     <modules>
         <module>core</module>
+        <module>styler</module>
     </modules>
 
     <name>Javaxcel</name>
@@ -63,7 +64,6 @@
 
         <!-- Dependency versions -->
         <spring-expression.version>5.3.18</spring-expression.version>
-        <javaxcel-styler.version>0.2.2</javaxcel-styler.version>
         <common-utils.version>0.13.0</common-utils.version>
         <jetbrains-annotations.version>23.0.0</jetbrains-annotations.version>
 
@@ -131,7 +131,7 @@
             <dependency>
                 <groupId>com.github.javaxcel</groupId>
                 <artifactId>javaxcel-styler</artifactId>
-                <version>${javaxcel-styler.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <!-- Jetbrains Annotations -->

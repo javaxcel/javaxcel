@@ -14,7 +14,7 @@
 
     <name>Javaxcel Core</name>
     <description>Supporter for export and import of Excel file</description>
-    <url>https://github.com/javaxcel/core</url>
+    <url>https://github.com/javaxcel/tree/dev/core</url>
 
     <dependencies>
         <!-- Referenced modules -->
