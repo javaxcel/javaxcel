@@ -26,19 +26,19 @@ public final class Borders {
         throw new UnsupportedOperationException(getClass().getName() + " is not allowed to instantiate");
     }
 
-    public static void drawTop(CellStyle cellStyle, BorderStyle border) {
+    public static void setTopStyle(CellStyle cellStyle, BorderStyle border) {
         cellStyle.setBorderTop(border);
     }
 
-    public static void drawRight(CellStyle cellStyle, BorderStyle border) {
+    public static void setRightStyle(CellStyle cellStyle, BorderStyle border) {
         cellStyle.setBorderRight(border);
     }
 
-    public static void drawBottom(CellStyle cellStyle, BorderStyle border) {
+    public static void setBottomStyle(CellStyle cellStyle, BorderStyle border) {
         cellStyle.setBorderBottom(border);
     }
 
-    public static void drawLeft(CellStyle cellStyle, BorderStyle border) {
+    public static void setLeftStyle(CellStyle cellStyle, BorderStyle border) {
         cellStyle.setBorderLeft(border);
     }
 
@@ -48,20 +48,19 @@ public final class Borders {
         cellStyle.setBorderBottom(border);
         cellStyle.setBorderLeft(border);
     }
-
-    public static void dyeTop(CellStyle cellStyle, IndexedColors color) {
+    public static void setTopColor(CellStyle cellStyle, IndexedColors color) {
         cellStyle.setTopBorderColor(color.getIndex());
     }
 
-    public static void dyeRight(CellStyle cellStyle, IndexedColors color) {
+    public static void setRightColor(CellStyle cellStyle, IndexedColors color) {
         cellStyle.setRightBorderColor(color.getIndex());
     }
 
-    public static void dyeBottom(CellStyle cellStyle, IndexedColors color) {
+    public static void setBottomColor(CellStyle cellStyle, IndexedColors color) {
         cellStyle.setBottomBorderColor(color.getIndex());
     }
 
-    public static void dyeLeft(CellStyle cellStyle, IndexedColors color) {
+    public static void setLeftColor(CellStyle cellStyle, IndexedColors color) {
         cellStyle.setLeftBorderColor(color.getIndex());
     }
 

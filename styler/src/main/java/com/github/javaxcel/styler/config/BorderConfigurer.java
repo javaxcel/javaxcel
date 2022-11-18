@@ -20,7 +20,14 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 
-import static com.github.javaxcel.styler.role.Borders.*;
+import static com.github.javaxcel.styler.role.Borders.setBottomStyle;
+import static com.github.javaxcel.styler.role.Borders.setLeftStyle;
+import static com.github.javaxcel.styler.role.Borders.setRightStyle;
+import static com.github.javaxcel.styler.role.Borders.setTopStyle;
+import static com.github.javaxcel.styler.role.Borders.setBottomColor;
+import static com.github.javaxcel.styler.role.Borders.setLeftColor;
+import static com.github.javaxcel.styler.role.Borders.setRightColor;
+import static com.github.javaxcel.styler.role.Borders.setTopColor;
 
 public final class BorderConfigurer {
 
@@ -34,48 +41,58 @@ public final class BorderConfigurer {
     }
 
     public BorderConfigurer top(BorderStyle border, IndexedColors color) {
-        drawTop(cellStyle, border);
-        dyeTop(cellStyle, color);
+        setTopStyle(cellStyle, border);
+        setTopColor(cellStyle, color);
         return this;
     }
 
     public BorderConfigurer right(BorderStyle border, IndexedColors color) {
-        drawRight(cellStyle, border);
-        dyeRight(cellStyle, color);
+        setRightStyle(cellStyle, border);
+        setRightColor(cellStyle, color);
         return this;
     }
 
     public BorderConfigurer bottom(BorderStyle border, IndexedColors color) {
-        drawBottom(cellStyle, border);
-        dyeBottom(cellStyle, color);
+        setBottomStyle(cellStyle, border);
+        setBottomColor(cellStyle, color);
         return this;
     }
 
     public BorderConfigurer left(BorderStyle border, IndexedColors color) {
-        drawLeft(cellStyle, border);
-        dyeLeft(cellStyle, color);
+        setLeftStyle(cellStyle, border);
+        setLeftColor(cellStyle, color);
         return this;
     }
 
     public BorderConfigurer topAndBottom(BorderStyle border, IndexedColors color) {
-        drawTop(cellStyle, border);
-        dyeTop(cellStyle, color);
-        drawBottom(cellStyle, border);
-        dyeBottom(cellStyle, color);
+        setTopStyle(cellStyle, border);
+        setTopColor(cellStyle, color);
+        setBottomStyle(cellStyle, border);
+        setBottomColor(cellStyle, color);
         return this;
     }
 
     public BorderConfigurer leftAndRight(BorderStyle border, IndexedColors color) {
-        drawLeft(cellStyle, border);
-        dyeLeft(cellStyle, color);
-        drawRight(cellStyle, border);
-        dyeRight(cellStyle, color);
+        setLeftStyle(cellStyle, border);
+        setLeftColor(cellStyle, color);
+        setRightStyle(cellStyle, border);
+        setRightColor(cellStyle, color);
         return this;
     }
 
     public BorderConfigurer all(BorderStyle border, IndexedColors color) {
-        drawAll(cellStyle, border);
-        dyeAll(cellStyle, color);
+        // Border
+        setTopStyle(cellStyle, border);
+        setRightStyle(cellStyle, border);
+        setBottomStyle(cellStyle, border);
+        setLeftStyle(cellStyle, border);
+
+        // Color
+        setTopColor(cellStyle, color);
+        setRightColor(cellStyle, color);
+        setBottomColor(cellStyle, color);
+        setLeftColor(cellStyle, color);
+
         return this;
     }
 
