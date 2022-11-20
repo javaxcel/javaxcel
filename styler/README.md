@@ -11,13 +11,6 @@
         <img alt="Maven Central" src="https://img.shields.io/maven-central/v/com.github.javaxcel/javaxcel-styler?style=flat-square">
     </a>
     <img alt="jdk8" src="https://img.shields.io/badge/jdk-8-orange?style=flat-square">
-    <br/>
-    <a href="https://lgtm.com/projects/g/javaxcel/javaxcel-styler/context:java">
-        <img alt="Lgtm grade" src="https://img.shields.io/lgtm/grade/java/g/javaxcel/javaxcel-styler.svg?logo=&logoWidth=&label=lgtm%3A%20code%20quality&&style=flat-square"/>
-    </a>
-    <a href="https://www.codacy.com/gh/javaxcel/javaxcel-styler/dashboard">
-        <img alt="Codacy grade" src="https://img.shields.io/codacy/grade/8a27d2f03abc4028bbcf2160ee02c388?label=codacy%3A%20code%20quality&style=flat-square">
-    </a>
 </p>
 
 # Getting started
