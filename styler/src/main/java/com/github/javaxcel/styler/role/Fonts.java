@@ -127,7 +127,7 @@ public final class Fonts {
             this.value = value;
         }
 
-        public short getValue() {
+        public byte getValue() {
             return this.value;
         }
     }

@@ -16,6 +16,8 @@
 
 package com.github.javaxcel.styler.role
 
+import com.github.javaxcel.styler.role.Fonts.Offset
+import com.github.javaxcel.styler.role.Fonts.Underline
 import io.github.imsejin.common.tool.RandomString
 import org.apache.poi.hssf.record.ExtendedFormatRecord
 import org.apache.poi.hssf.record.FontRecord
@@ -70,7 +72,6 @@ class FontsSpec extends Specification {
         newCellStyle(EXCEL2007) | newFont(EXCEL2007)
     }
 
-    @SuppressWarnings("GroovyAssignabilityCheck")
     def "Sets font color to the cell style"() {
         given:
         def color = randomEnum(IndexedColors)
@@ -80,6 +81,77 @@ class FontsSpec extends Specification {
 
         then:
         font.color == color.index
+
+        where:
+        cellStyle               | font
+        newCellStyle(EXCEL97)   | newFont(EXCEL97)
+        newCellStyle(EXCEL2007) | newFont(EXCEL2007)
+    }
+
+    def "Sets bold font to the cell style"() {
+        when:
+        Fonts.bold(cellStyle, font)
+
+        then:
+        font.bold
+
+        where:
+        cellStyle               | font
+        newCellStyle(EXCEL97)   | newFont(EXCEL97)
+        newCellStyle(EXCEL2007) | newFont(EXCEL2007)
+    }
+
+    def "Sets italic font to the cell style"() {
+        when:
+        Fonts.italic(cellStyle, font)
+
+        then:
+        font.italic
+
+        where:
+        cellStyle               | font
+        newCellStyle(EXCEL97)   | newFont(EXCEL97)
+        newCellStyle(EXCEL2007) | newFont(EXCEL2007)
+    }
+
+    def "Sets strikeout font to the cell style"() {
+        when:
+        Fonts.strikeout(cellStyle, font)
+
+        then:
+        font.strikeout
+
+        where:
+        cellStyle               | font
+        newCellStyle(EXCEL97)   | newFont(EXCEL97)
+        newCellStyle(EXCEL2007) | newFont(EXCEL2007)
+    }
+
+    def "Sets font underline to the cell style"() {
+        given:
+        def underline = randomEnum(Underline)
+
+        when:
+        Fonts.setUnderline(cellStyle, font, underline)
+
+        then:
+        font.underline == underline.value
+
+        where:
+        cellStyle               | font
+        newCellStyle(EXCEL97)   | newFont(EXCEL97)
+        newCellStyle(EXCEL2007) | newFont(EXCEL2007)
+    }
+
+    def "Sets font offset to the cell style"() {
+        given:
+        def offset = randomEnum(Offset)
+
+        when:
+        Fonts.setOffset(cellStyle, font, offset)
+
+        then:
+        font.typeOffset == offset.value
 
         where:
         cellStyle               | font
