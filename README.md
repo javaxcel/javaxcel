@@ -28,6 +28,8 @@
 
 ## Table of Contents
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/536f09f969c64d4591a221b8d943ed79)](https://app.codacy.com/gh/javaxcel/javaxcel?utm_source=github.com&utm_medium=referral&utm_content=javaxcel/javaxcel&utm_campaign=Badge_Grade_Settings)
+
 - [What is Javaxcel?](#what-is-javaxcel)
 - [Getting started](#getting-started)
 
