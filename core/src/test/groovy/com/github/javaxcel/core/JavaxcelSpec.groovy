@@ -2,7 +2,7 @@ package com.github.javaxcel.core
 
 import com.github.javaxcel.core.converter.handler.registry.impl.DefaultExcelTypeHandlerRegistry
 import com.github.javaxcel.core.converter.handler.registry.impl.ExcelTypeHandlerRegistryImpl
-import com.github.javaxcel.core.internal.TimeUnitTypeHandler
+import com.github.javaxcel.test.handler.TimeUnitTypeHandler
 import spock.lang.Specification
 
 class JavaxcelSpec extends Specification {

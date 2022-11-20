@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.javaxcel.core.internal
+package com.github.javaxcel.test.model
 
 import com.github.javaxcel.core.annotation.ExcelColumn
 import io.github.imsejin.common.assertion.Asserts

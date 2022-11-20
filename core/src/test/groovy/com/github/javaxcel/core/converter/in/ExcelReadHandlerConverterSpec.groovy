@@ -24,10 +24,10 @@ import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer
 import com.github.javaxcel.core.annotation.ExcelColumn
 import com.github.javaxcel.core.converter.handler.registry.impl.DefaultExcelTypeHandlerRegistry
 import com.github.javaxcel.core.converter.in.ExcelReadHandlerConverter.Utils
-import com.github.javaxcel.core.internal.Array1D
-import com.github.javaxcel.core.internal.Array2D
-import com.github.javaxcel.core.internal.Array3D
-import com.github.javaxcel.core.internal.TimeUnitTypeHandler
+import com.github.javaxcel.test.handler.TimeUnitTypeHandler
+import com.github.javaxcel.test.model.Array1D
+import com.github.javaxcel.test.model.Array2D
+import com.github.javaxcel.test.model.Array3D
 import groovy.transform.EqualsAndHashCode
 import spock.lang.Specification
 

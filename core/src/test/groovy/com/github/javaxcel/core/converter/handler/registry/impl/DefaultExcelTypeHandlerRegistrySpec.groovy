@@ -20,7 +20,7 @@ import com.github.javaxcel.core.converter.handler.impl.io.FileTypeHandler
 import com.github.javaxcel.core.converter.handler.impl.math.BigIntegerTypeHandler
 import com.github.javaxcel.core.converter.handler.impl.util.DateTypeHandler
 import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry
-import com.github.javaxcel.core.internal.ObjectTypeHandler
+import com.github.javaxcel.test.handler.ObjectTypeHandler
 import io.github.imsejin.common.util.ReflectionUtils
 import spock.lang.Specification
 
