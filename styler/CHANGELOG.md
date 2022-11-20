@@ -10,6 +10,12 @@
 
 - 🔥 Remove: method `drawAll(CellStyle, BorderStyle)` in `Borders`
 - 🔥 Remove: method `dyeAll(CellStyle, IndexedColors)` in `Borders`
+- 🚚 Rename: method `horizontal(CellStyle, HorizontalAlignment)` to `setHorizontal(CellStyle, HorizontalAlignment)`
+  in `Alignments`
+- 🚚 Rename: method `vertical(CellStyle, VerticalAlignment)` to `setVertical(CellStyle, VerticalAlignment)`
+  in `Alignments`
+- 🚚 Rename: method `drawPattern(CellStyle, FillPatternType)` to `pattern(CellStyle, FillPatternType)` in `Backgrounds`
+- 🚚 Rename: method `dye(CellStyle, IndexedColors)` to `color(CellStyle, IndexedColors)` in `Backgrounds`
 - 🚚 Rename: method `drawTop(CellStyle, BorderStyle)` to `setTopStyle(CellStyle, BorderStyle)` in `Borders`
 - 🚚 Rename: method `drawRight(CellStyle, BorderStyle)` to `setRightStyle(CellStyle, BorderStyle)` in `Borders`
 - 🚚 Rename: method `drawBottom(CellStyle, BorderStyle)` to `setBottomStyle(CellStyle, BorderStyle)` in `Borders`
@@ -18,10 +24,12 @@
 - 🚚 Rename: method `dyeRight(CellStyle, IndexedColors)` to `setRightColor(CellStyle, IndexedColors)` in `Borders`
 - 🚚 Rename: method `dyeBottom(CellStyle, IndexedColors)` to `setBottomColor(CellStyle, IndexedColors)` in `Borders`
 - 🚚 Rename: method `dyeLeft(CellStyle, IndexedColors)` to `setLeftColor(CellStyle, IndexedColors)` in `Borders`
-- 🚚 Rename: method `horizontal(CellStyle, HorizontalAlignment)` to `setHorizontal(CellStyle, HorizontalAlignment)` in `Alignments`
-- 🚚 Rename: method `vertical(CellStyle, VerticalAlignment)` to `setVertical(CellStyle, VerticalAlignment)` in `Alignments`
-- 🚚 Rename: method `drawPattern(CellStyle, FillPatternType)` to `pattern(CellStyle, FillPatternType)` in `Backgrounds`
-- 🚚 Rename: method `dye(CellStyle, IndexedColors)` to `color(CellStyle, IndexedColors)` in `Backgrounds`
+- 🚚 Rename: method `name(CellStyle, Font, String)` to `setName(CellStyle, Font, String)` in `Fonts`
+- 🚚 Rename: method `size(CellStyle, Font, int)` to `setSize(CellStyle, Font, int)` in `Fonts`
+- 🚚 Rename: method `color(CellStyle, Font, IndexedColors)` to `setColor(CellStyle, Font, IndexedColors)` in `Fonts`
+- 🚚 Rename: method `underline(CellStyle, Font, Underline)` to `setUnderline(CellStyle, Font, Underline)` in `Fonts`
+- 🚚 Rename: method `offset(CellStyle, Font, Offset)` to `setOffset(CellStyle, Font, Offset)` in `Fonts`
+- 🔨 Modify: return type of `getValue()` in `Underline` from `short` to `byte`
 
 ### New features
 
