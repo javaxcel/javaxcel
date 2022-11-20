@@ -6,34 +6,8 @@
 
 <p align="center">Supporter for export and import of excel file</p>
 
-<p align="center">
-    <!--
-    <a href="https://travis-ci.com/github/javaxcel/javaxcel-core">
-        <img alt="Travis CI" src="https://img.shields.io/travis/com/javaxcel/javaxcel-core/release?style=flat-square"/>
-    </a>
-    -->
-    <a href="https://github.com/javaxcel/javaxcel-core/actions/workflows/maven-build.yml">
-        <img alt="Github Workflow" src="https://img.shields.io/github/workflow/status/javaxcel/javaxcel-core/Java%20CI%20with%20Maven/release?style=flat-square">
-    </a>
-    <a href="https://codecov.io/gh/javaxcel/javaxcel-core">
-        <img alt="Codecov branch" src="https://img.shields.io/codecov/c/github/javaxcel/javaxcel-core/release?label=code%20coverage&style=flat-square&token=X7ZO535W9K"/>
-    </a>
-    <a href="https://search.maven.org/artifact/com.github.javaxcel/javaxcel-core">
-        <img alt="Maven Central" src="https://img.shields.io/maven-central/v/com.github.javaxcel/javaxcel-core?style=flat-square">
-    </a>
-    <br/>
-    <a href="https://lgtm.com/projects/g/javaxcel/javaxcel-core/context:java">
-        <img alt="Lgtm grade" src="https://img.shields.io/lgtm/grade/java/github/javaxcel/javaxcel-core.svg?logo=&logoWidth=&label=lgtm%3A%20code%20quality&&style=flat-square"/>
-    </a>
-    <a href="https://www.codacy.com/gh/javaxcel/javaxcel-core/dashboard">
-        <img alt="Codacy grade" src="https://img.shields.io/codacy/grade/a430e1580c5f44d2b2f1b2c11195cc49?label=codacy%3A%20code%20quality&style=flat-square">
-    </a>
-    <img alt="jdk8" src="https://img.shields.io/badge/jdk-8-orange?style=flat-square">
-</p>
-
 ## Table of Contents
 
-- [What is Javaxcel?](#what-is-javaxcel)
 - [Getting started](#getting-started)
 - [Examples](#examples)
     1. [No option](#no-option)
@@ -52,12 +26,6 @@
     13. [Resolution of constructor and method](#resolution-of-constructor-and-method)
     13. [Add a handler for custom type](#add-a-handler-for-custom-type)
     14. [Support java.util.Map](#support-javautilmap)
-
-<br><br>
-
-# What is Javaxcel?
-
-Javaxcel is a supporter for exporting `java.util.List` to spreadsheets and importing `java.util.List` from spreadsheets using [Apache POI](https://github.com/apache/poi).
 
 <br><br>
 
@@ -88,32 +56,6 @@ implementation 'com.github.javaxcel:javaxcel-core:x.y.z'
 // Required dependency
 implementation 'org.apache.poi:poi-ooxml:a.b.c'
 ```
-
-<br>
-
-```java
-// Creates an instance of Javaxcel.
-Javaxcel javaxcel = Javaxcel.newInstance();
-
-File src = new File("/data", "old-products.xls");
-File dest = new File("/data", "new-products.xlsx");
-
-try (InputStream in = new FileInputStream(src);
-        OutputStream out = new FileOutputStream(dest);
-        Workbook oldWorkbook = new HSSFWorkbook(in);
-        Workbook newWorkbook = new SXSSFWorkbook()) {
-    // Reads all the sheets and returns data as a list.
-    List<Product> products = javaxcel.reader(oldWorkbook, Product.class).read();
-    
-    // Creates an Excel file and writes data to it.
-    javaxcel.writer(newWorkbook, Product.class).write(out, products);
-} catch (IOException e) {
-    e.printStackTrace();
-}
-```
-
-Code with simple usage.
-
 <br><br>
 
 # Examples
