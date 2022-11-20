@@ -28,17 +28,17 @@ public final class Fonts {
         throw new UnsupportedOperationException(getClass().getName() + " is not allowed to instantiate");
     }
 
-    public static void name(CellStyle cellStyle, Font font, String name) {
+    public static void setName(CellStyle cellStyle, Font font, String name) {
         font.setFontName(name);
         cellStyle.setFont(font);
     }
 
-    public static void size(CellStyle cellStyle, Font font, int size) {
+    public static void setSize(CellStyle cellStyle, Font font, int size) {
         font.setFontHeightInPoints((short) size);
         cellStyle.setFont(font);
     }
 
-    public static void color(CellStyle cellStyle, Font font, IndexedColors color) {
+    public static void setColor(CellStyle cellStyle, Font font, IndexedColors color) {
         font.setColor(color.getIndex());
         cellStyle.setFont(font);
     }
@@ -58,12 +58,12 @@ public final class Fonts {
         cellStyle.setFont(font);
     }
 
-    public static void underline(CellStyle cellStyle, Font font, Underline underline) {
+    public static void setUnderline(CellStyle cellStyle, Font font, Underline underline) {
         font.setUnderline(underline.value);
         cellStyle.setFont(font);
     }
 
-    public static void offset(CellStyle cellStyle, Font font, Offset offset) {
+    public static void setOffset(CellStyle cellStyle, Font font, Offset offset) {
         font.setTypeOffset(offset.value);
         cellStyle.setFont(font);
     }

@@ -18,6 +18,7 @@ package com.github.javaxcel.styler.role
 
 import org.apache.poi.hssf.record.ExtendedFormatRecord
 import org.apache.poi.hssf.usermodel.HSSFCellStyle
+import org.apache.poi.ss.SpreadsheetVersion
 import org.apache.poi.ss.usermodel.BorderStyle
 import org.apache.poi.ss.usermodel.CellStyle
 import org.apache.poi.ss.usermodel.IndexedColors
@@ -25,60 +26,61 @@ import org.apache.poi.xssf.model.StylesTable
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
 import spock.lang.Specification
 
+import static org.apache.poi.ss.SpreadsheetVersion.EXCEL2007
+import static org.apache.poi.ss.SpreadsheetVersion.EXCEL97
+
+@SuppressWarnings("GroovyAssignabilityCheck")
 class BordersSpec extends Specification {
 
     def "Sets border style to the cell style"() {
-        given:
-        def cellStyle = cellStyleImpl as CellStyle
+        when:
+        Borders.setTopStyle(cellStyle, border)
+        Borders.setRightStyle(cellStyle, border)
+        Borders.setBottomStyle(cellStyle, border)
+        Borders.setLeftStyle(cellStyle, border)
 
-        expect:
-        BorderStyle.values().each {
-            // Top
-            Borders.setTopStyle(cellStyle, it)
-            assert cellStyle.borderTop == it
-            // Right
-            Borders.setRightStyle(cellStyle, it)
-            assert cellStyle.borderRight == it
-            // Bottom
-            Borders.setBottomStyle(cellStyle, it)
-            assert cellStyle.borderBottom == it
-            // Left
-            Borders.setLeftStyle(cellStyle, it)
-            assert cellStyle.borderLeft == it
-        }
+        then:
+        cellStyle.borderTop == border
+        cellStyle.borderRight == border
+        cellStyle.borderBottom == border
+        cellStyle.borderLeft == border
 
         where:
-        cellStyleImpl << [
-                HSSFCellStyle.newInstance(0 as short, new ExtendedFormatRecord(), null),
-                new XSSFCellStyle(new StylesTable()),
-        ]
+        [border, cellStyle] << [
+                EnumSet.allOf(BorderStyle),
+                [EXCEL97, EXCEL2007].collect { newCellStyle(it) },
+        ].combinations()
     }
 
     def "Sets border color to the cell style"() {
-        given:
-        def cellStyle = cellStyleImpl as CellStyle
+        when:
+        Borders.setTopColor(cellStyle, color)
+        Borders.setRightColor(cellStyle, color)
+        Borders.setBottomColor(cellStyle, color)
+        Borders.setLeftColor(cellStyle, color)
 
-        expect:
-        IndexedColors.values().each {
-            // Top
-            Borders.setTopColor(cellStyle, it)
-            assert cellStyle.topBorderColor == it.index
-            // Right
-            Borders.setRightColor(cellStyle, it)
-            assert cellStyle.rightBorderColor == it.index
-            // Bottom
-            Borders.setBottomColor(cellStyle, it)
-            assert cellStyle.bottomBorderColor == it.index
-            // Left
-            Borders.setLeftColor(cellStyle, it)
-            assert cellStyle.leftBorderColor == it.index
-        }
+        then:
+        assert cellStyle.topBorderColor == color.index
+        assert cellStyle.rightBorderColor == color.index
+        assert cellStyle.bottomBorderColor == color.index
+        assert cellStyle.leftBorderColor == color.index
 
         where:
-        cellStyleImpl << [
-                HSSFCellStyle.newInstance(0 as short, new ExtendedFormatRecord(), null),
-                new XSSFCellStyle(new StylesTable()),
-        ]
+        [color, cellStyle] << [
+                EnumSet.allOf(IndexedColors),
+                [EXCEL97, EXCEL2007].collect { newCellStyle(it) },
+        ].combinations()
+    }
+
+    // -------------------------------------------------------------------------------------------------
+
+    private static CellStyle newCellStyle(SpreadsheetVersion spreadsheetVersion) {
+        switch (spreadsheetVersion) {
+            case EXCEL97:
+                return HSSFCellStyle.newInstance(0 as short, new ExtendedFormatRecord(), null)
+            case EXCEL2007:
+                return new XSSFCellStyle(new StylesTable())
+        }
     }
 
 }

@@ -36,17 +36,17 @@ public final class FontConfigurer {
     }
 
     public FontConfigurer name(String name) {
-        Fonts.name(cellStyle, font, name);
+        Fonts.setName(cellStyle, font, name);
         return this;
     }
 
     public FontConfigurer size(int size) {
-        Fonts.size(cellStyle, font, size);
+        Fonts.setSize(cellStyle, font, size);
         return this;
     }
 
     public FontConfigurer color(IndexedColors color) {
-        Fonts.color(cellStyle, font, color);
+        Fonts.setColor(cellStyle, font, color);
         return this;
     }
 
@@ -66,12 +66,12 @@ public final class FontConfigurer {
     }
 
     public FontConfigurer underline(Fonts.Underline underline) {
-        Fonts.underline(cellStyle, font, underline);
+        Fonts.setUnderline(cellStyle, font, underline);
         return this;
     }
 
     public FontConfigurer offset(Fonts.Offset offset) {
-        Fonts.offset(cellStyle, font, offset);
+        Fonts.setOffset(cellStyle, font, offset);
         return this;
     }
 

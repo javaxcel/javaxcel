@@ -18,6 +18,7 @@ package com.github.javaxcel.styler.role
 
 import org.apache.poi.hssf.record.ExtendedFormatRecord
 import org.apache.poi.hssf.usermodel.HSSFCellStyle
+import org.apache.poi.ss.SpreadsheetVersion
 import org.apache.poi.ss.usermodel.CellStyle
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
@@ -25,46 +26,49 @@ import org.apache.poi.xssf.model.StylesTable
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
 import spock.lang.Specification
 
+import static org.apache.poi.ss.SpreadsheetVersion.EXCEL2007
+import static org.apache.poi.ss.SpreadsheetVersion.EXCEL97
+
+@SuppressWarnings("GroovyAssignabilityCheck")
 class BackgroundsSpec extends Specification {
 
     def "Sets background color to the cell style"() {
-        given:
-        def cellStyle = cellStyleImpl as CellStyle
+        when:
+        Backgrounds.setColor(cellStyle, color)
 
-        expect:
-        IndexedColors.values().each {
-            // when
-            Backgrounds.setColor(cellStyle, it)
-
-            // then
-            assert cellStyle.fillForegroundColor == it.index
-        }
+        then:
+        cellStyle.fillForegroundColor == color.index
 
         where:
-        cellStyleImpl << [
-                HSSFCellStyle.newInstance(0 as short, new ExtendedFormatRecord(), null),
-                new XSSFCellStyle(new StylesTable()),
-        ]
+        [color, cellStyle] << [
+                EnumSet.allOf(IndexedColors),
+                [EXCEL97, EXCEL2007].collect { newCellStyle(it) },
+        ].combinations()
     }
 
     def "Sets background pattern to the cell style"() {
-        given:
-        def cellStyle = cellStyleImpl as CellStyle
+        when:
+        Backgrounds.setPattern(cellStyle, pattern)
 
-        expect:
-        FillPatternType.values().each {
-            // when
-            Backgrounds.setPattern(cellStyle, it)
-
-            // then
-            assert cellStyle.fillPattern == it
-        }
+        then:
+        cellStyle.fillPattern == pattern
 
         where:
-        cellStyleImpl << [
-                HSSFCellStyle.newInstance(0 as short, new ExtendedFormatRecord(), null),
-                new XSSFCellStyle(new StylesTable()),
-        ]
+        [pattern, cellStyle] << [
+                EnumSet.allOf(FillPatternType),
+                [EXCEL97, EXCEL2007].collect { newCellStyle(it) },
+        ].combinations()
+    }
+
+    // -------------------------------------------------------------------------------------------------
+
+    private static CellStyle newCellStyle(SpreadsheetVersion spreadsheetVersion) {
+        switch (spreadsheetVersion) {
+            case EXCEL97:
+                return HSSFCellStyle.newInstance(0 as short, new ExtendedFormatRecord(), null)
+            case EXCEL2007:
+                return new XSSFCellStyle(new StylesTable())
+        }
     }
 
 }

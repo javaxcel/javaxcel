@@ -18,6 +18,7 @@ package com.github.javaxcel.styler.role
 
 import org.apache.poi.hssf.record.ExtendedFormatRecord
 import org.apache.poi.hssf.usermodel.HSSFCellStyle
+import org.apache.poi.ss.SpreadsheetVersion
 import org.apache.poi.ss.usermodel.CellStyle
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.apache.poi.ss.usermodel.VerticalAlignment
@@ -25,46 +26,49 @@ import org.apache.poi.xssf.model.StylesTable
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
 import spock.lang.Specification
 
+import static org.apache.poi.ss.SpreadsheetVersion.EXCEL2007
+import static org.apache.poi.ss.SpreadsheetVersion.EXCEL97
+
+@SuppressWarnings("GroovyAssignabilityCheck")
 class AlignmentsSpec extends Specification {
 
     def "Sets horizontal alignment to the cell style"() {
-        given:
-        def cellStyle = cellStyleImpl as CellStyle
+        when:
+        Alignments.setHorizontal(cellStyle, horizontal)
 
-        expect:
-        HorizontalAlignment.values().each {
-            // when
-            Alignments.setHorizontal(cellStyle, it)
-
-            // then
-            assert cellStyle.alignment == it
-        }
+        then:
+        cellStyle.alignment == horizontal
 
         where:
-        cellStyleImpl << [
-                HSSFCellStyle.newInstance(0 as short, new ExtendedFormatRecord(), null),
-                new XSSFCellStyle(new StylesTable()),
-        ]
+        [horizontal, cellStyle] << [
+                EnumSet.allOf(HorizontalAlignment),
+                [EXCEL97, EXCEL2007].collect { newCellStyle(it) },
+        ].combinations()
     }
 
     def "Sets vertical alignment to the cell style"() {
-        given:
-        def cellStyle = cellStyleImpl as CellStyle
+        when:
+        Alignments.setVertical(cellStyle, vertical)
 
-        expect:
-        VerticalAlignment.values().each {
-            // when
-            Alignments.setVertical(cellStyle, it)
-
-            // then
-            assert cellStyle.verticalAlignment == it
-        }
+        then:
+        cellStyle.verticalAlignment == vertical
 
         where:
-        cellStyleImpl << [
-                HSSFCellStyle.newInstance(0 as short, new ExtendedFormatRecord(), null),
-                new XSSFCellStyle(new StylesTable()),
-        ]
+        [vertical, cellStyle] << [
+                EnumSet.allOf(VerticalAlignment),
+                [EXCEL97, EXCEL2007].collect { newCellStyle(it) },
+        ].combinations()
+    }
+
+    // -------------------------------------------------------------------------------------------------
+
+    private static CellStyle newCellStyle(SpreadsheetVersion spreadsheetVersion) {
+        switch (spreadsheetVersion) {
+            case EXCEL97:
+                return HSSFCellStyle.newInstance(0 as short, new ExtendedFormatRecord(), null)
+            case EXCEL2007:
+                return new XSSFCellStyle(new StylesTable())
+        }
     }
 
 }
