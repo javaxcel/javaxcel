@@ -8,9 +8,9 @@
 
 <p align="center">
     <a href="https://github.com/javaxcel/javaxcel/actions/workflows/maven-build.yml">
-        <img alt="Github Workflow" src="https://img.shields.io/github/workflow/status/javaxcel/javaxcel/Java%20CI%20with%20Maven/release?style=flat-square">
+        <img alt="GitHub Workflow Status (branch)" src="https://img.shields.io/github/workflow/status/javaxcel/javaxcel/Java%20CI%20with%20Maven/release?style=flat-square">
     </a>
-    <a href="https://codecov.io/gh/javaxcel/javaxcel-core">
+    <a href="https://codecov.io/gh/javaxcel/javaxcel">
         <img alt="Codecov branch" src="https://img.shields.io/codecov/c/github/javaxcel/javaxcel/release?label=code%20coverage&style=flat-square&token=X7ZO535W9K"/>
     </a>
     <a href="https://search.maven.org/artifact/com.github.javaxcel/javaxcel-core">
