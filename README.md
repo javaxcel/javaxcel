@@ -17,11 +17,11 @@
         <img alt="Maven Central" src="https://img.shields.io/maven-central/v/com.github.javaxcel/javaxcel-core?style=flat-square">
     </a>
     <br/>
-    <a href="https://lgtm.com/projects/g/javaxcel/javaxcel-core/context:java">
-        <img alt="Lgtm grade" src="https://img.shields.io/lgtm/grade/java/github/javaxcel/javaxcel-core.svg?logo=&logoWidth=&label=lgtm%3A%20code%20quality&&style=flat-square"/>
+    <a href="https://lgtm.com/projects/g/javaxcel/javaxcel/context:java">
+        <img alt="Lgtm grade" src="https://img.shields.io/lgtm/grade/java/github/javaxcel/javaxcel.svg?logo=&logoWidth=&label=lgtm%3A%20code%20quality&&style=flat-square"/>
     </a>
-    <a href="https://www.codacy.com/gh/javaxcel/javaxcel-core/dashboard">
-        <img alt="Codacy grade" src="https://img.shields.io/codacy/grade/a430e1580c5f44d2b2f1b2c11195cc49?label=codacy%3A%20code%20quality&style=flat-square">
+    <a href="https://www.codacy.com/gh/javaxcel/javaxcel/dashboard">
+        <img alt="Codacy grade" src="https://img.shields.io/codacy/grade/6895ee87f26f491182e361d59e6f40b8?label=codacy%3A%20code%20quality&style=flat-square">
     </a>
     <img alt="jdk8" src="https://img.shields.io/badge/jdk-8-orange?style=flat-square">
 </p>
