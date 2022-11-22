@@ -19,7 +19,7 @@ package com.github.javaxcel.core.out.strategy.impl
 import com.github.javaxcel.core.out.context.ExcelWriteContext
 import com.github.javaxcel.core.out.core.impl.MapWriter
 import com.github.javaxcel.core.out.core.impl.ModelWriter
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.apache.poi.ss.usermodel.Workbook
 import spock.lang.Specification
 
 import java.util.function.Function
@@ -34,8 +34,8 @@ class KeyNamesSpec extends Specification {
         def legalKeyNames = ["width", "depth", "height"]
         def illegalKeyNames = ["alpha", "beta", "alpha"]
         def contextMap = [
-                (ModelWriter.class): new ExcelWriteContext<>(new XSSFWorkbook(), String, ModelWriter),
-                (MapWriter.class)  : new ExcelWriteContext<>(new XSSFWorkbook(), String, MapWriter),
+                (ModelWriter.class): new ExcelWriteContext<>(Mock(Workbook), String, ModelWriter),
+                (MapWriter.class)  : new ExcelWriteContext<>(Mock(Workbook), String, MapWriter),
         ]
 
         when: "Create strategy with legal argument"

@@ -19,7 +19,7 @@ package com.github.javaxcel.core.out.strategy.impl
 import com.github.javaxcel.core.out.context.ExcelWriteContext
 import com.github.javaxcel.core.out.core.impl.MapWriter
 import com.github.javaxcel.core.out.core.impl.ModelWriter
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.apache.poi.ss.usermodel.Workbook
 import spock.lang.Specification
 
 @SuppressWarnings("GroovyResultOfObjectAllocationIgnored")
@@ -30,8 +30,8 @@ class DefaultValueSpec extends Specification {
         def legalDefaultValue = "<null>"
         def illegalDefaultValue = ""
         def contextMap = [
-                (ModelWriter): new ExcelWriteContext<>(new XSSFWorkbook(), String, ModelWriter),
-                (MapWriter)  : new ExcelWriteContext<>(new XSSFWorkbook(), String, MapWriter),
+                (ModelWriter): new ExcelWriteContext<>(Mock(Workbook), String, ModelWriter),
+                (MapWriter)  : new ExcelWriteContext<>(Mock(Workbook), String, MapWriter),
         ]
 
         when: "Create strategy with legal argument"
