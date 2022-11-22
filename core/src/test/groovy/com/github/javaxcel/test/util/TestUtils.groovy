@@ -44,7 +44,9 @@ import java.util.function.Predicate
 
 final class TestUtils {
 
-    static final Class<?>[] CLASSES = [
+    // Groovy won't generate a property — a combination of getter and setter — for a field
+    // explicitly specifying access modifier.
+    private static final Class<?>[] RANDOMIZED_CLASSES = [
             boolean, byte, short, char, int, long, float, double,
             Boolean, Byte, Short, Character, Integer, Long, Float, Double,
             Object, String, BigInteger, BigDecimal,
@@ -53,7 +55,9 @@ final class TestUtils {
             AccessMode, TimeUnit, Month, MonthDay,
     ].asImmutable()
 
-    static final EasyRandom GENERATOR = new EasyRandom(new EasyRandomParameters()
+    // Groovy won't generate a property — a combination of getter and setter — for a field
+    // explicitly specifying access modifier.
+    private static final EasyRandom GENERATOR = new EasyRandom(new EasyRandomParameters()
             .charset(StandardCharsets.UTF_8)
             .dateRange(LocalDate.of(1000, Month.JANUARY, 1), LocalDate.now())
             .timeRange(LocalTime.MIN, LocalTime.MAX)
@@ -99,8 +103,8 @@ final class TestUtils {
         def map = new HashMap<String, Object>()
 
         size.times {
-            def index = GENERATOR.nextInt(CLASSES.length)
-            def randomized = randomize(CLASSES[index] as Class)
+            def index = GENERATOR.nextInt(RANDOMIZED_CLASSES.length)
+            def randomized = randomize(RANDOMIZED_CLASSES[index] as Class)
 
             // For abundant test cases, some empty strings will be converted to null.
             if (MathUtils.isOdd(it) && randomized == "") {

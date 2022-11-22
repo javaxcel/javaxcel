@@ -55,7 +55,7 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
      */
     protected static final ExcelStyleConfig DEFAULT_STYLE_CONFIG = new NoStyleConfig();
 
-    private final ExcelWriteContext<T> context;
+    final ExcelWriteContext<T> context;
 
     /**
      * Creates a writer for model.
