@@ -79,7 +79,10 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
                 .isNotNull()
                 .describedAs("strategies cannot have null element: {0}", ArrayUtils.toString(strategies))
                 .doesNotContainNull();
-        if (strategies.length == 0) return this;
+
+        if (strategies.length == 0) {
+            return this;
+        }
 
         // Makes each strategy be unique; removes duplication.
         Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> strategyMap = Arrays.stream(strategies)
@@ -179,7 +182,9 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
         ExcelWriteStrategy strategy = context.getStrategyMap().get(SheetName.class);
         String sheetName = strategy == null ? "Sheet" : (String) strategy.execute(context);
 
-        if (numOfSheets < 2) return Collections.singletonList(sheetName);
+        if (numOfSheets < 2) {
+            return Collections.singletonList(sheetName);
+        }
 
         List<String> sheetNames = new ArrayList<>();
         for (int i = 1; i <= numOfSheets; i++) {
