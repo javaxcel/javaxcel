@@ -16,17 +16,20 @@
 
 package com.github.javaxcel.core.in.core.impl
 
-import com.github.javaxcel.core.TestUtils
+import com.github.javaxcel.core.Javaxcel
 import com.github.javaxcel.core.out.strategy.impl.HeaderNames
 import com.github.javaxcel.core.out.strategy.impl.SheetName
 import com.github.javaxcel.core.util.ExcelUtils
+import com.github.javaxcel.test.util.TestUtils
 import io.github.imsejin.common.tool.RandomString
 import io.github.imsejin.common.tool.Stopwatch
 import lombok.Cleanup
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
+import org.apache.poi.xssf.streaming.SXSSFWorkbook
 import spock.lang.Specification
 import spock.lang.TempDir
 
+import java.nio.file.Files
 import java.nio.file.Path
 import java.util.concurrent.TimeUnit
 
@@ -38,6 +41,32 @@ class MapReaderSpec extends Specification {
     Path path
 
     def "test"() {
+        given:
+        def keys = ["A", "B", "C", "D", "E", "F"]
+        def workbook = new SXSSFWorkbook()
+        def numOfMocks = 1024
+        def maps = (0..<numOfMocks).collect { TestUtils.randomizeMap(keys) }
+        def filePath = path.resolve("maps-${System.currentTimeMillis()}.xlsx")
+        def out = new FileOutputStream(filePath.toFile())
+
+        when:
+        Javaxcel.newInstance()
+                .writer(workbook)
+                .write(out, maps)
+
+        and:
+        workbook = ExcelUtils.getWorkbook(filePath.toFile())
+
+        then:
+        Files.exists(filePath)
+        ExcelUtils.getNumOfModels(workbook) == numOfMocks
+        workbook[0][0].collect { it.stringCellValue } == keys
+
+        cleanup:
+        out.close()
+    }
+
+    def "test1"() {
         given:
         def stopwatch = new Stopwatch(TimeUnit.SECONDS)
         def file = new File(path.toFile(), "maps.xlsx")
@@ -57,7 +86,7 @@ class MapReaderSpec extends Specification {
 
         // Write excel file with mocks
         stopwatch.start("write %,d maps", numOfMocks)
-        TestUtils.JAVAXCEL.writer(workbook)
+        Javaxcel.newInstance().writer(workbook)
                 .options(new SheetName("Maps"), new HeaderNames(keys))
                 .write(out, maps)
         stopwatch.stop()
@@ -65,7 +94,7 @@ class MapReaderSpec extends Specification {
         when: "Read excel file"
         stopwatch.start("read %,d maps", numOfMocks)
         @Cleanup def newWorkbook = new HSSFWorkbook(new FileInputStream(file))
-        def actual = TestUtils.JAVAXCEL.reader(newWorkbook).read()
+        def actual = Javaxcel.newInstance().reader(newWorkbook).read()
         stopwatch.stop()
         println stopwatch.statistics
 
