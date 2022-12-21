@@ -74,7 +74,7 @@ public @interface ExcelColumn {
      * converter replaces it with this default value.
      *
      * <p> <u>If the field is also annotated with {@link ExcelWriteExpression} or {@link ExcelReadExpression},
-     * this value is considered as a expression(SpEL).</u>
+     * this value is considered as a expression(SpEL).</u> The expression has no variables.
      *
      * <pre>{@code
      *      // Regarded as a string.
