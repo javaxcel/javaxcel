@@ -16,9 +16,9 @@
 
 package com.github.javaxcel.core.converter.in;
 
+import com.github.javaxcel.core.analysis.ExcelAnalysis;
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta;
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta.Source;
-import com.github.javaxcel.core.analysis.ExcelAnalysis;
 import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer;
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelReadExpression;
@@ -104,27 +104,41 @@ public class ExcelReadExpressionConverter implements ExcelReadConverter {
 
         Cache cache = this.analysisMap.get(field);
         Object value = cache.expression.getValue(context, field.getType());
-        value = isNullOrEmpty(value) ? null : value;
 
-        // Returns default value if the value is null or empty string.
-        if (value == null && cache.expressionForDefault != null) {
-            // There is no access to fields(variables) on default expression.
-            Object defaultValue = cache.expressionForDefault.getValue(field.getType());
-
-            // Returns null if the default value is also null or empty string.
-            if (isNullOrEmpty(defaultValue)) {
-                return null;
-            }
-
-            return defaultValue;
+        // If return value of expression is empty string, replaces the value with null.
+        if (isNullOrEmptyString(value)) {
+            value = null;
         }
 
-        return value;
+        // Returns the return value of expression.
+        if (value != null) {
+            return value;
+        }
+
+        // Checks if the value is null or empty string.
+        // Returns null if default expression is not defined.
+        if (cache.expressionForDefault == null) {
+            return null;
+        }
+
+        // Returns default value if the value is null or empty string.
+        // TODO: Consider that integration with @ExcelColumn.defaultValue, @ExcelWriteExpression and @ExcelReadExpression.
+        // TODO: @ExcelColumn.defaultValue is considered as a stringified value, not expression.
+        // TODO: So the original expression is executed one more with that value.
+        // There is no access to fields(variables) on default expression.
+        Object defaultValue = cache.expressionForDefault.getValue(field.getType());
+
+        // Returns null if the default value is also null or empty string.
+        if (isNullOrEmptyString(defaultValue)) {
+            return null;
+        }
+
+        return defaultValue;
     }
 
     // -------------------------------------------------------------------------------------------------
 
-    private static boolean isNullOrEmpty(@Nullable Object object) {
+    private static boolean isNullOrEmptyString(@Nullable Object object) {
         if (object == null) {
             return true;
         }

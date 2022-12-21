@@ -121,31 +121,37 @@ public class ExcelWriteExpressionConverter implements ExcelWriteConverter {
 
         Cache cache = this.analysisMap.get(field);
         Object value = cache.expression.getValue(context);
-        value = isNullOrEmpty(value) ? null : value;
 
-        // Checks if the value is null or empty string.
-        if (value == null) {
-            // Returns null if default expression is not defined.
-            if (cache.expressionForDefault == null) {
-                return null;
-            }
+        // If a return value of expression is empty string, replaces the value with null.
+        if (isNullOrEmptyString(value)) {
+            value = null;
+        }
 
-            // There is no access to fields(variables) on default expression.
-            Object defaultValue = cache.expressionForDefault.getValue();
-
-            // Returns null if the default value is also null or empty string.
-            if (isNullOrEmpty(defaultValue)) {
-                return null;
-            }
-
+        // Returns the return value of expression.
+        if (value != null) {
             // Forces the evaluated value to be a string
             // even if desired return type of expression is not String.
-            return defaultValue.toString();
+            return value.toString();
+        }
+
+        // Checks if the value is null or empty string.
+        // Returns null if default expression is not defined.
+        if (cache.expressionForDefault == null) {
+            return null;
+        }
+
+        // TODO: I think that expressionForDefault is not needed when writing.
+        // There is no access to fields(variables) on default expression.
+        Object defaultValue = cache.expressionForDefault.getValue();
+
+        // Returns null if the default value is also null or empty string.
+        if (isNullOrEmptyString(defaultValue)) {
+            return null;
         }
 
         // Forces the evaluated value to be a string
         // even if desired return type of expression is not String.
-        return value.toString();
+        return defaultValue.toString();
     }
 
     // -------------------------------------------------------------------------------------------------
@@ -168,11 +174,11 @@ public class ExcelWriteExpressionConverter implements ExcelWriteConverter {
             return variables;
 
         } else {
-            throw new RuntimeException("Never throw; ExcelWriteAnalyzer adds the flags into each analysis");
+            throw new AssertionError("Never throw; ExcelWriteAnalyzer adds the flags into each analysis");
         }
     }
 
-    private static boolean isNullOrEmpty(@Nullable Object object) {
+    private static boolean isNullOrEmptyString(@Nullable Object object) {
         if (object == null) {
             return true;
         }
