@@ -23,7 +23,6 @@ import com.github.javaxcel.core.analysis.ExcelAnalysisImpl.DefaultMetaImpl
 import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer
 import com.github.javaxcel.core.annotation.ExcelColumn
 import com.github.javaxcel.core.converter.handler.registry.impl.DefaultExcelTypeHandlerRegistry
-import com.github.javaxcel.core.converter.in.ExcelReadHandlerConverter.Utils
 import com.github.javaxcel.test.handler.TimeUnitTypeHandler
 import com.github.javaxcel.test.model.Array1D
 import com.github.javaxcel.test.model.Array2D
@@ -173,58 +172,6 @@ class ExcelReadHandlerConverterSpec extends Specification {
         "timeUnit"   | "ms"      || TimeUnit.MILLISECONDS
         "timeUnit"   | "μs"      || TimeUnit.MICROSECONDS
         "timeUnit"   | "ns"      || TimeUnit.NANOSECONDS
-    }
-
-    // -------------------------------------------------------------------------------------------------
-
-    def "Split shallowly a string as array"() {
-        when:
-        def actual = Utils.shallowSplit(string, ", ")
-
-        then:
-        actual == expected as String[]
-
-        where:
-        string                                                            | expected
-        "[]"                                                              | []
-        "[10]"                                                            | ["10"]
-        "[, ]"                                                            | ["", ""]
-        "[[], , ]"                                                        | ["[]", "", ""]
-        "[, , []]"                                                        | ["", "", "[]"]
-        "[1, 2, 3]"                                                       | ["1", "2", "3"]
-        "[[], [], ]"                                                      | ["[]", "[]", ""]
-        "[, [], []]"                                                      | ["", "[]", "[]"]
-        "[[], , []]"                                                      | ["[]", "", "[]"]
-        "[, , , , ]"                                                      | ["", "", "", "", ""]
-        "[, , [2], []]"                                                   | ["", "", "[2]", "[]"]
-        "[[], , , , []]"                                                  | ["[]", "", "", "", "[]"]
-        "[, [1, ], [2], ]"                                                | ["", "[1, ]", "[2]", ""]
-        "[, , [2], [], ]"                                                 | ["", "", "[2]", "[]", ""]
-        "[, , , [], , []]"                                                | ["", "", "", "[]", "", "[]"]
-        "[, , [], , [2], ]"                                               | ["", "", "[]", "", "[2]", ""]
-        "[, , , [], , [2], ]"                                             | ["", "", "", "[]", "", "[2]", ""]
-        "[[], [1, 2, 4, 5], [0, [0]], [], 2]"                             | ["[]", "[1, 2, 4, 5]", "[0, [0]]", "[]", "2"]
-        "[, [[[2, 5]]], [], [, [, [1]]], , [[[2], [4, 5], [6]], [], ], ]" | ["", "[[[2, 5]]]", "[]", "[, [, [1]]]", "", "[[[2], [4, 5], [6]], [], ]", ""]
-    }
-
-    def "Gets shallow length of array"() {
-        when:
-        def actual = Utils.getShallowLength string
-
-        then:
-        actual == expected
-
-        where:
-        string                                                            | expected
-        "[]"                                                              | 0
-        "[10]"                                                            | 1
-        "[, ]"                                                            | 2
-        "[1, 2, 3]"                                                       | 3
-        "[, [1, ], [2], ]"                                                | 4
-        "[, , [2], []]"                                                   | 4
-        "[, , , [], , [2], ]"                                             | 7
-        "[[], [1, 2, 4, 5], [0, [0]], [], 2]"                             | 5
-        "[, [[[2, 5]]], [], [, [, [1]]], , [[[2], [4, 5], [6]], [], ], ]" | 7
     }
 
     // -------------------------------------------------------------------------------------------------
