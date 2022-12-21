@@ -55,7 +55,7 @@ public final class ExcelWriteConverters implements ExcelWriteConverter {
             }
         }
 
-        throw new RuntimeException("Never throw");
+        throw new AssertionError("Never throw");
     }
 
 }

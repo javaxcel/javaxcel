@@ -38,7 +38,7 @@ import java.util.Map;
  * @see ModelReader
  * @see MapReader
  */
-public class Javaxcel {
+public final class Javaxcel {
 
     @VisibleForTesting
     final ExcelTypeHandlerRegistry registry;
@@ -52,6 +52,7 @@ public class Javaxcel {
     }
 
     public static Javaxcel newInstance(ExcelTypeHandlerRegistry registry) {
+        // Defensive copy.
         ExcelTypeHandlerRegistry clone = new ExcelTypeHandlerRegistryImpl();
         clone.addAll(registry);
 

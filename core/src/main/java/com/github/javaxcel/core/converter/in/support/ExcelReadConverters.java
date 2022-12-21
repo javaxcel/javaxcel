@@ -56,7 +56,7 @@ public final class ExcelReadConverters implements ExcelReadConverter {
             }
         }
 
-        throw new RuntimeException("Never throw");
+        throw new AssertionError("Never throw");
     }
 
 }

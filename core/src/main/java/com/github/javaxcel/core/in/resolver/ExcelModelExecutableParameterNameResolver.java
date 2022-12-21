@@ -67,7 +67,7 @@ public class ExcelModelExecutableParameterNameResolver {
 
     // -------------------------------------------------------------------------------------------------
 
-    public static class ResolvedParameter {
+    public static final class ResolvedParameter {
         private static final ParameterNameDiscoverer DISCOVERER = new DefaultParameterNameDiscoverer();
 
         private final String name;

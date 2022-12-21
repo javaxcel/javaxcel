@@ -122,7 +122,7 @@ public class ExcelWriteHandlerConverter implements ExcelWriteConverter {
             return ReflectionUtils.invoke(getter, model);
 
         } else {
-            throw new RuntimeException("Never throw; ExcelWriteAnalyzer adds the flags into each analysis");
+            throw new AssertionError("Never throw; ExcelWriteAnalyzer adds the flags into each analysis");
         }
     }
 
