@@ -7,6 +7,7 @@ import com.github.javaxcel.core.converter.handler.impl.lang.LongTypeHandler
 import com.github.javaxcel.core.converter.handler.impl.lang.StringTypeHandler
 import com.github.javaxcel.core.converter.handler.impl.math.BigDecimalTypeHandler
 import com.github.javaxcel.core.converter.handler.impl.math.BigIntegerTypeHandler
+import com.github.javaxcel.core.converter.handler.impl.util.LocaleTypeHandler
 import com.github.javaxcel.core.converter.handler.impl.util.UUIDTypeHandler
 import com.github.javaxcel.core.converter.handler.registry.impl.DefaultExcelTypeHandlerRegistry
 import com.github.javaxcel.core.model.sample.ComplexSample
@@ -88,7 +89,7 @@ class ExcelWriteAnalyzerSpec extends Specification {
         type          | handlerTypes
         PlainSample   | [LongTypeHandler, BigDecimalTypeHandler, StringTypeHandler]
         ModelSample   | [IntegerTypeHandler, StringTypeHandler, BigIntegerTypeHandler, StringTypeHandler]
-        GenericSample | [null, StringTypeHandler, BigDecimalTypeHandler, StringTypeHandler, StringTypeHandler, StringTypeHandler]
+        GenericSample | [LocaleTypeHandler, StringTypeHandler, BigDecimalTypeHandler, StringTypeHandler, StringTypeHandler, StringTypeHandler]
         ComplexSample | [LongTypeHandler, null, null, null, null, null, null, UUIDTypeHandler, UUIDTypeHandler,
                          UUIDTypeHandler, DoubleTypeHandler, DoubleTypeHandler, DoubleTypeHandler, null, null,
                          LongTypeHandler, LongTypeHandler, null, null, LongTypeHandler, LongTypeHandler, null, null,

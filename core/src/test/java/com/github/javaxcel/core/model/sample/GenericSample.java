@@ -9,10 +9,11 @@ import java.util.Deque;
 @ToString
 @EqualsAndHashCode
 public class GenericSample<
-        ID extends Number,
+        ID extends Long,
         TITLE extends String,
         NUMBER extends BigDecimal,
-        SUBTITLES extends Deque<TITLE>> {
+        SUBTITLES extends Deque<TITLE>,
+        ARRAY extends Iterable<? extends ID[]>> {
 
     private ID id;
 
@@ -25,5 +26,7 @@ public class GenericSample<
     private SUBTITLES subtitles;
 
     private SUBTITLES[][] subtitles2DArray;
+
+    private Iterable<ARRAY> arrays;
 
 }

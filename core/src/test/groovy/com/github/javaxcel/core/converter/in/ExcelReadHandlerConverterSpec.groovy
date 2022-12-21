@@ -23,6 +23,7 @@ import com.github.javaxcel.core.analysis.ExcelAnalysisImpl.DefaultMetaImpl
 import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer
 import com.github.javaxcel.core.annotation.ExcelColumn
 import com.github.javaxcel.core.converter.handler.registry.impl.DefaultExcelTypeHandlerRegistry
+import com.github.javaxcel.core.model.sample.GenericSample
 import com.github.javaxcel.test.handler.TimeUnitTypeHandler
 import com.github.javaxcel.test.model.Array1D
 import com.github.javaxcel.test.model.Array2D
@@ -172,6 +173,28 @@ class ExcelReadHandlerConverterSpec extends Specification {
         "timeUnit"   | "ms"      || TimeUnit.MILLISECONDS
         "timeUnit"   | "μs"      || TimeUnit.MICROSECONDS
         "timeUnit"   | "ns"      || TimeUnit.NANOSECONDS
+    }
+
+    // -------------------------------------------------------------------------------------------------
+
+    def "test"() {
+        given:
+        def finder = new ExcelReadHandlerConverter.TypeFinder()
+
+        when:
+        def field = GenericSample.getDeclaredField("arrays")
+
+        def count = 0
+        def actualType = field.getGenericType()
+        while (!(actualType instanceof Class)) {
+            count++
+            actualType = finder.find(actualType).type
+            println "actualType = $actualType / $field"
+        }
+
+        then:
+        actualType
+        println "count = $count"
     }
 
     // -------------------------------------------------------------------------------------------------
