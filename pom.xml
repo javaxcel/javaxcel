@@ -6,7 +6,7 @@
 
     <groupId>com.github.javaxcel</groupId>
     <artifactId>javaxcel</artifactId>
-    <version>0.8.2</version>
+    <version>0.9.0</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -78,6 +78,26 @@
     </properties>
 
     <repositories>
+        <!--
+            Effective January 15, 2020, The Central Repository no longer supports insecure
+            communication over plain HTTP and requires that all requests to the repository
+            are encrypted over HTTPS.
+
+            501 HTTPS Required.
+            Use https://repo.maven.apache.org/maven2/
+            More information at https://links.sonatype.com/central/501-https-required
+
+            Return code is: 501 , ReasonPhrase:HTTPS Required.
+            ERROR: Failed to parse POMs
+
+            See https://support.sonatype.com/hc/en-us/articles/360041287334
+        -->
+        <repository>
+            <id>maven-central</id>
+            <name>Maven Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
@@ -99,6 +119,10 @@
                     <exclusion>
                         <groupId>org.ini4j</groupId>
                         <artifactId>ini4j</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.commons</groupId>
+                        <artifactId>commons-compress</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -125,13 +149,6 @@
                 <artifactId>spring-expression</artifactId>
                 <version>${spring-expression.version}</version>
                 <optional>true</optional>
-            </dependency>
-
-            <!-- Javaxcel Styler -->
-            <dependency>
-                <groupId>com.github.javaxcel</groupId>
-                <artifactId>javaxcel-styler</artifactId>
-                <version>${project.version}</version>
             </dependency>
 
             <!-- Jetbrains Annotations -->

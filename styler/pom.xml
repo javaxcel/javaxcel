@@ -7,11 +7,10 @@
     <parent>
         <artifactId>javaxcel</artifactId>
         <groupId>com.github.javaxcel</groupId>
-        <version>0.8.2</version>
+        <version>0.9.0</version>
     </parent>
 
     <artifactId>javaxcel-styler</artifactId>
-    <version>${parent.version}</version>
     <packaging>jar</packaging>
 
     <name>Javaxcel Styler</name>
