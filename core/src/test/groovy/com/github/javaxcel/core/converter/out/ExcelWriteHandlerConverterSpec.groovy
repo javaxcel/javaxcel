@@ -181,7 +181,7 @@ class ExcelWriteHandlerConverterSpec extends Specification {
         "timeUnit"   | new EnumModel(timeUnit: TimeUnit.NANOSECONDS)  || "ns"
     }
 
-    def "Converts iterable and array"() {
+    def "Converts mixed iterable and array"() {
         given:
         def analyses = analyze(model.class.declaredFields, ExcelWriteAnalyzer.FIELD_ACCESS)
         def field = model.class.getDeclaredField(fieldName)

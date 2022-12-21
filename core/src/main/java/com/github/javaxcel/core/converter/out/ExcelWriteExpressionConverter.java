@@ -16,9 +16,9 @@
 
 package com.github.javaxcel.core.converter.out;
 
+import com.github.javaxcel.core.analysis.ExcelAnalysis;
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta;
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta.Source;
-import com.github.javaxcel.core.analysis.ExcelAnalysis;
 import com.github.javaxcel.core.analysis.out.ExcelWriteAnalyzer;
 import com.github.javaxcel.core.annotation.ExcelWriteExpression;
 import com.github.javaxcel.core.util.FieldUtils;

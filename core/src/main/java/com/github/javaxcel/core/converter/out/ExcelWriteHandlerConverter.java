@@ -140,7 +140,7 @@ public class ExcelWriteHandlerConverter implements ExcelWriteConverter {
 
     private String handleInternal(Field field, Class<?> type, Object value) {
         if (type.isArray()) {
-            // Supports multi-dimensional array type.
+            // Supports multidimensional array type.
             return handleArray(field, value);
         } else if (value instanceof Iterable) {
             // Supports nested iterable type.
