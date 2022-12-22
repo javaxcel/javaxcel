@@ -6,10 +6,10 @@ class StringArraySplitterSpec extends Specification {
 
     def "Splits a string as array shallowly"() {
         given:
-        def splitter = new StringArraySplitter(", ")
+        StringArraySplitter splitter = new StringArraySplitter(", ")
 
         when:
-        def actual = splitter.shallowSplit(string)
+        String[] actual = splitter.shallowSplit(string)
 
         then:
         actual == expected as String[]
@@ -39,10 +39,10 @@ class StringArraySplitterSpec extends Specification {
 
     def "Gets length of array shallowly"() {
         given:
-        def splitter = new StringArraySplitter(", ")
+        StringArraySplitter splitter = new StringArraySplitter(", ")
 
         when:
-        def actual = splitter.getShallowLength(string)
+        int actual = splitter.getShallowLength(string)
 
         then:
         actual == expected
