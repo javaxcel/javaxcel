@@ -1,6 +1,7 @@
 package com.github.javaxcel.core.analysis;
 
 import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
+import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
@@ -55,6 +56,12 @@ public final class ExcelAnalysisImpl implements ExcelAnalysis {
                 () -> getClass().getSimpleName() + ".handler cannot be null");
     }
 
+    @Override
+    @ExcludeFromGeneratedJacocoReport
+    public String toString() {
+        return "ExcelAnalysisImpl(field=" + field + ", flags=" + flags + ", defaultMeta=" + defaultMeta + ", handler=" + handler + ')';
+    }
+
     // -------------------------------------------------------------------------------------------------
 
     public static final class DefaultMetaImpl implements DefaultMeta {
@@ -78,6 +85,12 @@ public final class ExcelAnalysisImpl implements ExcelAnalysis {
         @Override
         public Source getSource() {
             return this.source;
+        }
+
+        @Override
+        @ExcludeFromGeneratedJacocoReport
+        public String toString() {
+            return "DefaultMetaImpl(value=" + value + ", source=" + source + ')';
         }
     }
 

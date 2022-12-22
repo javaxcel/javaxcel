@@ -24,7 +24,7 @@ import com.github.javaxcel.core.analysis.out.ExcelWriteAnalyzer
 import com.github.javaxcel.core.annotation.ExcelColumn
 import com.github.javaxcel.core.annotation.ExcelModel
 import com.github.javaxcel.core.converter.handler.registry.impl.DefaultExcelTypeHandlerRegistry
-import com.github.javaxcel.test.handler.TimeUnitTypeHandler
+import com.github.javaxcel.test.converter.handler.impl.TimeUnitTypeHandler
 import com.github.javaxcel.test.model.Array1D
 import com.github.javaxcel.test.model.Array2D
 import com.github.javaxcel.test.model.Array3D
@@ -67,6 +67,10 @@ class ExcelWriteHandlerConverterSpec extends Specification {
         "objects"  | [new Object() {
             String toString() { "java.lang.Object@x" }
         }] as Object[]                                                    || "[java.lang.Object@x]"
+        "strings"  | [] as String[]                                       || "[]"
+        "strings"  | [null] as String[]                                   || "[]"
+        "strings"  | ["alpha", "beta"] as String[]                        || "[alpha, beta]"
+        "strings"  | ["alpha", "", "gamma"] as String[]                   || "[alpha, , gamma]"
         "locales"  | [] as Locale[]                                       || "[]"
         "locales"  | [null] as Locale[]                                   || "[]"
         "locales"  | [null, Locale.ROOT, null] as Locale[]                || "[, , ]"

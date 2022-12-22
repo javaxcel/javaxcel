@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.javaxcel.test.handler
+package com.github.javaxcel.test.converter.handler.impl
 
 import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler
 

@@ -83,13 +83,13 @@ class ExcelWriteAnalyzerSpec extends Specification {
 
         then: "Field, value and handler of analysis is equal to the expected"
         analyses.size() == fields.size()
-        analyses*.handler*.class == handlerTypes
+        analyses*.handler*.class == expected
 
         where:
-        type          | handlerTypes
+        type          | expected
         PlainSample   | [LongTypeHandler, BigDecimalTypeHandler, StringTypeHandler]
         ModelSample   | [IntegerTypeHandler, StringTypeHandler, BigIntegerTypeHandler, StringTypeHandler]
-        GenericSample | [LocaleTypeHandler, StringTypeHandler, BigDecimalTypeHandler, StringTypeHandler, StringTypeHandler, StringTypeHandler]
+        GenericSample | [LongTypeHandler, StringTypeHandler, BigDecimalTypeHandler, StringTypeHandler, StringTypeHandler, StringTypeHandler, LongTypeHandler]
         ComplexSample | [LongTypeHandler, null, null, null, null, null, null, UUIDTypeHandler, UUIDTypeHandler,
                          UUIDTypeHandler, DoubleTypeHandler, DoubleTypeHandler, DoubleTypeHandler, null, null,
                          LongTypeHandler, LongTypeHandler, null, null, LongTypeHandler, LongTypeHandler, null, null,

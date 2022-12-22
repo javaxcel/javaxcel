@@ -39,6 +39,7 @@ class Array1D {
         if (componentType == float) this.floats = array as float[]
         if (componentType == double) this.doubles = array as double[]
         if (componentType == Object) this.objects = array as Object[]
+        if (componentType == String) this.strings = array as String[]
         if (componentType == Locale) this.locales = array as Locale[]
     }
 
@@ -53,6 +54,7 @@ class Array1D {
 
     @ExcelColumn(defaultValue = "[]")
     Object[] objects
+    String[] strings
     Locale[] locales
 
 }

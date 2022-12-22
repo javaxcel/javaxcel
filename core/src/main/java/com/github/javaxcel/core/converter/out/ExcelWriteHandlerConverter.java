@@ -171,8 +171,8 @@ public class ExcelWriteHandlerConverter implements ExcelWriteConverter {
 
                 String string = handleInternal(field, elementType, element);
 
-                // Considers null as empty string.
-                if (string != null) {
+                // Regards null as empty string.
+                if (!StringUtils.isNullOrEmpty(string)) {
                     sb.append(string);
                 }
             }
@@ -205,8 +205,8 @@ public class ExcelWriteHandlerConverter implements ExcelWriteConverter {
 
                 String string = handleInternal(field, elementType, element);
 
-                // Considers null as empty string.
-                if (string != null) {
+                // Regards null as empty string.
+                if (!StringUtils.isNullOrEmpty(string)) {
                     sb.append(string);
                 }
             }

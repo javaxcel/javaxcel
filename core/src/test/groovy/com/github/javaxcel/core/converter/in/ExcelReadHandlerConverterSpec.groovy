@@ -23,8 +23,7 @@ import com.github.javaxcel.core.analysis.ExcelAnalysisImpl.DefaultMetaImpl
 import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer
 import com.github.javaxcel.core.annotation.ExcelColumn
 import com.github.javaxcel.core.converter.handler.registry.impl.DefaultExcelTypeHandlerRegistry
-import com.github.javaxcel.core.model.sample.GenericSample
-import com.github.javaxcel.test.handler.TimeUnitTypeHandler
+import com.github.javaxcel.test.converter.handler.impl.TimeUnitTypeHandler
 import com.github.javaxcel.test.model.Array1D
 import com.github.javaxcel.test.model.Array2D
 import com.github.javaxcel.test.model.Array3D
@@ -64,6 +63,10 @@ class ExcelReadHandlerConverterSpec extends Specification {
         "doubles"  | "[3.141592, -0.0879, 0.0]"      || [3.141592, -0.0879, 0.0] as double[]
         "objects"  | "[]"                            || [] as Object[]
         "objects"  | "[, java.lang.Object@736e9adb]" || [null, null] as Object[]
+        "strings"  | "[]"                            || [] as String[]
+        "strings"  | "[, ]"                          || [null, null] as String[]
+        "strings"  | "[alpha, beta]"                 || ["alpha", "beta"] as String[]
+        "strings"  | "[alpha, , gamma]"              || ["alpha", null, "gamma"] as String[]
         "locales"  | "[]"                            || [] as Locale[]
         "locales"  | "[, ]"                          || [Locale.ROOT, Locale.ROOT] as Locale[]
         "locales"  | "[en_US, ko_KR, fr_FR]"         || [Locale.US, Locale.KOREA, Locale.FRANCE] as Locale[]
@@ -144,6 +147,33 @@ class ExcelReadHandlerConverterSpec extends Specification {
         "locales"  | "[[, [, ], [ja_JP, zh_TW]], []]"          || [[null, [Locale.ROOT, Locale.ROOT], [Locale.JAPAN, Locale.TAIWAN]], []] as Locale[][][]
     }
 
+    def "Converts into iterable"() {
+        given:
+        def variables = [(fieldName): value]
+        def field = IterableModel.getDeclaredField(fieldName)
+        def analyses = analyze(field.declaringClass.declaredFields, ExcelReadAnalyzer.FIELD_ACCESS)
+
+        when:
+        def converter = new ExcelReadHandlerConverter(analyses, new DefaultExcelTypeHandlerRegistry())
+        def actual = converter.convert(variables, field)
+
+        then:
+        actual == expected
+
+        where:
+        fieldName                      | value                                    || expected
+        "iterable_string"              | null                                     || null
+        "iterable_string"              | "[]"                                     || []
+        "iterable_string"              | "[74, 0, -12]"                           || [74, 0, -12]
+        "collection_long"              | "[0, 9720, -8715]"                       || [0, 9720, -8715]
+        "collection_list_long"         | "[[]]"                                   || [[]]
+        "collection_list_long"         | "[[241832184], , [748015106], []]"       || [[241832184], null, [748015106], []]
+        "list_string"                  | "[alpha, beta]"                          || ["alpha", "beta"]
+        "iterable_bigDecimal"          | "[-0.7215, 3.141592, ]"                  || [-0.7215, 3.141592, null]
+        "list_iterable_string"         | "[[-9, -3], [-1, 0], [3, 9]]"            || [["-9", "-3"], ["-1", "0"], ["3", "9"]]
+        "iterable_iterable_bigDecimal" | "[[9.155, 12.784, -0.019], [], [6.218]]" || [[9.155, 12.784, -0.019], [], [6.218]]
+    }
+
     def "Converts into enum by custom handler"() {
         given:
         def registry = new DefaultExcelTypeHandlerRegistry()
@@ -177,28 +207,6 @@ class ExcelReadHandlerConverterSpec extends Specification {
 
     // -------------------------------------------------------------------------------------------------
 
-    def "test"() {
-        given:
-        def finder = new ExcelReadHandlerConverter.TypeFinder()
-
-        when:
-        def field = GenericSample.getDeclaredField("arrays")
-
-        def count = 0
-        def actualType = field.getGenericType()
-        while (!(actualType instanceof Class)) {
-            count++
-            actualType = finder.find(actualType).type
-            println "actualType = $actualType / $field"
-        }
-
-        then:
-        actualType
-        println "count = $count"
-    }
-
-    // -------------------------------------------------------------------------------------------------
-
     private static Iterable<ExcelAnalysis> analyze(Field[] fields, int flags) {
         fields.findAll { !it.isSynthetic() }.collect {
             def analysis = new ExcelAnalysisImpl(it)
@@ -218,6 +226,18 @@ class ExcelReadHandlerConverterSpec extends Specification {
     private static class EnumModel {
         AccessMode accessMode
         TimeUnit timeUnit
+    }
+
+    private static class IterableModel<
+            A extends String,
+            B extends Iterable<BigDecimal>> {
+        Iterable<Integer> iterable_string
+        Collection<Long> collection_long
+        Collection<List<Long>> collection_list_long
+        List<A> list_string
+        B iterable_bigDecimal
+        List<Iterable<A>> list_iterable_string
+        Iterable<B> iterable_iterable_bigDecimal
     }
 
 }

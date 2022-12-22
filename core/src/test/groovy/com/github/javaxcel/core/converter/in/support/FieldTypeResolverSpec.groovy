@@ -17,73 +17,103 @@
 package com.github.javaxcel.core.converter.in.support
 
 import com.github.javaxcel.core.converter.in.support.FieldTypeResolver.TypeResolution
+import com.github.javaxcel.test.converter.in.support.FieldTypeResolverTestModel_1
+import com.github.javaxcel.test.converter.in.support.FieldTypeResolverTestModel_2
 import spock.lang.Specification
 
-import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.ARRAY
-import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.CONCRETE
-import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.ITERABLE
+import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.*
 
 class FieldTypeResolverSpec extends Specification {
 
-    def "Resolves a type of field"() {
+    def "Resolves a concrete type of the field"() {
         given:
-        def field = Model.getDeclaredField(fieldName)
+        def field = FieldTypeResolverTestModel_1.getDeclaredField(fieldName)
+
+        when:
+        def concreteType = FieldTypeResolver.resolveConcreteType(field)
+
+        then:
+        concreteType == expected
+
+        where:
+        fieldName                                             | expected
+        "concrete"                                            | Long
+        "raw"                                                 | FieldTypeResolverTestModel_1
+        "generic"                                             | FieldTypeResolverTestModel_1
+        "generic_array"                                       | FieldTypeResolverTestModel_1
+        "type_variable"                                       | Object
+        "type_variable_array"                                 | Object
+        "type_variable_2d_array"                              | Object
+        "bounded_type_variable"                               | UUID
+        "bounded_type_variable_array"                         | UUID
+        "bounded_type_variable_2d_array"                      | UUID
+        "bounded_iterable_type_variable"                      | Double
+        "bounded_iterable_type_variable_array"                | Double
+        "bounded_iterable_type_variable_2d_array"             | Double
+        "iterable"                                            | Object
+        "iterable_unknown"                                    | Object
+        "iterable_concrete"                                   | Long
+        "iterable_concrete_array"                             | Long
+        "iterable_raw"                                        | FieldTypeResolverTestModel_1
+        "iterable_generic"                                    | FieldTypeResolverTestModel_1
+        "iterable_upper_wildcard_concrete"                    | Long
+        "iterable_lower_wildcard_concrete"                    | Long
+        "iterable_upper_wildcard_generic"                     | FieldTypeResolverTestModel_1
+        "iterable_lower_wildcard_generic"                     | FieldTypeResolverTestModel_1
+        "iterable_type_variable"                              | Object
+        "iterable_type_variable_array"                        | Object
+        "iterable_upper_wildcard_type_variable"               | Object
+        "iterable_lower_wildcard_type_variable"               | Object
+        "iterable_upper_wildcard_type_variable_array"         | Object
+        "iterable_lower_wildcard_type_variable_array"         | Object
+        "iterable_bounded_type_variable"                      | UUID
+        "iterable_bounded_type_variable_array"                | UUID
+        "iterable_upper_wildcard_bounded_type_variable"       | UUID
+        "iterable_lower_wildcard_bounded_type_variable"       | UUID
+        "iterable_upper_wildcard_bounded_type_variable_array" | UUID
+        "iterable_lower_wildcard_bounded_type_variable_array" | UUID
+        "iterable_bounded_iterable_type_variable"             | Double
+        "iterable_iterable_generic"                           | FieldTypeResolverTestModel_1
+    }
+
+    def "Resolves a nested type of the type"() {
+        given:
+        def field = FieldTypeResolverTestModel_2.getDeclaredField(fieldName)
         def type = field.genericType
 
         when:
-        def actual = [] as List<TypeResolution>
-        kinds.size().times {
+        def resolutions = [] as List<TypeResolution>
+        do {
             def resolution = FieldTypeResolver.resolve(type)
-            actual.add(resolution)
-        }
+            resolutions.add(resolution)
+            type = resolution.nestedType
+
+        } while (resolutions.last().kind != CONCRETE)
 
         then:
-        !actual.isEmpty()
-        actual.size() == kinds.size()
-        actual*.kind == kinds
-        actual.last().type == actualType
+        !resolutions.isEmpty()
+        resolutions.last().currentType == expectedType
+        resolutions.size() == kinds.size()
+        println resolutions*.currentType.typeName
+        resolutions*.kind == kinds
 
         where:
-        fieldName                                    || actualType | resolvedCount | kinds
-        "integer"                                    || Integer    | 1             | [CONCRETE]
-        "object"                                     || Object     | 1             | [CONCRETE]
-        "bigInteger"                                 || BigInteger | 1             | [CONCRETE]
-        "array_string"                               || String     | 1             | [ARRAY, CONCRETE]
-        "array_array_bigInteger"                     || BigInteger | 1             | [ARRAY, ARRAY, CONCRETE]
-        "array_queue_string"                         || String     | 1             | [ARRAY, ITERABLE, CONCRETE]
-        "array_iterable_array_iterable_array_locale" || Locale     | 1             | [ARRAY, ITERABLE, ARRAY, ITERABLE, ARRAY, CONCRETE]
-        "iterable"                                   || Object     | 1             | [ITERABLE, CONCRETE]
-        "iterable_long"                              || Long       | 1             | [ITERABLE, CONCRETE]
-        "list_object"                                || Object     | 1             | [ITERABLE, CONCRETE]
-        "set_bigInteger"                             || BigInteger | 1             | [ITERABLE, CONCRETE]
-        "collection_bigInteger"                      || BigInteger | 1             | [ITERABLE, CONCRETE]
-        "iterable_iterable_uuid"                     || UUID       | 1             | [ITERABLE, ITERABLE, CONCRETE]
-    }
-
-    // -------------------------------------------------------------------------------------------------
-
-    private static class Model<
-            A,
-            B extends BigInteger,
-            C extends Queue<String>,
-            D extends Collection<B>,
-            E extends Iterable<? super UUID>,
-            F extends Iterable<? extends Locale[]>> {
-        private Integer integer
-        private A object
-        private B bigInteger
-
-        private String[] array_string
-        private B[][] array_array_bigInteger
-        private C[] array_queue_string
-        private Iterable<? extends F[]>[] array_iterable_array_iterable_array_locale
-
-        private Iterable iterable
-        private Iterable<Long> iterable_long
-        private List<A> list_object
-        private Set<B> set_bigInteger
-        private D collection_bigInteger
-        private Iterable<E> iterable_iterable_uuid
+        fieldName                                    || expectedType                 | kinds                                               | types
+        "integer"                                    || Integer                      | [CONCRETE]                                          | ["java.lang.Integer"]
+        "object"                                     || Object                       | [CONCRETE]                                          | ["java.lang.Object"]
+        "bigInteger"                                 || BigInteger                   | [CONCRETE]                                          | ["java.math.BigInteger"]
+        "self"                                       || FieldTypeResolverTestModel_2 | [CONCRETE]                                          | ["com.github.javaxcel.test.converter.in.support.FieldTypeResolverTestModel_2"]
+        "array_string"                               || String                       | [ARRAY, CONCRETE]                                   | ["java.lang.String", "java.lang.String"]
+        "array_array_bigInteger"                     || BigInteger                   | [ARRAY, ARRAY, CONCRETE]                            | ["B[]", "B", "java.math.BigInteger"]
+        "array_queue_string"                         || String                       | [ARRAY, ITERABLE, CONCRETE]                         | ["C", "java.lang.String", "java.lang.String"]
+        "array_iterable_array_iterable_array_locale" || Locale                       | [ARRAY, ITERABLE, ARRAY, ITERABLE, ARRAY, CONCRETE] | ["java.lang.Iterable<? extends F[]>", "? extends F[]", "F", "? extends java.util.Locale[]", "java.util.Locale", "java.util.Locale"]
+        "iterable"                                   || Object                       | [ITERABLE, CONCRETE]                                | ["java.lang.Object", "java.lang.Object"]
+        "iterable_long"                              || Long                         | [ITERABLE, CONCRETE]                                | ["java.lang.Long", "java.lang.Long"]
+        "deque_object"                               || Object                       | [ITERABLE, CONCRETE]                                | ["?", "java.lang.Object"]
+        "list_object"                                || Object                       | [ITERABLE, CONCRETE]                                | ["A", "java.lang.Object"]
+        "set_bigInteger"                             || BigInteger                   | [ITERABLE, CONCRETE]                                | ["B", "java.math.BigInteger"]
+        "collection_bigInteger"                      || BigInteger                   | [ITERABLE, CONCRETE]                                | ["B", "java.math.BigInteger"]
+        "iterable_iterable_uuid"                     || UUID                         | [ITERABLE, ITERABLE, CONCRETE]                      | ["E", "? super java.util.UUID", "java.util.UUID"]
     }
 
 }

@@ -20,22 +20,18 @@ import com.github.javaxcel.core.analysis.ExcelAnalysis;
 import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer;
 import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
 import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
+import com.github.javaxcel.core.converter.in.support.FieldTypeResolver;
+import com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind;
+import com.github.javaxcel.core.converter.in.support.FieldTypeResolver.TypeResolution;
 import com.github.javaxcel.core.converter.in.support.StringArraySplitter;
-import com.github.javaxcel.core.util.FieldUtils;
 import io.github.imsejin.common.assertion.Asserts;
-import io.github.imsejin.common.util.ArrayUtils;
 import io.github.imsejin.common.util.ClassUtils;
 import io.github.imsejin.common.util.StringUtils;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.VisibleForTesting;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -82,13 +78,13 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
     @Nullable
     @Override
     public Object convert(Map<String, String> variables, Field field) {
-        Class<?> type = field.getType();
+        Type type = field.getGenericType();
         String value = variables.get(field.getName());
 
         return handleInternal(field, type, value);
     }
 
-    private Object handleInternal(Field field, Class<?> type, String value) {
+    private Object handleInternal(Field field, Type type, String value) {
         // When cell value is null or empty.
         if (StringUtils.isNullOrEmpty(value)) {
             ExcelAnalysis analysis = this.analysisMap.get(field);
@@ -96,27 +92,82 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
 
             if (StringUtils.isNullOrEmpty(defaultValue)) {
                 // When you don't explicitly define default value.
-                return ClassUtils.initialValueOf(type);
+                if (type instanceof Class) {
+                    return ClassUtils.initialValueOf((Class<?>) type);
+                }
+
+                // Returns null as default value, because initial value of the type is always null
+                // if the type is not a Class.
+                return null;
             } else {
                 // Converts again with the default value.
                 return handleInternal(field, type, defaultValue);
             }
         }
 
-        if (type.isArray()) {
-            // Supports multidimensional array type.
-            return handleArray(field, type, value);
-        } else if (Iterable.class.isAssignableFrom(type)) {
-            // Supports nested iterable type.
-            Class<?> actualType = FieldUtils.resolveActualType(field);
-            return handleIterable(field, actualType, value);
+//        TypeResolution resolution;
+//        do {
+//            resolution = FieldTypeResolver.resolve(type);
+//            type = resolution.getType();
+//
+//            switch (resolution.getKind()) {
+//                case ARRAY:
+//                    // Supports multidimensional array type.
+//                    return handleArray(field, type, value);
+//                case ITERABLE:
+//                    // Supports nested iterable type.
+//                    return handleIterable(field, type, value);
+//                case CONCRETE:
+//                    return handleConcrete(field, (Class<?>) type, value);
+//                default:
+//                    throw new AssertionError("Never throw");
+//            }
+//
+//        } while (resolution.getKind() != CONCRETE);
+
+//        TypeResolution resolution = FieldTypeResolver.resolve(type);
+//        type = resolution.getType();
+//        switch (resolution.getKind()) {
+//            case ARRAY:
+//                // Supports multidimensional array type.
+//                return handleArray(field, type, value);
+//            case ITERABLE:
+//                // Supports nested iterable type.
+//                return handleIterable(field, type, value);
+//            case CONCRETE:
+//                return handleConcrete(field, (Class<?>) type, value);
+//            default:
+//                throw new AssertionError("Never throw");
+//        }
+
+        if (type instanceof Class) {
+            Class<?> clazz = (Class<?>) type;
+
+            if (clazz.isArray()) {
+                // Supports multidimensional array type.
+                return handleArray(field, clazz, value);
+            } else if (Iterable.class.isAssignableFrom(clazz)) {
+                // Raw type of Iterable.
+                // TODO: implement an IterableSupplier.
+                return new ArrayList<>();
+            } else {
+                return handleConcrete(field, clazz, value);
+            }
+
         } else {
-            return handleConcrete(field, type, value);
+            // Supports nested iterable type.
+            TypeResolution resolution = FieldTypeResolver.resolve(type);
+            return handleIterable(field, resolution, value);
         }
     }
 
     private Object handleArray(Field field, Class<?> type, String value) {
         Class<?> componentType = type.getComponentType();
+
+        if (Iterable.class.isAssignableFrom(componentType)) {
+            throw new UnsupportedOperationException("Mixed array and iterable is not supported: " + field);
+        }
+
         String[] strings = SPLITTER.shallowSplit(value);
 
         // To solve that ClassCastException(primitive array doesn't be assignable to Object array),
@@ -126,13 +177,19 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
         for (int i = 0; i < strings.length; i++) {
             String string = strings[i];
 
+            // Regards an empty string as null.
+            if (StringUtils.isNullOrEmpty(string)) {
+                Array.set(array, i, null);
+                continue;
+            }
+
             Object element;
             if (componentType.isArray()) {
                 element = string.isEmpty() ? null : handleArray(field, componentType, string);
-            } else if (Iterable.class.isAssignableFrom(componentType)) {
-                element = string.isEmpty() ? null : handleIterable(field, componentType, string);
+//            } else if (Iterable.class.isAssignableFrom(componentType)) {
+//                element = string.isEmpty() ? null : handleIterable(field, componentType, string);
             } else {
-                // Allows empty string to handler for non-array type.
+                // TODO: why...? Allows empty string to handler for non-array type.
                 element = handleConcrete(field, componentType, string);
             }
 
@@ -140,6 +197,43 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
         }
 
         return array;
+    }
+
+    private Iterable<?> handleIterable(Field field, TypeResolution resolution, String value) {
+        if (resolution.getKind() != Kind.ITERABLE) {
+            throw new IllegalStateException("It is not a type of java.lang.Iterable: " + field);
+        }
+
+        resolution = FieldTypeResolver.resolve(resolution.getNestedType());
+        Kind kind = resolution.getKind();
+
+        if (kind == Kind.ARRAY) {
+            throw new UnsupportedOperationException("Mixed array and iterable is not supported: " + field);
+        }
+
+        String[] strings = SPLITTER.shallowSplit(value);
+        List<Object> list = new ArrayList<>(strings.length);
+
+        for (String string : strings) {
+            // Regards an empty string as null.
+            if (StringUtils.isNullOrEmpty(string)) {
+                list.add(null);
+                continue;
+            }
+
+            Object element;
+            if (kind == Kind.ITERABLE) {
+                element = string.isEmpty() ? null : handleIterable(field, resolution, string);
+            } else {
+                // Allows empty string to handler for non-array type.
+                Class<?> clazz = (Class<?>) resolution.getCurrentType();
+                element = handleConcrete(field, clazz, string);
+            }
+
+            list.add(element);
+        }
+
+        return list;
     }
 
     // TODO: Fix this.
@@ -187,94 +281,6 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
             String message = String.format("Failed to convert %s(String) to %s", value, type.getSimpleName());
             throw new RuntimeException(message, e);
         }
-    }
-
-    // -------------------------------------------------------------------------------------------------
-
-    @VisibleForTesting
-    static class TypeFinder {
-
-        enum Kind {
-            ARRAY, ITERABLE, CONCRETE
-        }
-
-        static class Result {
-            private final Type type;
-            private final Kind kind;
-
-            public Result(Type type, Kind kind) {
-                this.type = type;
-                this.kind = kind;
-            }
-
-            public Type getType() {
-                return type;
-            }
-
-            public Kind getKind() {
-                return kind;
-            }
-        }
-
-        @Nullable
-        public Result find(Type type) {
-            if (type == null) {
-                return null;
-            }
-
-            Kind kind;
-
-            while (true) {
-                if (type instanceof Class) {
-                    kind = Kind.CONCRETE;
-                    break;
-                }
-
-                if (type instanceof TypeVariable) {
-                    TypeVariable<?> typeVariable = (TypeVariable<?>) type;
-                    type = typeVariable.getBounds()[0];
-                    continue;
-                }
-
-                if (type instanceof GenericArrayType) {
-                    GenericArrayType genericArrayType = (GenericArrayType) type;
-                    type = genericArrayType.getGenericComponentType();
-                    kind = Kind.ARRAY;
-                    break;
-                }
-
-                if (type instanceof ParameterizedType) {
-                    ParameterizedType parameterizedType = (ParameterizedType) type;
-                    Type rawType = parameterizedType.getRawType();
-
-                    if (rawType instanceof Class && Iterable.class.isAssignableFrom((Class<?>) rawType)) {
-                        type = parameterizedType.getActualTypeArguments()[0];
-                        kind = Kind.ITERABLE;
-                        break;
-                    } else {
-                        type = rawType;
-                        continue;
-                    }
-                }
-
-                if (type instanceof WildcardType) {
-                    WildcardType wildcardType = (WildcardType) type;
-                    Type[] lowerBounds = wildcardType.getLowerBounds();
-
-                    Type boundedType;
-                    if (ArrayUtils.exists(lowerBounds)) {
-                        boundedType = lowerBounds[0];
-                    } else {
-                        boundedType = wildcardType.getUpperBounds()[0];
-                    }
-
-                    type = boundedType;
-                }
-            }
-
-            return new Result(type, kind);
-        }
-
     }
 
 }

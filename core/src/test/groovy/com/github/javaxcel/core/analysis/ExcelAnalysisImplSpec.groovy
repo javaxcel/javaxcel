@@ -18,8 +18,8 @@ package com.github.javaxcel.core.analysis
 
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta.Source
 import com.github.javaxcel.core.analysis.ExcelAnalysisImpl.DefaultMetaImpl
-import com.github.javaxcel.test.handler.ObjectTypeHandler
-import com.github.javaxcel.test.handler.TimeUnitTypeHandler
+import com.github.javaxcel.test.converter.handler.impl.ObjectTypeHandler
+import com.github.javaxcel.test.converter.handler.impl.TimeUnitTypeHandler
 import groovy.transform.EqualsAndHashCode
 import spock.lang.Specification
 

@@ -19,6 +19,7 @@ package com.github.javaxcel.core.analysis;
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta;
 import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
 import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
+import com.github.javaxcel.core.converter.in.support.FieldTypeResolver;
 import com.github.javaxcel.core.util.FieldUtils;
 import io.github.imsejin.common.assertion.Asserts;
 
@@ -60,8 +61,9 @@ public abstract class AbstractExcelAnalyzer implements ExcelAnalyzer {
             analysis.setDefaultMeta(defaultMeta);
 
             // Analyzes handler for the field.
-            Class<?> actualType = FieldUtils.resolveActualType(field);
-            ExcelTypeHandler<?> handler = this.registry.getHandler(actualType);
+//            Class<?> concreteType = FieldUtils.resolveActualType(field);
+            Class<?> concreteType = FieldTypeResolver.resolveConcreteType(field);
+            ExcelTypeHandler<?> handler = this.registry.getHandler(concreteType);
             if (handler != null) {
                 analysis.setHandler(handler);
             }
