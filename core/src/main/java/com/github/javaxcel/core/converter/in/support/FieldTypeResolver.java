@@ -17,6 +17,7 @@
 package com.github.javaxcel.core.converter.in.support;
 
 import io.github.imsejin.common.util.ArrayUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
@@ -62,30 +63,39 @@ public class FieldTypeResolver {
         TypeResolution resolution;
         do {
             resolution = resolve(type);
-            type = resolution.getNestedType();
+            type = resolution.getElementType();
 
         } while (resolution.getKind() != CONCRETE);
 
         return (Class<?>) resolution.getCurrentType();
     }
 
+    /**
+     * Resolves a resolution of the given type.
+     *
+     * <pre>
+     *     // type ==
+     *     resolve(type) //
+     * </pre>
+     *
+     * @param type type to resolve
+     * @return resolution of the type
+     */
     public static TypeResolution resolve(Type type) {
         Kind kind;
-        Type nestedType = null;
+        Type elementType = null;
 
         while (true) {
             if (type instanceof Class) {
                 Class<?> clazz = (Class<?>) type;
 
                 if (clazz.isArray()) {
-//                    type = clazz.getComponentType();
-                    nestedType = clazz.getComponentType();
+                    elementType = clazz.getComponentType();
                     kind = Kind.ARRAY;
                 } else {
                     // When the type is raw type.
                     if (Iterable.class.isAssignableFrom(clazz)) {
-//                        type = Object.class;
-                        nestedType = Object.class;
+                        elementType = Object.class;
                         kind = Kind.ITERABLE;
                         break;
                     }
@@ -104,8 +114,7 @@ public class FieldTypeResolver {
 
             if (type instanceof GenericArrayType) {
                 GenericArrayType genericArrayType = (GenericArrayType) type;
-//                type = genericArrayType.getGenericComponentType();
-                nestedType = genericArrayType.getGenericComponentType();
+                elementType = genericArrayType.getGenericComponentType();
                 kind = Kind.ARRAY;
                 break;
             }
@@ -115,8 +124,7 @@ public class FieldTypeResolver {
                 Type rawType = parameterizedType.getRawType();
 
                 if (rawType instanceof Class && Iterable.class.isAssignableFrom((Class<?>) rawType)) {
-//                    type = parameterizedType.getActualTypeArguments()[0];
-                    nestedType = parameterizedType.getActualTypeArguments()[0];
+                    elementType = parameterizedType.getActualTypeArguments()[0];
                     kind = Kind.ITERABLE;
                     break;
                 } else {
@@ -140,7 +148,7 @@ public class FieldTypeResolver {
             }
         }
 
-        return new TypeResolution(type, kind, nestedType);
+        return new TypeResolution(kind, type, elementType);
     }
 
     // -------------------------------------------------------------------------------------------------
@@ -150,26 +158,27 @@ public class FieldTypeResolver {
     }
 
     public static final class TypeResolution {
-        private final Type currentType;
-        private final Type nestedType;
         private final Kind kind;
+        private final Type currentType;
+        private final Type elementType;
 
-        private TypeResolution(Type currentType, Kind kind, Type nestedType) {
-            this.currentType = currentType;
+        private TypeResolution(Kind kind, Type currentType, @Nullable Type elementType) {
             this.kind = kind;
-            this.nestedType = nestedType;
-        }
-
-        public Type getCurrentType() {
-            return this.currentType;
+            this.currentType = currentType;
+            this.elementType = elementType;
         }
 
         public Kind getKind() {
             return this.kind;
         }
 
-        public Type getNestedType() {
-            return this.nestedType;
+        public Type getCurrentType() {
+            return this.currentType;
+        }
+
+        @Nullable
+        public Type getElementType() {
+            return this.elementType;
         }
 
         @Override
@@ -178,17 +187,19 @@ public class FieldTypeResolver {
             if (o == null || getClass() != o.getClass()) return false;
             TypeResolution that = (TypeResolution) o;
 
-            return currentType.equals(that.currentType) && kind == that.kind;
+            return kind == that.kind
+                    && currentType.equals(that.currentType)
+                    && Objects.equals(elementType, that.elementType);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(currentType, kind);
+            return Objects.hash(kind, currentType, elementType);
         }
 
         @Override
         public String toString() {
-            return "TypeResolution(type=" + currentType + ", kind=" + kind + ')';
+            return "TypeResolution(kind=" + kind + ", currentType=" + currentType + ", elementType=" + elementType + ')';
         }
     }
 

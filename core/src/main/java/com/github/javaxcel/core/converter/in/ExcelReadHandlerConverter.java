@@ -204,7 +204,7 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
             throw new IllegalStateException("It is not a type of java.lang.Iterable: " + field);
         }
 
-        resolution = FieldTypeResolver.resolve(resolution.getNestedType());
+        resolution = FieldTypeResolver.resolve(resolution.getElementType());
         Kind kind = resolution.getKind();
 
         if (kind == Kind.ARRAY) {

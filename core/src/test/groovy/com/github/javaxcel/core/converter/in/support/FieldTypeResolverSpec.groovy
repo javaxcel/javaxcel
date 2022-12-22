@@ -21,7 +21,12 @@ import com.github.javaxcel.test.converter.in.support.FieldTypeResolver_TestModel
 import com.github.javaxcel.test.converter.in.support.FieldTypeResolver_TestModel_2
 import spock.lang.Specification
 
-import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.*
+import java.lang.reflect.Field
+import java.lang.reflect.Type
+
+import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.ARRAY
+import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.CONCRETE
+import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.ITERABLE
 
 class FieldTypeResolverSpec extends Specification {
 
@@ -30,7 +35,7 @@ class FieldTypeResolverSpec extends Specification {
         Field field = FieldTypeResolver_TestModel_1.getDeclaredField(fieldName)
 
         when:
-        def concreteType = FieldTypeResolver.resolveConcreteType(field)
+        Class<?> concreteType = FieldTypeResolver.resolveConcreteType(field)
 
         then:
         concreteType == expected
@@ -79,41 +84,55 @@ class FieldTypeResolverSpec extends Specification {
     def "Resolves a nested type from the type"() {
         given:
         Field field = FieldTypeResolver_TestModel_2.getDeclaredField(fieldName)
-        def type = field.genericType
+        Type type = field.genericType
 
         when:
-        def resolutions = [] as List<TypeResolution>
+        List<TypeResolution> resolutions = []
         do {
-            def resolution = FieldTypeResolver.resolve(type)
+            TypeResolution resolution = FieldTypeResolver.resolve(type)
             resolutions.add(resolution)
-            type = resolution.nestedType
+            type = resolution.elementType
+
+            // If a kind of resolution is array or iterable,
+            // an element type of the resolution is always null.
+            if (resolution.kind != CONCRETE) {
+                assert resolution.elementType != null
+            }
 
         } while (resolutions.last().kind != CONCRETE)
 
         then:
         !resolutions.isEmpty()
-        resolutions.last().currentType == expectedType
+
+        and: "Last resolution has a concrete type"
+        resolutions.last().currentType == concreteType
+        resolutions.last().elementType == null
+
+        and: "Checks the kind of all resolutions"
         resolutions.size() == kinds.size()
-        println resolutions*.currentType.typeName
         resolutions*.kind == kinds
 
+        and: "Checks the current type of all resolutions"
+        resolutions.size() == types.size()
+        resolutions*.currentType.typeName == types
+
         where:
-        fieldName                                    || expectedType                 | kinds                                               | types
-        "integer"                                    || Integer                      | [CONCRETE]                                          | ["java.lang.Integer"]
-        "object"                                     || Object                       | [CONCRETE]                                          | ["java.lang.Object"]
-        "bigInteger"                                 || BigInteger                   | [CONCRETE]                                          | ["java.math.BigInteger"]
-        "self"                                       || FieldTypeResolverTestModel_2 | [CONCRETE]                                          | ["com.github.javaxcel.test.converter.in.support.FieldTypeResolverTestModel_2"]
-        "array_string"                               || String                       | [ARRAY, CONCRETE]                                   | ["java.lang.String", "java.lang.String"]
-        "array_array_bigInteger"                     || BigInteger                   | [ARRAY, ARRAY, CONCRETE]                            | ["B[]", "B", "java.math.BigInteger"]
-        "array_queue_string"                         || String                       | [ARRAY, ITERABLE, CONCRETE]                         | ["C", "java.lang.String", "java.lang.String"]
-        "array_iterable_array_iterable_array_locale" || Locale                       | [ARRAY, ITERABLE, ARRAY, ITERABLE, ARRAY, CONCRETE] | ["java.lang.Iterable<? extends F[]>", "? extends F[]", "F", "? extends java.util.Locale[]", "java.util.Locale", "java.util.Locale"]
-        "iterable"                                   || Object                       | [ITERABLE, CONCRETE]                                | ["java.lang.Object", "java.lang.Object"]
-        "iterable_long"                              || Long                         | [ITERABLE, CONCRETE]                                | ["java.lang.Long", "java.lang.Long"]
-        "deque_object"                               || Object                       | [ITERABLE, CONCRETE]                                | ["?", "java.lang.Object"]
-        "list_object"                                || Object                       | [ITERABLE, CONCRETE]                                | ["A", "java.lang.Object"]
-        "set_bigInteger"                             || BigInteger                   | [ITERABLE, CONCRETE]                                | ["B", "java.math.BigInteger"]
-        "collection_bigInteger"                      || BigInteger                   | [ITERABLE, CONCRETE]                                | ["B", "java.math.BigInteger"]
-        "iterable_iterable_uuid"                     || UUID                         | [ITERABLE, ITERABLE, CONCRETE]                      | ["E", "? super java.util.UUID", "java.util.UUID"]
+        fieldName                                    || concreteType | kinds                                               | types
+        "integer"                                    || Integer      | [CONCRETE]                                          | ["java.lang.Integer"]
+        "object"                                     || Object       | [CONCRETE]                                          | ["java.lang.Object"]
+        "bigInteger"                                 || BigInteger   | [CONCRETE]                                          | ["java.math.BigInteger"]
+        "map"                                        || Map          | [CONCRETE]                                          | ["java.util.Map"]
+        "array_string"                               || String       | [ARRAY, CONCRETE]                                   | ["java.lang.String[]", "java.lang.String"]
+        "array_array_bigInteger"                     || BigInteger   | [ARRAY, ARRAY, CONCRETE]                            | ["B[][]", "B[]", "java.math.BigInteger"]
+        "array_queue_string"                         || String       | [ARRAY, ITERABLE, CONCRETE]                         | ["C[]", "java.util.Queue<java.lang.String>", "java.lang.String"]
+        "array_iterable_array_iterable_array_locale" || Locale       | [ARRAY, ITERABLE, ARRAY, ITERABLE, ARRAY, CONCRETE] | ["java.lang.Iterable<? extends F[]>[]", "java.lang.Iterable<? extends F[]>", "F[]", "java.lang.Iterable<? extends java.util.Locale[]>", "java.util.Locale[]", "java.util.Locale"]
+        "iterable"                                   || Object       | [ITERABLE, CONCRETE]                                | ["java.lang.Iterable", "java.lang.Object"]
+        "iterable_long"                              || Long         | [ITERABLE, CONCRETE]                                | ["java.lang.Iterable<java.lang.Long>", "java.lang.Long"]
+        "deque_object"                               || Object       | [ITERABLE, CONCRETE]                                | ["java.util.Deque<?>", "java.lang.Object"]
+        "list_object"                                || Object       | [ITERABLE, CONCRETE]                                | ["java.util.List<A>", "java.lang.Object"]
+        "set_bigInteger"                             || BigInteger   | [ITERABLE, CONCRETE]                                | ["java.util.Set<B>", "java.math.BigInteger"]
+        "collection_bigInteger"                      || BigInteger   | [ITERABLE, CONCRETE]                                | ["java.util.Collection<B>", "java.math.BigInteger"]
+        "iterable_iterable_uuid"                     || UUID         | [ITERABLE, ITERABLE, CONCRETE]                      | ["java.lang.Iterable<E>", "java.lang.Iterable<? super java.util.UUID>", "java.util.UUID"]
     }
 
 }
