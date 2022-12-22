@@ -17,8 +17,8 @@
 package com.github.javaxcel.core.converter.in.support
 
 import com.github.javaxcel.core.converter.in.support.FieldTypeResolver.TypeResolution
-import com.github.javaxcel.test.converter.in.support.FieldTypeResolverTestModel_1
-import com.github.javaxcel.test.converter.in.support.FieldTypeResolverTestModel_2
+import com.github.javaxcel.test.converter.in.support.FieldTypeResolver_TestModel_1
+import com.github.javaxcel.test.converter.in.support.FieldTypeResolver_TestModel_2
 import spock.lang.Specification
 
 import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.*
@@ -27,7 +27,7 @@ class FieldTypeResolverSpec extends Specification {
 
     def "Resolves a concrete type of the field"() {
         given:
-        def field = FieldTypeResolverTestModel_1.getDeclaredField(fieldName)
+        Field field = FieldTypeResolver_TestModel_1.getDeclaredField(fieldName)
 
         when:
         def concreteType = FieldTypeResolver.resolveConcreteType(field)
@@ -38,9 +38,9 @@ class FieldTypeResolverSpec extends Specification {
         where:
         fieldName                                             | expected
         "concrete"                                            | Long
-        "raw"                                                 | FieldTypeResolverTestModel_1
-        "generic"                                             | FieldTypeResolverTestModel_1
-        "generic_array"                                       | FieldTypeResolverTestModel_1
+        "raw"                                                 | FieldTypeResolver_TestModel_1
+        "generic"                                             | FieldTypeResolver_TestModel_1
+        "generic_array"                                       | FieldTypeResolver_TestModel_1
         "type_variable"                                       | Object
         "type_variable_array"                                 | Object
         "type_variable_2d_array"                              | Object
@@ -54,12 +54,12 @@ class FieldTypeResolverSpec extends Specification {
         "iterable_unknown"                                    | Object
         "iterable_concrete"                                   | Long
         "iterable_concrete_array"                             | Long
-        "iterable_raw"                                        | FieldTypeResolverTestModel_1
-        "iterable_generic"                                    | FieldTypeResolverTestModel_1
+        "iterable_raw"                                        | FieldTypeResolver_TestModel_1
+        "iterable_generic"                                    | FieldTypeResolver_TestModel_1
         "iterable_upper_wildcard_concrete"                    | Long
         "iterable_lower_wildcard_concrete"                    | Long
-        "iterable_upper_wildcard_generic"                     | FieldTypeResolverTestModel_1
-        "iterable_lower_wildcard_generic"                     | FieldTypeResolverTestModel_1
+        "iterable_upper_wildcard_generic"                     | FieldTypeResolver_TestModel_1
+        "iterable_lower_wildcard_generic"                     | FieldTypeResolver_TestModel_1
         "iterable_type_variable"                              | Object
         "iterable_type_variable_array"                        | Object
         "iterable_upper_wildcard_type_variable"               | Object
@@ -73,12 +73,12 @@ class FieldTypeResolverSpec extends Specification {
         "iterable_upper_wildcard_bounded_type_variable_array" | UUID
         "iterable_lower_wildcard_bounded_type_variable_array" | UUID
         "iterable_bounded_iterable_type_variable"             | Double
-        "iterable_iterable_generic"                           | FieldTypeResolverTestModel_1
+        "iterable_iterable_generic"                           | FieldTypeResolver_TestModel_1
     }
 
-    def "Resolves a nested type of the type"() {
+    def "Resolves a nested type from the type"() {
         given:
-        def field = FieldTypeResolverTestModel_2.getDeclaredField(fieldName)
+        Field field = FieldTypeResolver_TestModel_2.getDeclaredField(fieldName)
         def type = field.genericType
 
         when:

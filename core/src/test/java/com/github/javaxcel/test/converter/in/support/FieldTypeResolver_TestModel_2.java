@@ -5,12 +5,13 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
 
 @SuppressWarnings({"unused", "rawtypes"})
-public class FieldTypeResolverTestModel_2<
+public class FieldTypeResolver_TestModel_2<
         A,
         B extends BigInteger,
         C extends Queue<String>,
@@ -21,7 +22,7 @@ public class FieldTypeResolverTestModel_2<
     private Integer integer;
     private A object;
     private B bigInteger;
-    private FieldTypeResolverTestModel_2<String, B, C, List<B>, Set<UUID>, F> self;
+    private Map<C, Set<UUID>> map;
 
     private String[] array_string;
     private B[][] array_array_bigInteger;
