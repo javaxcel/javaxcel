@@ -25,6 +25,7 @@ import com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind;
 import com.github.javaxcel.core.converter.in.support.FieldTypeResolver.TypeResolution;
 import com.github.javaxcel.core.converter.in.support.StringArraySplitter;
 import io.github.imsejin.common.assertion.Asserts;
+import io.github.imsejin.common.util.ArrayUtils;
 import io.github.imsejin.common.util.ClassUtils;
 import io.github.imsejin.common.util.StringUtils;
 import org.jetbrains.annotations.Nullable;
@@ -105,69 +106,41 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
             }
         }
 
-//        TypeResolution resolution;
-//        do {
-//            resolution = FieldTypeResolver.resolve(type);
-//            type = resolution.getType();
-//
-//            switch (resolution.getKind()) {
-//                case ARRAY:
-//                    // Supports multidimensional array type.
-//                    return handleArray(field, type, value);
-//                case ITERABLE:
-//                    // Supports nested iterable type.
-//                    return handleIterable(field, type, value);
-//                case CONCRETE:
-//                    return handleConcrete(field, (Class<?>) type, value);
-//                default:
-//                    throw new AssertionError("Never throw");
-//            }
-//
-//        } while (resolution.getKind() != CONCRETE);
+        TypeResolution resolution = FieldTypeResolver.resolve(type);
+        type = resolution.getCurrentType();
 
-//        TypeResolution resolution = FieldTypeResolver.resolve(type);
-//        type = resolution.getType();
-//        switch (resolution.getKind()) {
-//            case ARRAY:
-//                // Supports multidimensional array type.
-//                return handleArray(field, type, value);
-//            case ITERABLE:
-//                // Supports nested iterable type.
-//                return handleIterable(field, type, value);
-//            case CONCRETE:
-//                return handleConcrete(field, (Class<?>) type, value);
-//            default:
-//                throw new AssertionError("Never throw");
-//        }
+        switch (resolution.getKind()) {
+            case ARRAY:
+                Class<?> concreteType = FieldTypeResolver.resolveConcreteType(type);
 
-        if (type instanceof Class) {
-            Class<?> clazz = (Class<?>) type;
+                // Finds dimension of the array by Type.typeName that has string "[]" when it is array.
+                String typeName = resolution.getCurrentType().getTypeName();
+                int dimension = StringUtils.countOf(typeName, "[]");
 
-            if (clazz.isArray()) {
                 // Supports multidimensional array type.
-                return handleArray(field, clazz, value);
-            } else if (Iterable.class.isAssignableFrom(clazz)) {
-                // Raw type of Iterable.
-                // TODO: implement an IterableSupplier.
-                return new ArrayList<>();
-            } else {
-                return handleConcrete(field, clazz, value);
-            }
-
-        } else {
-            // Supports nested iterable type.
-            TypeResolution resolution = FieldTypeResolver.resolve(type);
-            return handleIterable(field, resolution, value);
+                return handleArray(field, concreteType, dimension, value);
+            case ITERABLE:
+                // Supports nested iterable type.
+                return handleIterable(field, resolution, value);
+            case CONCRETE:
+                return handleConcrete(field, (Class<?>) type, value);
+            default:
+                throw new AssertionError("Never throw");
         }
     }
 
-    private Object handleArray(Field field, Class<?> type, String value) {
-        Class<?> componentType = type.getComponentType();
+    private Object handleArray(Field field, Class<?> concreteType, int dimension, String value) {
+        Asserts.that(concreteType)
+                .describedAs("Mixed array and iterable is not supported: {0}", field)
+                .thrownBy(UnsupportedOperationException::new)
+                .isNotNull()
+                .isNot(Iterable.class::isAssignableFrom);
+        Asserts.that(dimension)
+                .describedAs("Dimension of an array must be positive: {0}", dimension)
+                .isNotNull()
+                .isPositive();
 
-        if (Iterable.class.isAssignableFrom(componentType)) {
-            throw new UnsupportedOperationException("Mixed array and iterable is not supported: " + field);
-        }
-
+        Class<?> componentType = ArrayUtils.resolveArrayType(concreteType, dimension - 1);
         String[] strings = SPLITTER.shallowSplit(value);
 
         // To solve that ClassCastException(primitive array doesn't be assignable to Object array),
@@ -185,9 +158,7 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
 
             Object element;
             if (componentType.isArray()) {
-                element = string.isEmpty() ? null : handleArray(field, componentType, string);
-//            } else if (Iterable.class.isAssignableFrom(componentType)) {
-//                element = string.isEmpty() ? null : handleIterable(field, componentType, string);
+                element = string.isEmpty() ? null : handleArray(field, concreteType, dimension - 1, string);
             } else {
                 // TODO: why...? Allows empty string to handler for non-array type.
                 element = handleConcrete(field, componentType, string);
@@ -200,18 +171,23 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
     }
 
     private Iterable<?> handleIterable(Field field, TypeResolution resolution, String value) {
-        if (resolution.getKind() != Kind.ITERABLE) {
-            throw new IllegalStateException("It is not a type of java.lang.Iterable: " + field);
-        }
+        Asserts.that(resolution)
+                .describedAs("It is not a type of java.lang.Iterable: {0}", field)
+                .isNotNull()
+                .returns(Kind.ITERABLE, TypeResolution::getKind);
 
         resolution = FieldTypeResolver.resolve(resolution.getElementType());
         Kind kind = resolution.getKind();
 
-        if (kind == Kind.ARRAY) {
-            throw new UnsupportedOperationException("Mixed array and iterable is not supported: " + field);
-        }
+        Asserts.that(kind)
+                .describedAs("Mixed array and iterable is not supported: {0}", field)
+                .thrownBy(UnsupportedOperationException::new)
+                .isNotNull()
+                .isNotEqualTo(Kind.ARRAY);
 
         String[] strings = SPLITTER.shallowSplit(value);
+
+        // TODO: implement an IterableSupplier.
         List<Object> list = new ArrayList<>(strings.length);
 
         for (String string : strings) {
@@ -228,30 +204,6 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
                 // Allows empty string to handler for non-array type.
                 Class<?> clazz = (Class<?>) resolution.getCurrentType();
                 element = handleConcrete(field, clazz, string);
-            }
-
-            list.add(element);
-        }
-
-        return list;
-    }
-
-    // TODO: Fix this.
-    private Iterable<?> handleIterable(Field field, Class<?> type, String value) {
-        Class<?> componentType = type.getComponentType();
-        String[] strings = SPLITTER.shallowSplit(value);
-
-        List<Object> list = new ArrayList<>(strings.length);
-
-        for (String string : strings) {
-            Object element;
-            if (componentType.isArray()) {
-                element = string.isEmpty() ? null : handleArray(field, componentType, string);
-            } else if (Iterable.class.isAssignableFrom(componentType)) {
-                element = string.isEmpty() ? null : handleIterable(field, componentType, string);
-            } else {
-                // Allows empty string to handler for non-array type.
-                element = handleConcrete(field, componentType, string);
             }
 
             list.add(element);

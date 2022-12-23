@@ -29,6 +29,7 @@ import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_Array3D
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_DefaultValue
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_Enum
+import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_GenericArray
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_Iterable
 import spock.lang.Specification
 
@@ -38,7 +39,7 @@ import java.util.concurrent.TimeUnit
 
 class ExcelReadHandlerConverterSpec extends Specification {
 
-    def "Converts into 1D Array"() {
+    def "Converts into 1D array"() {
         given:
         def variables = [(fieldName): value]
         def field = ExcelReadHandlerConverter_TestModel_Array1D.getDeclaredField(fieldName)
@@ -74,7 +75,7 @@ class ExcelReadHandlerConverterSpec extends Specification {
         "locales"  | "[en, ja, , ]"                  || [Locale.ENGLISH, Locale.JAPANESE, null, null]
     }
 
-    def "Converts into 2D Array"() {
+    def "Converts into 2D array"() {
         given:
         def variables = [(fieldName): value]
         def field = ExcelReadHandlerConverter_TestModel_Array2D.getDeclaredField(fieldName)
@@ -116,7 +117,7 @@ class ExcelReadHandlerConverterSpec extends Specification {
         "locales"  | "[[en_GB], [], [it_IT], []]"          || [[Locale.UK], [], [Locale.ITALY], []]
     }
 
-    def "Converts into 3D Array"() {
+    def "Converts into 3D array"() {
         given:
         def variables = [(fieldName): value]
         def field = ExcelReadHandlerConverter_TestModel_Array3D.getDeclaredField(fieldName)
@@ -159,6 +160,28 @@ class ExcelReadHandlerConverterSpec extends Specification {
         "locales"  | "[[, [, ], [ja_JP, zh_TW]], []]"               || [[null, [null, null], [Locale.JAPAN, Locale.TAIWAN]], []]
     }
 
+    def "Converts into generic array"() {
+        given:
+        def variables = [(fieldName): value]
+        def field = ExcelReadHandlerConverter_TestModel_GenericArray.getDeclaredField(fieldName)
+        def analyses = analyze(field.declaringClass.declaredFields, ExcelReadAnalyzer.SETTER)
+
+        when:
+        def converter = new ExcelReadHandlerConverter(analyses, new DefaultExcelTypeHandlerRegistry())
+        def actual = converter.convert(variables, field)
+
+        then:
+        actual == expected.asType(field.type)
+
+        where:
+        fieldName       | value                            || expected
+        "objects"       | null                             || null
+        "objects"       | "[, ]"                           || [null, null]
+        "strings_1"     | "[alpha]"                        || ["alpha"]
+        "strings_2"     | "[alpha, , beta]"                || ["alpha", null, "beta"]
+        "strings_array" | "[[], , [alpha, beta], [gamma]]" || [[], null, ["alpha", "beta"], ["gamma"]]
+    }
+
     def "Converts into iterable"() {
         given:
         def variables = [(fieldName): value]
@@ -170,14 +193,16 @@ class ExcelReadHandlerConverterSpec extends Specification {
         def actual = converter.convert(variables, field)
 
         then:
-        actual == expected
+        actual == expected.asType(field.type)
 
         where:
         fieldName                      | value                                    || expected
-        "iterable_string"              | null                                     || null
+        "iterable_raw"                 | null                                     || null
+        "iterable_raw"                 | "[]"                                     || []
         "iterable_string"              | "[]"                                     || []
         "iterable_string"              | "[74, 0, -12]"                           || [74, 0, -12]
         "collection_long"              | "[0, 9720, -8715]"                       || [0, 9720, -8715]
+        "set_locale"                   | "[en_US, ko_KR, ja_JP]"                  || [Locale.US, Locale.KOREA, Locale.JAPAN]
         "collection_list_long"         | "[[]]"                                   || [[]]
         "collection_list_long"         | "[[241832184], , [748015106], []]"       || [[241832184], null, [748015106], []]
         "list_string"                  | "[alpha, beta]"                          || ["alpha", "beta"]
