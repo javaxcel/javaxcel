@@ -20,6 +20,7 @@ import com.github.javaxcel.core.analysis.ExcelAnalysis;
 import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer;
 import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
 import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
+import com.github.javaxcel.core.converter.in.support.CollectionSupplier;
 import com.github.javaxcel.core.converter.in.support.FieldTypeResolver;
 import com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind;
 import com.github.javaxcel.core.converter.in.support.FieldTypeResolver.TypeResolution;
@@ -33,10 +34,9 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ExcelReadHandlerConverter implements ExcelReadConverter {
@@ -170,11 +170,20 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
         return array;
     }
 
+    @SuppressWarnings("unchecked")
     private Iterable<?> handleIterable(Field field, TypeResolution resolution, String value) {
         Asserts.that(resolution)
                 .describedAs("It is not a type of java.lang.Iterable: {0}", field)
                 .isNotNull()
                 .returns(Kind.ITERABLE, TypeResolution::getKind);
+        Asserts.that(resolution.getIterableType())
+                .isNotNull()
+                .is(Iterable.class::isAssignableFrom)
+                .isInterface();
+
+        String[] strings = SPLITTER.shallowSplit(value);
+        Collection<Object> collection = (Collection<Object>) CollectionSupplier.supply(
+                resolution.getIterableType(), strings.length);
 
         resolution = FieldTypeResolver.resolve(resolution.getElementType());
         Kind kind = resolution.getKind();
@@ -185,15 +194,10 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
                 .isNotNull()
                 .isNotEqualTo(Kind.ARRAY);
 
-        String[] strings = SPLITTER.shallowSplit(value);
-
-        // TODO: implement an IterableSupplier.
-        List<Object> list = new ArrayList<>(strings.length);
-
         for (String string : strings) {
             // Regards an empty string as null.
             if (StringUtils.isNullOrEmpty(string)) {
-                list.add(null);
+                collection.add(null);
                 continue;
             }
 
@@ -206,10 +210,10 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
                 element = handleConcrete(field, clazz, string);
             }
 
-            list.add(element);
+            collection.add(element);
         }
 
-        return list;
+        return collection;
     }
 
     private Object handleConcrete(Field field, Class<?> type, String value) {

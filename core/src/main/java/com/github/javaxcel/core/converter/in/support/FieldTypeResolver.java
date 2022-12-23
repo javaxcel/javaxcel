@@ -79,6 +79,7 @@ public class FieldTypeResolver {
     public static TypeResolution resolve(Type type) {
         Kind kind;
         Type elementType = null;
+        Class<?> iterableType = null;
 
         while (true) {
             if (type instanceof Class) {
@@ -91,6 +92,7 @@ public class FieldTypeResolver {
                     // When the type is raw type.
                     if (Iterable.class.isAssignableFrom(clazz)) {
                         elementType = Object.class;
+                        iterableType = clazz;
                         kind = Kind.ITERABLE;
                         break;
                     }
@@ -130,6 +132,7 @@ public class FieldTypeResolver {
 
                 if (rawType instanceof Class && Iterable.class.isAssignableFrom((Class<?>) rawType)) {
                     elementType = parameterizedType.getActualTypeArguments()[0];
+                    iterableType = (Class<?>) rawType;
                     kind = Kind.ITERABLE;
                     break;
                 } else {
@@ -156,7 +159,7 @@ public class FieldTypeResolver {
             }
         }
 
-        return new TypeResolution(kind, type, elementType);
+        return new TypeResolution(kind, type, elementType, iterableType);
     }
 
     // -------------------------------------------------------------------------------------------------
@@ -169,11 +172,14 @@ public class FieldTypeResolver {
         private final Kind kind;
         private final Type currentType;
         private final Type elementType;
+        private final Class<? extends Iterable<?>> iterableType;
 
-        private TypeResolution(Kind kind, Type currentType, @Nullable Type elementType) {
+        @SuppressWarnings("unchecked")
+        private TypeResolution(Kind kind, Type currentType, @Nullable Type elementType, @Nullable Class<?> iterableType) {
             this.kind = kind;
             this.currentType = currentType;
             this.elementType = elementType;
+            this.iterableType = (Class<? extends Iterable<?>>) iterableType;
         }
 
         public Kind getKind() {
@@ -189,6 +195,11 @@ public class FieldTypeResolver {
             return this.elementType;
         }
 
+        @Nullable
+        public Class<? extends Iterable<?>> getIterableType() {
+            return this.iterableType;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -197,17 +208,18 @@ public class FieldTypeResolver {
 
             return kind == that.kind
                     && currentType.equals(that.currentType)
-                    && Objects.equals(elementType, that.elementType);
+                    && Objects.equals(elementType, that.elementType)
+                    && Objects.equals(iterableType, that.iterableType);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(kind, currentType, elementType);
+            return Objects.hash(kind, currentType, elementType, iterableType);
         }
 
         @Override
         public String toString() {
-            return "TypeResolution(kind=" + kind + ", currentType=" + currentType + ", elementType=" + elementType + ')';
+            return "TypeResolution(kind=" + kind + ", currentType=" + currentType + ", elementType=" + elementType + ", iterableType=" + iterableType + ')';
         }
     }
 
