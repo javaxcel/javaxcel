@@ -24,10 +24,12 @@ import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer
 import com.github.javaxcel.core.annotation.ExcelColumn
 import com.github.javaxcel.core.converter.handler.registry.impl.DefaultExcelTypeHandlerRegistry
 import com.github.javaxcel.test.converter.handler.impl.TimeUnitTypeHandler
-import com.github.javaxcel.test.model.Array1D
-import com.github.javaxcel.test.model.Array2D
-import com.github.javaxcel.test.model.Array3D
-import groovy.transform.EqualsAndHashCode
+import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_Array1D
+import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_Array2D
+import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_Array3D
+import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_DefaultValue
+import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_Enum
+import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_Iterable
 import spock.lang.Specification
 
 import java.lang.reflect.Field
@@ -39,7 +41,7 @@ class ExcelReadHandlerConverterSpec extends Specification {
     def "Converts into 1D Array"() {
         given:
         def variables = [(fieldName): value]
-        def field = Array1D.getDeclaredField(fieldName)
+        def field = ExcelReadHandlerConverter_TestModel_Array1D.getDeclaredField(fieldName)
         def analyses = analyze(field.declaringClass.declaredFields, ExcelReadAnalyzer.FIELD_ACCESS)
 
         when:
@@ -47,36 +49,35 @@ class ExcelReadHandlerConverterSpec extends Specification {
         def actual = converter.convert(variables, field)
 
         then:
-        actual == expected
+        actual == expected.asType(field.type)
 
         where:
         fieldName  | value                           || expected
         "booleans" | null                            || null
-        "objects"  | null                            || [] as Object[] // @ExcelColumn.defaultValue = "[]"
-        "booleans" | "[false, true]"                 || [false, true] as boolean[]
-        "bytes"    | "[-128, 0, 127]"                || [-128, 0, 127] as byte[]
-        "shorts"   | "[-32768, 0, 32767]"            || [-32768, 0, 32767] as short[]
-        "chars"    | "[a, B, 0, /]"                  || ['a', 'B', '0', '/'] as char[]
-        "ints"     | "[74, 0, -12]"                  || [74, 0, -12] as int[]
-        "longs"    | "[0, 9720, -8715]"              || [0, 9720, -8715] as long[]
-        "floats"   | "[0.0, 9.745, -1.14157]"        || [0.0, 9.745, -1.14157] as float[]
-        "doubles"  | "[3.141592, -0.0879, 0.0]"      || [3.141592, -0.0879, 0.0] as double[]
-        "objects"  | "[]"                            || [] as Object[]
-        "objects"  | "[, java.lang.Object@736e9adb]" || [null, null] as Object[]
-        "strings"  | "[]"                            || [] as String[]
-        "strings"  | "[, ]"                          || [null, null] as String[]
-        "strings"  | "[alpha, beta]"                 || ["alpha", "beta"] as String[]
-        "strings"  | "[alpha, , gamma]"              || ["alpha", null, "gamma"] as String[]
-        "locales"  | "[]"                            || [] as Locale[]
-        "locales"  | "[, ]"                          || [Locale.ROOT, Locale.ROOT] as Locale[]
-        "locales"  | "[en_US, ko_KR, fr_FR]"         || [Locale.US, Locale.KOREA, Locale.FRANCE] as Locale[]
-        "locales"  | "[en, ja, , ]"                  || [Locale.ENGLISH, Locale.JAPANESE, Locale.ROOT, Locale.ROOT] as Locale[]
+        "booleans" | "[false, true]"                 || [false, true]
+        "bytes"    | "[-128, 0, 127]"                || [-128, 0, 127]
+        "shorts"   | "[-32768, 0, 32767]"            || [-32768, 0, 32767]
+        "chars"    | "[a, B, 0, /]"                  || ['a', 'B', '0', '/']
+        "ints"     | "[74, 0, -12]"                  || [74, 0, -12]
+        "longs"    | "[0, 9720, -8715]"              || [0, 9720, -8715]
+        "floats"   | "[0.0, 9.745, -1.14157]"        || [0.0, 9.745, -1.14157]
+        "doubles"  | "[3.141592, -0.0879, 0.0]"      || [3.141592, -0.0879, 0.0]
+        "objects"  | "[]"                            || []
+        "objects"  | "[, java.lang.Object@736e9adb]" || [null, null]
+        "strings"  | "[]"                            || []
+        "strings"  | "[, ]"                          || [null, null]
+        "strings"  | "[alpha, beta]"                 || ["alpha", "beta"]
+        "strings"  | "[alpha, , gamma]"              || ["alpha", null, "gamma"]
+        "locales"  | "[]"                            || []
+        "locales"  | "[, ]"                          || [null, null]
+        "locales"  | "[en_US, ko_KR, fr_FR]"         || [Locale.US, Locale.KOREA, Locale.FRANCE]
+        "locales"  | "[en, ja, , ]"                  || [Locale.ENGLISH, Locale.JAPANESE, null, null]
     }
 
     def "Converts into 2D Array"() {
         given:
         def variables = [(fieldName): value]
-        def field = Array2D.getDeclaredField(fieldName)
+        def field = ExcelReadHandlerConverter_TestModel_Array2D.getDeclaredField(fieldName)
         def analyses = analyze(field.declaringClass.declaredFields, ExcelReadAnalyzer.SETTER)
 
         when:
@@ -84,36 +85,41 @@ class ExcelReadHandlerConverterSpec extends Specification {
         def actual = converter.convert(variables, field)
 
         then:
-        actual == expected
+        actual == expected.asType(field.type)
 
         where:
-        fieldName  | value                               || expected
-        "objects"  | null                                || null
-        "booleans" | "[[false], [true], [false, true]]"  || [[false], [true], [false, true]] as boolean[][]
-        "bytes"    | "[[-128], , [127]]"                 || [[-128], null, [127]] as byte[][]
-        "shorts"   | "[[-32768, 0, 32767]]"              || [[-32768, 0, 32767]] as short[][]
-        "chars"    | "[[a, B], [], [0, /]]"              || [['a', 'B'], [], ['0', '/']] as char[][]
-        "ints"     | "[, [74, 0, -12]]"                  || [null, [74, 0, -12]] as int[][]
-        "longs"    | "[[0], [], [9720, -8715]]"          || [[0], [], [9720, -8715]] as long[][]
-        "floats"   | "[[0.0], [9.745, -1.14157]]"        || [[0.0], [9.745, -1.14157]] as float[][]
-        "doubles"  | "[[3.141592, -0.0879, 0.0], ]"      || [[3.141592, -0.0879, 0.0], null] as double[][]
-        "objects"  | "[]"                                || [] as Object[][]
-        "objects"  | "[, [], ]"                          || [null, [], null] as Object[][]
-        "objects"  | "[[java.lang.Object@736e9adb], []]" || [[null], []] as Object[][]
-        "locales"  | "[]"                                || [] as Locale[][]
-        "locales"  | "[[]]"                              || [[]] as Locale[][]
-        "locales"  | "[[], []]"                          || [[], []] as Locale[][]
-        "locales"  | "[[], , []]"                        || [[], null, []] as Locale[][]
-        "locales"  | "[, [], [], ]"                      || [null, [], [], null] as Locale[][]
-        "locales"  | "[, [], , [, ]]"                    || [null, [], null, [Locale.ROOT, Locale.ROOT]] as Locale[][]
-        "locales"  | "[, [de_DE, zh_CN], [], ]"          || [null, [Locale.GERMANY, Locale.CHINA], [], null] as Locale[][]
-        "locales"  | "[[en_GB], [], [it_IT], []]"        || [[Locale.UK], [], [Locale.ITALY], []] as Locale[][]
+        fieldName  | value                                 || expected
+        "booleans" | null                                  || null
+        "booleans" | "[[false], [true], [false, true]]"    || [[false], [true], [false, true]]
+        "bytes"    | "[[-128], , [127]]"                   || [[-128], null, [127]]
+        "shorts"   | "[[-32768, 0, 32767]]"                || [[-32768, 0, 32767]]
+        "chars"    | "[[a, B], [], [0, /]]"                || [['a', 'B'], [], ['0', '/']]
+        "ints"     | "[, [74, 0, -12]]"                    || [null, [74, 0, -12]]
+        "longs"    | "[[0], [], [9720, -8715]]"            || [[0], [], [9720, -8715]]
+        "floats"   | "[[0.0], [9.745, -1.14157]]"          || [[0.0], [9.745, -1.14157]]
+        "doubles"  | "[[3.141592, -0.0879, 0.0], ]"        || [[3.141592, -0.0879, 0.0], null]
+        "objects"  | "[]"                                  || []
+        "objects"  | "[, [], ]"                            || [null, [], null]
+        "objects"  | "[[java.lang.Object@736e9adb], []]"   || [[null], []] // There is no handler for Object.
+        "strings"  | "[]"                                  || []
+        "strings"  | "[, ]"                                || [null, null]
+        "strings"  | "[, [], [], ]"                        || [null, [], [], null]
+        "strings"  | "[[alpha, beta], [gamma, ], ]"        || [["alpha", "beta"], ["gamma", null], null]
+        "strings"  | "[[], [alpha, beta, gamma], [delta]]" || [[], ["alpha", "beta", "gamma"], ["delta"]]
+        "locales"  | "[]"                                  || []
+        "locales"  | "[[]]"                                || [[]]
+        "locales"  | "[[], []]"                            || [[], []]
+        "locales"  | "[[], , []]"                          || [[], null, []]
+        "locales"  | "[, [], [], ]"                        || [null, [], [], null]
+        "locales"  | "[, [], , [, ]]"                      || [null, [], null, [null, null]]
+        "locales"  | "[, [de_DE, zh_CN], [], ]"            || [null, [Locale.GERMANY, Locale.CHINA], [], null]
+        "locales"  | "[[en_GB], [], [it_IT], []]"          || [[Locale.UK], [], [Locale.ITALY], []]
     }
 
     def "Converts into 3D Array"() {
         given:
         def variables = [(fieldName): value]
-        def field = Array3D.getDeclaredField(fieldName)
+        def field = ExcelReadHandlerConverter_TestModel_Array3D.getDeclaredField(fieldName)
         def analyses = analyze(field.declaringClass.declaredFields, ExcelReadAnalyzer.FIELD_ACCESS)
 
         when:
@@ -121,36 +127,42 @@ class ExcelReadHandlerConverterSpec extends Specification {
         def actual = converter.convert(variables, field)
 
         then:
-        actual == expected
+        actual == expected.asType(field.type)
 
         where:
-        fieldName  | value                                     || expected
-        "objects"  | null                                      || null
-        "booleans" | "[[], [[false], [true]], ]"               || [[], [[false], [true]], null] as boolean[][][]
-        "bytes"    | "[, [[-128]], [[127]]]"                   || [null, [[-128]], [[127]]] as byte[][][]
-        "shorts"   | "[[[-32768, 0, 32767]]]"                  || [[[-32768, 0, 32767]]] as short[][][]
-        "chars"    | "[[[a], [], [B]], [], [[0, /]]]"          || [[['a'], [], ['B']], [], [['0', '/']]] as char[][][]
-        "ints"     | "[, [, [74], [0, -12]]]"                  || [null, [null, [74], [0, -12]]] as int[][][]
-        "longs"    | "[[[0], ], [], [[9720, -8715], ]]"        || [[[0], null], [], [[9720, -8715], null]] as long[][][]
-        "floats"   | "[[[], [0.0]], [[9.745], [-1.14157]]]"    || [[[], [0.0]], [[9.745], [-1.14157]]] as float[][][]
-        "doubles"  | "[[[3.141592, -0.0879], [0.0]], ]"        || [[[3.141592, -0.0879], [0.0]], null] as double[][][]
-        "objects"  | "[]"                                      || [] as Object[][][]
-        "objects"  | "[, [], [[]]]"                            || [null, [], [[]]] as Object[][][]
-        "objects"  | "[, [[java.lang.Object@736e9adb, ]], []]" || [null, [[null, null]], []] as Object[][][]
-        "locales"  | "[]"                                      || [] as Locale[][][]
-        "locales"  | "[[]]"                                    || [[]] as Locale[][][]
-        "locales"  | "[[], []]"                                || [[], []] as Locale[][][]
-        "locales"  | "[[], , []]"                              || [[], null, []] as Locale[][][]
-        "locales"  | "[, , , ]"                                || [null, null, null, null] as Locale[][][]
-        "locales"  | "[, [[], []], [], ]"                      || [null, [[], []], [], null] as Locale[][][]
-        "locales"  | "[[[en_US, en], [ko_KR, ko]]]"            || [[[Locale.US, Locale.ENGLISH], [Locale.KOREA, Locale.KOREAN]]] as Locale[][][]
-        "locales"  | "[[, [, ], [ja_JP, zh_TW]], []]"          || [[null, [Locale.ROOT, Locale.ROOT], [Locale.JAPAN, Locale.TAIWAN]], []] as Locale[][][]
+        fieldName  | value                                          || expected
+        "booleans" | null                                           || null
+        "booleans" | "[[], [[false], [true]], ]"                    || [[], [[false], [true]], null]
+        "bytes"    | "[, [[-128]], [[127]]]"                        || [null, [[-128]], [[127]]]
+        "shorts"   | "[[[-32768, 0, 32767]]]"                       || [[[-32768, 0, 32767]]]
+        "chars"    | "[[[a], [], [B]], [], [[0, /]]]"               || [[['a'], [], ['B']], [], [['0', '/']]]
+        "ints"     | "[, [, [74], [0, -12]]]"                       || [null, [null, [74], [0, -12]]]
+        "longs"    | "[[[0], ], [], [[9720, -8715], ]]"             || [[[0], null], [], [[9720, -8715], null]]
+        "floats"   | "[[[], [0.0]], [[9.745], [-1.14157]]]"         || [[[], [0.0]], [[9.745], [-1.14157]]]
+        "doubles"  | "[[[3.141592, -0.0879], [0.0]], ]"             || [[[3.141592, -0.0879], [0.0]], null]
+        "objects"  | "[]"                                           || []
+        "objects"  | "[, [], [[]]]"                                 || [null, [], [[]]]
+        "objects"  | "[, [[java.lang.Object@736e9adb, ]], []]"      || [null, [[null, null]], []] // There is no handler for Object.
+        "strings"  | "[]"                                           || []
+        "strings"  | "[, ]"                                         || [null, null]
+        "strings"  | "[, [], [], ]"                                 || [null, [], [], null]
+        "strings"  | "[[[], []], [[, , ]], , []]"                   || [[[], []], [[null, null, null]], null, []]
+        "strings"  | "[, [[alpha, ], [beta]], [[], []], [[gamma]]]" || [null, [["alpha", null], ["beta"]], [[], []], [["gamma"]]]
+        "strings"  | "[[[alpha, beta, , gamma]], [[delta]], []]"    || [[["alpha", "beta", null, "gamma"]], [["delta"]], []]
+        "locales"  | "[]"                                           || []
+        "locales"  | "[[]]"                                         || [[]]
+        "locales"  | "[[], []]"                                     || [[], []]
+        "locales"  | "[[], , []]"                                   || [[], null, []]
+        "locales"  | "[, , , ]"                                     || [null, null, null, null]
+        "locales"  | "[, [[], []], [], ]"                           || [null, [[], []], [], null]
+        "locales"  | "[[[en_US, en], [ko_KR, ko]]]"                 || [[[Locale.US, Locale.ENGLISH], [Locale.KOREA, Locale.KOREAN]]]
+        "locales"  | "[[, [, ], [ja_JP, zh_TW]], []]"               || [[null, [null, null], [Locale.JAPAN, Locale.TAIWAN]], []]
     }
 
     def "Converts into iterable"() {
         given:
         def variables = [(fieldName): value]
-        def field = IterableModel.getDeclaredField(fieldName)
+        def field = ExcelReadHandlerConverter_TestModel_Iterable.getDeclaredField(fieldName)
         def analyses = analyze(field.declaringClass.declaredFields, ExcelReadAnalyzer.FIELD_ACCESS)
 
         when:
@@ -179,7 +191,7 @@ class ExcelReadHandlerConverterSpec extends Specification {
         def registry = new DefaultExcelTypeHandlerRegistry()
         registry.add(new TimeUnitTypeHandler())
         def variables = [(fieldName): value]
-        def field = EnumModel.getDeclaredField(fieldName)
+        def field = ExcelReadHandlerConverter_TestModel_Enum.getDeclaredField(fieldName)
         def analyses = analyze(field.declaringClass.declaredFields, ExcelReadAnalyzer.SETTER)
 
         when:
@@ -205,6 +217,37 @@ class ExcelReadHandlerConverterSpec extends Specification {
         "timeUnit"   | "ns"      || TimeUnit.NANOSECONDS
     }
 
+    def "Converts through default value"() {
+        given:
+        def variables = [(fieldName): null]
+        def field = ExcelReadHandlerConverter_TestModel_DefaultValue.getDeclaredField(fieldName)
+        def analyses = analyze(field.declaringClass.declaredFields, ExcelReadAnalyzer.SETTER)
+
+        when:
+        def converter = new ExcelReadHandlerConverter(analyses, new DefaultExcelTypeHandlerRegistry())
+        def actual = converter.convert(variables, field)
+
+        then:
+        actual == expected.asType(field.type)
+
+        where:
+        fieldName  | expected
+        "_boolean" | true
+        "_byte"    | 127
+        "_short"   | 32767
+        "_char"    | 'A'
+        "_int"     | 1048576
+        "_long"    | -1073741824
+        "_float"   | 3.141592
+        "_double"  | -2.718281828459045
+        "string"   | "[1]"
+        "locale"   | Locale.US
+        "objects"  | []
+        "chars"    | ['A', 'B', 'C']
+        "strings"  | ["alpha", "beta"]
+        "locales"  | [[Locale.US], [Locale.KOREA]]
+    }
+
     // -------------------------------------------------------------------------------------------------
 
     private static Iterable<ExcelAnalysis> analyze(Field[] fields, int flags) {
@@ -220,24 +263,6 @@ class ExcelReadHandlerConverterSpec extends Specification {
 
             analysis
         }
-    }
-
-    @EqualsAndHashCode
-    private static class EnumModel {
-        AccessMode accessMode
-        TimeUnit timeUnit
-    }
-
-    private static class IterableModel<
-            A extends String,
-            B extends Iterable<BigDecimal>> {
-        Iterable<Integer> iterable_string
-        Collection<Long> collection_long
-        Collection<List<Long>> collection_list_long
-        List<A> list_string
-        B iterable_bigDecimal
-        List<Iterable<A>> list_iterable_string
-        Iterable<B> iterable_iterable_bigDecimal
     }
 
 }
