@@ -20,19 +20,13 @@ import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelIgnore;
 import com.github.javaxcel.core.annotation.ExcelModel;
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
-import io.github.imsejin.common.util.ArrayUtils;
 import io.github.imsejin.common.util.ReflectionUtils;
 import io.github.imsejin.common.util.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -213,78 +207,6 @@ public final class FieldUtils {
         }
 
         return null;
-    }
-
-    public static Class<?> resolveActualType(Field field) {
-        Type type = field.getGenericType();
-
-        while (!(type instanceof Class)) {
-            // class Sample<S, C extends Iterable<S>> {
-            //     private C c;
-            // } ... typeVariable.bounds == [Iterable<S>]
-            if (type instanceof TypeVariable) {
-                TypeVariable<?> typeVariable = (TypeVariable<?>) type;
-                type = typeVariable.getBounds()[0];
-                continue;
-            }
-
-            // class Sample<S extends Number> {
-            //     private S[][] s;
-            // } ... genericArrayType.genericComponentType == S[]
-            if (type instanceof GenericArrayType) {
-                GenericArrayType genericArrayType = (GenericArrayType) type;
-                type = genericArrayType.getGenericComponentType();
-                continue;
-            }
-
-            // class Sample<S extends Number> {
-            //     private Iterable<Sample<Long>> samples;
-            // } ... parameterizedType.rawType == Iterable.class
-            // ... parameterizedType.actualTypeArguments == [Sample]
-            if (type instanceof ParameterizedType) {
-                ParameterizedType parameterizedType = (ParameterizedType) type;
-                Type rawType = parameterizedType.getRawType();
-
-                if (rawType instanceof Class && Iterable.class.isAssignableFrom((Class<?>) rawType)) {
-                    type = parameterizedType.getActualTypeArguments()[0];
-                } else {
-                    type = rawType;
-                }
-
-                continue;
-            }
-
-            // When type is wildcard type:
-            // List<? super java.lang.String>
-            // List<? extends java.lang.String>
-            if (type instanceof WildcardType) {
-                WildcardType wildcardType = (WildcardType) type;
-                Type[] lowerBounds = wildcardType.getLowerBounds();
-
-                Type boundedType;
-                if (ArrayUtils.exists(lowerBounds)) {
-                    boundedType = lowerBounds[0];
-                } else {
-                    boundedType = wildcardType.getUpperBounds()[0];
-                }
-
-                type = boundedType;
-            }
-        }
-
-        // When type is concrete type or array.
-        Class<?> actualType = (Class<?>) type;
-        Class<?> actualComponentType = ArrayUtils.resolveActualComponentType(actualType);
-
-        if (Iterable.class.isAssignableFrom(actualType)) {
-            // Raw type.
-            return Object.class;
-        } else if (actualType.isArray() && Iterable.class.isAssignableFrom(actualComponentType)) {
-            // Raw type array.
-            return Object.class;
-        } else {
-            return actualType;
-        }
     }
 
 }

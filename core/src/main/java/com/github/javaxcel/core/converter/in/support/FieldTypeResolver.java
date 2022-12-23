@@ -73,11 +73,6 @@ public class FieldTypeResolver {
     /**
      * Resolves a resolution of the given type.
      *
-     * <pre>
-     *     // type ==
-     *     resolve(type) //
-     * </pre>
-     *
      * @param type type to resolve
      * @return resolution of the type
      */
@@ -106,12 +101,18 @@ public class FieldTypeResolver {
                 break;
             }
 
+            // class Sample<S, C extends Iterable<S>> {
+            //     private C c;
+            // } ... typeVariable.bounds == [Iterable<S>]
             if (type instanceof TypeVariable) {
                 TypeVariable<?> typeVariable = (TypeVariable<?>) type;
                 type = typeVariable.getBounds()[0];
                 continue;
             }
 
+            // class Sample<S extends Number> {
+            //     private S[][] s;
+            // } ... genericArrayType.genericComponentType == S[]
             if (type instanceof GenericArrayType) {
                 GenericArrayType genericArrayType = (GenericArrayType) type;
                 elementType = genericArrayType.getGenericComponentType();
@@ -119,6 +120,10 @@ public class FieldTypeResolver {
                 break;
             }
 
+            // class Sample<S extends Number> {
+            //     private Iterable<Sample<Long>> samples;
+            // } ... parameterizedType.rawType == Iterable.class
+            // ... parameterizedType.actualTypeArguments == [Sample]
             if (type instanceof ParameterizedType) {
                 ParameterizedType parameterizedType = (ParameterizedType) type;
                 Type rawType = parameterizedType.getRawType();
@@ -133,6 +138,9 @@ public class FieldTypeResolver {
                 }
             }
 
+            // When type is wildcard type:
+            // List<? super java.lang.String>
+            // List<? extends java.lang.String>
             if (type instanceof WildcardType) {
                 WildcardType wildcardType = (WildcardType) type;
                 Type[] lowerBounds = wildcardType.getLowerBounds();
