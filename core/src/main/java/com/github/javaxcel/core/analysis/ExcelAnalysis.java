@@ -109,14 +109,17 @@ public interface ExcelAnalysis {
              * From nowhere.
              */
             NONE,
+
             /**
              * From class.
              */
             MODEL,
+
             /**
              * From field.
              */
             COLUMN,
+
             /**
              * From strategy.
              */
