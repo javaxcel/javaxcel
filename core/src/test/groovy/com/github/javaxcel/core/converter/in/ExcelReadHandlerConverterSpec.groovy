@@ -31,10 +31,13 @@ import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_Enum
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_GenericArray
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_Iterable
+import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_VariantIterable
 import spock.lang.Specification
 
 import java.lang.reflect.Field
 import java.nio.file.AccessMode
+import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.LinkedBlockingDeque
 import java.util.concurrent.TimeUnit
 
 class ExcelReadHandlerConverterSpec extends Specification {
@@ -182,7 +185,7 @@ class ExcelReadHandlerConverterSpec extends Specification {
         "strings_array" | "[[], , [alpha, beta], [gamma]]" || [[], null, ["alpha", "beta"], ["gamma"]]
     }
 
-    def "Converts into iterable"() {
+    def "Converts into Iterable"() {
         given:
         def variables = [(fieldName): value]
         def field = ExcelReadHandlerConverter_TestModel_Iterable.getDeclaredField(fieldName)
@@ -199,8 +202,8 @@ class ExcelReadHandlerConverterSpec extends Specification {
         fieldName                      | value                                    || expected
         "iterable_raw"                 | null                                     || null
         "iterable_raw"                 | "[]"                                     || []
-        "iterable_string"              | "[]"                                     || []
-        "iterable_string"              | "[74, 0, -12]"                           || [74, 0, -12]
+        "iterable_integer"             | "[]"                                     || []
+        "iterable_integer"             | "[74, 0, -12]"                           || [74, 0, -12]
         "collection_long"              | "[0, 9720, -8715]"                       || [0, 9720, -8715]
         "set_locale"                   | "[en_US, ko_KR, ja_JP]"                  || [Locale.US, Locale.KOREA, Locale.JAPAN]
         "collection_list_long"         | "[[]]"                                   || [[]]
@@ -209,6 +212,37 @@ class ExcelReadHandlerConverterSpec extends Specification {
         "iterable_bigDecimal"          | "[-0.7215, 3.141592, ]"                  || [-0.7215, 3.141592, null]
         "list_iterable_string"         | "[[-9, -3], [-1, 0], [3, 9]]"            || [["-9", "-3"], ["-1", "0"], ["3", "9"]]
         "iterable_iterable_bigDecimal" | "[[9.155, 12.784, -0.019], [], [6.218]]" || [[9.155, 12.784, -0.019], [], [6.218]]
+    }
+
+    def "Converts into variant sub-interfaces of Iterable"() {
+        given:
+        def variables = [(fieldName): value]
+        def field = ExcelReadHandlerConverter_TestModel_VariantIterable.getDeclaredField(fieldName)
+        def analyses = analyze(field.declaringClass.declaredFields, ExcelReadAnalyzer.SETTER)
+
+        when:
+        def converter = new ExcelReadHandlerConverter(analyses, new DefaultExcelTypeHandlerRegistry())
+        def actual = converter.convert(variables, field) as Iterable
+
+        then:
+        field.type.isInstance(actual)
+        actual.class == expected.class
+
+        and: "These are not supported on comparison: ArrayDeque, ArrayBlockingQueue, LinkedBlockingDeque"
+        actual == expected || actual.toList() == expected.toList()
+
+        where:
+        fieldName              | value                                     || expected
+        "iterable_boolean"     | "[true, false]"                           || [true, false]
+        "collection_byte"      | "[-128, 0, 127]"                          || [-128, 0, 127]
+        "list_short"           | "[-32768, 0, 32767]"                      || [-32768, 0, 32767]
+        "set_character"        | "[A,  , B, C]"                            || new HashSet<>(['A', ' ', 'B', 'C'])
+        "sortedSet_integer"    | "[-1048576, 0, 1048576]"                  || new TreeSet<>([-1048576, 0, 1048576])
+        "navigableSet_long"    | "[-4294967296, 0, 4294967296]"            || new TreeSet<>([-4294967296L, 0L, 4294967296L])
+        "queue_float"          | "[-1.414213, 3.141592]"                   || new LinkedList<>([-1.414213F, 3.141592F])
+        "deque_double"         | "[-1.618033988749894, 2.718281828459045]" || new ArrayDeque<>([-1.618033988749894D, 2.718281828459045D])
+        "blockingQueue_string" | "[alpha, beta, gamma, delta]"             || new ArrayBlockingQueue<>(4, false, ["alpha", "beta", "gamma", "delta"])
+        "blockingDeque_locale" | "[en_US, ko_KR, ja_JP]"                   || new LinkedBlockingDeque<>([Locale.US, Locale.KOREA, Locale.JAPAN])
     }
 
     def "Converts into enum by custom handler"() {
