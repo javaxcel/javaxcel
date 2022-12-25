@@ -30,11 +30,16 @@ import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestMod
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Array3D
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Enum
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_GenericArray
+import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Iterable
+import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_RawIterable
+import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_VariantIterable
 import groovy.transform.EqualsAndHashCode
 import spock.lang.Specification
 
 import java.lang.reflect.Field
 import java.nio.file.AccessMode
+import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.LinkedBlockingDeque
 import java.util.concurrent.TimeUnit
 
 class ExcelWriteHandlerConverterSpec extends Specification {
@@ -181,8 +186,97 @@ class ExcelWriteHandlerConverterSpec extends Specification {
         "strings_array" | [[], null, ["alpha", "beta"], ["gamma"]] || "[[], , [alpha, beta], [gamma]]"
     }
 
+    def "Converts Iterable"() {
+        given:
+        def model = new ExcelWriteHandlerConverter_TestModel_Iterable()
+        model[fieldName] = value
 
-    def "Converts mixed iterable and array"() {
+        and:
+        def field = model.class.getDeclaredField(fieldName)
+        def analyses = analyze(model.class.declaredFields, ExcelWriteAnalyzer.GETTER)
+
+        when:
+        def converter = new ExcelWriteHandlerConverter(analyses, new DefaultExcelTypeHandlerRegistry())
+        def actual = converter.convert(model, field)
+
+        then:
+        actual == expected
+
+        where:
+        fieldName                      | value                                   || expected
+        "iterable_integer"             | []                                      || "[]"
+        "iterable_integer"             | [74, 0, -12]                            || "[74, 0, -12]"
+        "collection_long"              | [0, 9720, -8715]                        || "[0, 9720, -8715]"
+        "set_locale"                   | [Locale.US, Locale.KOREA, Locale.JAPAN] || "[en_US, ko_KR, ja_JP]"
+        "collection_list_long"         | [[]]                                    || "[[]]"
+        "collection_list_long"         | [[241832184], null, [748015106], []]    || "[[241832184], , [748015106], []]"
+        "list_string"                  | ["alpha", "beta"]                       || "[alpha, beta]"
+        "iterable_bigDecimal"          | [-0.7215, 3.141592, null]               || "[-0.7215, 3.141592, ]"
+        "list_iterable_string"         | [["-9", "-3"], ["-1", "0"], ["3", "9"]] || "[[-9, -3], [-1, 0], [3, 9]]"
+        "iterable_iterable_bigDecimal" | [[9.155, 12.784, -0.019], [], [6.218]]  || "[[9.155, 12.784, -0.019], [], [6.218]]"
+    }
+
+    def "Converts variant sub-interfaces of Iterable"() {
+        given:
+        def model = new ExcelWriteHandlerConverter_TestModel_VariantIterable()
+        model[fieldName] = value
+
+        and:
+        def field = model.class.getDeclaredField(fieldName)
+        def analyses = analyze(model.class.declaredFields, ExcelWriteAnalyzer.FIELD_ACCESS)
+
+        when:
+        def converter = new ExcelWriteHandlerConverter(analyses, new DefaultExcelTypeHandlerRegistry())
+        def actual = converter.convert(model, field)
+
+        then:
+        actual == expected
+
+        where:
+        fieldName              | value                                                                   || expected
+        "iterable_boolean"     | [true, false]                                                           || "[true, false]"
+        "collection_byte"      | [-128, 0, 127]                                                          || "[-128, 0, 127]"
+        "list_short"           | [-32768, 0, 32767]                                                      || "[-32768, 0, 32767]"
+        "set_character"        | ['A', ' ', 'B', 'C']                                                    || "[A,  , B, C]"
+        "sortedSet_integer"    | new TreeSet<>([-1048576, 0, 1048576])                                   || "[-1048576, 0, 1048576]"
+        "navigableSet_long"    | new TreeSet<>([-4294967296L, 0L, 4294967296L])                          || "[-4294967296, 0, 4294967296]"
+        "queue_float"          | new LinkedList<>([-1.414213F, 3.141592F])                               || "[-1.414213, 3.141592]"
+        "deque_double"         | new ArrayDeque<>([-1.618033988749894D, 2.718281828459045D])             || "[-1.618033988749894, 2.718281828459045]"
+        "blockingQueue_string" | new ArrayBlockingQueue<>(4, false, ["alpha", "beta", "gamma", "delta"]) || "[alpha, beta, gamma, delta]"
+        "blockingDeque_locale" | new LinkedBlockingDeque<>([Locale.US, Locale.KOREA, Locale.JAPAN])      || "[en_US, ko_KR, ja_JP]"
+    }
+
+    def "Converts raw Iterable"() {
+        given:
+        def model = new ExcelWriteHandlerConverter_TestModel_RawIterable()
+        model[fieldName] = value
+
+        and:
+        def field = model.class.getDeclaredField(fieldName)
+        def analyses = analyze(model.class.declaredFields, ExcelWriteAnalyzer.FIELD_ACCESS)
+
+        when:
+        def converter = new ExcelWriteHandlerConverter(analyses, new DefaultExcelTypeHandlerRegistry())
+        def actual = converter.convert(model, field)
+
+        then:
+        actual == expected
+
+        where:
+        fieldName       | value                                                     || expected
+        "iterable"      | [true, false]                                             || "[true, false]"
+        "collection"    | [-128, 0, 127]                                            || "[-128, 0, 127]"
+        "list"          | ["-32,768", 0, 32767]                                     || "[-32,768, 0, 32767]"
+        "set"           | ['A', 0, 'B', 24]                                         || "[A, 0, B, 24]"
+        "sortedSet"     | new TreeSet([3.14D, -1048576D])                           || "[-1048576.0, 3.14]"
+        "navigableSet"  | new TreeSet(["alpha", 'D', "beta"])                       || "[D, alpha, beta]"
+        "queue"         | new LinkedList([-1.414213F, "gamma"])                     || "[-1.414213, gamma]"
+        "deque"         | new ArrayDeque([Locale.US, 2.718281828459045D])           || "[en_US, 2.718281828459045]"
+        "blockingQueue" | new ArrayBlockingQueue(2, false, ["delta", Locale.KOREA]) || "[delta, ko_KR]"
+        "blockingDeque" | new LinkedBlockingDeque([3.141592F, Locale.JAPAN])        || "[3.141592, ja_JP]"
+    }
+
+    def "Converts mixed Iterable and array"() {
         given:
         def analyses = analyze(model.class.declaredFields, ExcelWriteAnalyzer.FIELD_ACCESS)
         def field = model.class.getDeclaredField(fieldName)

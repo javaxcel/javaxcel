@@ -213,36 +213,6 @@ class ExcelReadHandlerConverterSpec extends Specification {
         "iterable_iterable_bigDecimal" | "[[9.155, 12.784, -0.019], [], [6.218]]" || [[9.155, 12.784, -0.019], [], [6.218]]
     }
 
-    def "Converts into raw Iterable"() {
-        given:
-        def variables = [(fieldName): value]
-        def field = ExcelReadHandlerConverter_TestModel_RawIterable.getDeclaredField(fieldName)
-        def analyses = analyze(field.declaringClass.declaredFields, ExcelReadAnalyzer.SETTER)
-
-        when:
-        def converter = new ExcelReadHandlerConverter(analyses, new DefaultExcelTypeHandlerRegistry())
-        def actual = converter.convert(variables, field) as Iterable
-
-        then:
-        field.type.isInstance(actual)
-
-        and: "These are not supported on comparison: ArrayDeque, ArrayBlockingQueue, LinkedBlockingDeque"
-        actual == expected || actual.toList() == expected.toList()
-
-        where:
-        fieldName       | value                || expected
-        "iterable"      | "[true, false]"      || [null, null]
-        "collection"    | "[-128, 0, 127]"     || [null, null, null]
-        "list"          | "[-32768, 0, 32767]" || [null, null, null]
-        "set"           | "[A, B, , C]"        || [null] // Set removes the duplicated element from itself.
-        "sortedSet"     | "[]"                 || []
-        "navigableSet"  | "[]"                 || []
-        "queue"         | "[alpha]"            || [null]
-        "deque"         | "[]"                 || []
-        "blockingQueue" | "[]"                 || []
-        "blockingDeque" | "[]"                 || []
-    }
-
     def "Converts into variant sub-interfaces of Iterable"() {
         given:
         def variables = [(fieldName): value]
@@ -272,6 +242,36 @@ class ExcelReadHandlerConverterSpec extends Specification {
         "deque_double"         | "[-1.618033988749894, 2.718281828459045]" || new ArrayDeque<>([-1.618033988749894D, 2.718281828459045D])
         "blockingQueue_string" | "[alpha, beta, gamma, delta]"             || new ArrayBlockingQueue<>(4, false, ["alpha", "beta", "gamma", "delta"])
         "blockingDeque_locale" | "[en_US, ko_KR, ja_JP]"                   || new LinkedBlockingDeque<>([Locale.US, Locale.KOREA, Locale.JAPAN])
+    }
+
+    def "Converts into raw Iterable"() {
+        given:
+        def variables = [(fieldName): value]
+        def field = ExcelReadHandlerConverter_TestModel_RawIterable.getDeclaredField(fieldName)
+        def analyses = analyze(field.declaringClass.declaredFields, ExcelReadAnalyzer.SETTER)
+
+        when:
+        def converter = new ExcelReadHandlerConverter(analyses, new DefaultExcelTypeHandlerRegistry())
+        def actual = converter.convert(variables, field) as Iterable
+
+        then:
+        field.type.isInstance(actual)
+
+        and: "These are not supported on comparison: ArrayDeque, ArrayBlockingQueue, LinkedBlockingDeque"
+        actual == expected || actual.toList() == expected.toList()
+
+        where:
+        fieldName       | value                || expected
+        "iterable"      | "[true, false]"      || [null, null]
+        "collection"    | "[-128, 0, 127]"     || [null, null, null]
+        "list"          | "[-32768, 0, 32767]" || [null, null, null]
+        "set"           | "[A, B, , C]"        || [null] // Set removes the duplicated element from itself.
+        "sortedSet"     | "[]"                 || []
+        "navigableSet"  | "[]"                 || []
+        "queue"         | "[alpha]"            || [null]
+        "deque"         | "[]"                 || []
+        "blockingQueue" | "[]"                 || []
+        "blockingDeque" | "[]"                 || []
     }
 
     def "Converts into enum by custom handler"() {
