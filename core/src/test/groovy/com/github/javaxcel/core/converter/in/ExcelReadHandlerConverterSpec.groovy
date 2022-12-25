@@ -31,6 +31,7 @@ import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_Enum
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_GenericArray
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_Iterable
+import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_RawIterable
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_VariantIterable
 import spock.lang.Specification
 
@@ -200,8 +201,6 @@ class ExcelReadHandlerConverterSpec extends Specification {
 
         where:
         fieldName                      | value                                    || expected
-        "iterable_raw"                 | null                                     || null
-        "iterable_raw"                 | "[]"                                     || []
         "iterable_integer"             | "[]"                                     || []
         "iterable_integer"             | "[74, 0, -12]"                           || [74, 0, -12]
         "collection_long"              | "[0, 9720, -8715]"                       || [0, 9720, -8715]
@@ -212,6 +211,36 @@ class ExcelReadHandlerConverterSpec extends Specification {
         "iterable_bigDecimal"          | "[-0.7215, 3.141592, ]"                  || [-0.7215, 3.141592, null]
         "list_iterable_string"         | "[[-9, -3], [-1, 0], [3, 9]]"            || [["-9", "-3"], ["-1", "0"], ["3", "9"]]
         "iterable_iterable_bigDecimal" | "[[9.155, 12.784, -0.019], [], [6.218]]" || [[9.155, 12.784, -0.019], [], [6.218]]
+    }
+
+    def "Converts into raw Iterable"() {
+        given:
+        def variables = [(fieldName): value]
+        def field = ExcelReadHandlerConverter_TestModel_RawIterable.getDeclaredField(fieldName)
+        def analyses = analyze(field.declaringClass.declaredFields, ExcelReadAnalyzer.SETTER)
+
+        when:
+        def converter = new ExcelReadHandlerConverter(analyses, new DefaultExcelTypeHandlerRegistry())
+        def actual = converter.convert(variables, field) as Iterable
+
+        then:
+        field.type.isInstance(actual)
+
+        and: "These are not supported on comparison: ArrayDeque, ArrayBlockingQueue, LinkedBlockingDeque"
+        actual == expected || actual.toList() == expected.toList()
+
+        where:
+        fieldName       | value                || expected
+        "iterable"      | "[true, false]"      || [null, null]
+        "collection"    | "[-128, 0, 127]"     || [null, null, null]
+        "list"          | "[-32768, 0, 32767]" || [null, null, null]
+        "set"           | "[A, B, , C]"        || [null] // Set removes the duplicated element from itself.
+        "sortedSet"     | "[]"                 || []
+        "navigableSet"  | "[]"                 || []
+        "queue"         | "[alpha]"            || [null]
+        "deque"         | "[]"                 || []
+        "blockingQueue" | "[]"                 || []
+        "blockingDeque" | "[]"                 || []
     }
 
     def "Converts into variant sub-interfaces of Iterable"() {
@@ -249,6 +278,8 @@ class ExcelReadHandlerConverterSpec extends Specification {
         given:
         def registry = new DefaultExcelTypeHandlerRegistry()
         registry.add(new TimeUnitTypeHandler())
+
+        and:
         def variables = [(fieldName): value]
         def field = ExcelReadHandlerConverter_TestModel_Enum.getDeclaredField(fieldName)
         def analyses = analyze(field.declaringClass.declaredFields, ExcelReadAnalyzer.SETTER)

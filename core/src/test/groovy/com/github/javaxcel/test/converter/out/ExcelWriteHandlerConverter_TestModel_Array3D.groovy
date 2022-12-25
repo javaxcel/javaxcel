@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.github.javaxcel.test.model
+package com.github.javaxcel.test.converter.out
 
 import io.github.imsejin.common.assertion.Asserts
 import io.github.imsejin.common.util.ArrayUtils
 
-class Array3D {
+class ExcelWriteHandlerConverter_TestModel_Array3D {
 
-    Array3D(Object array) {
+    ExcelWriteHandlerConverter_TestModel_Array3D(Object array) {
         if (array == null) return
         Asserts.that(array.class).isArray()
 

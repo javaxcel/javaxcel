@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package com.github.javaxcel.test.converter.in
+package com.github.javaxcel.test.converter.out
 
 @SuppressWarnings("unused")
-class ExcelReadHandlerConverter_TestModel_Iterable<
-        A extends String,
-        B extends Iterable<BigDecimal>> {
+class ExcelWriteHandlerConverter_TestModel_GenericArray<
+        A,
+        B extends String,
+        C extends B> {
 
-    Iterable<Integer> iterable_integer
-    Collection<Long> collection_long
-    Set<Locale> set_locale
-    Collection<List<Long>> collection_list_long
-    List<A> list_string
-    B iterable_bigDecimal
-    List<Iterable<A>> list_iterable_string
-    Iterable<B> iterable_iterable_bigDecimal
+    A[] objects
+    B[] strings_1
+    C[] strings_2
+    C[][] strings_array
 
 }

@@ -16,18 +16,21 @@
 
 package com.github.javaxcel.test.converter.in
 
-@SuppressWarnings("unused")
-class ExcelReadHandlerConverter_TestModel_Iterable<
-        A extends String,
-        B extends Iterable<BigDecimal>> {
+import java.util.concurrent.BlockingDeque
+import java.util.concurrent.BlockingQueue
 
-    Iterable<Integer> iterable_integer
-    Collection<Long> collection_long
-    Set<Locale> set_locale
-    Collection<List<Long>> collection_list_long
-    List<A> list_string
-    B iterable_bigDecimal
-    List<Iterable<A>> list_iterable_string
-    Iterable<B> iterable_iterable_bigDecimal
+@SuppressWarnings("unused")
+class ExcelReadHandlerConverter_TestModel_RawIterable {
+
+    Iterable iterable
+    Collection collection
+    List list
+    Set set
+    SortedSet sortedSet
+    NavigableSet navigableSet
+    Queue queue
+    Deque deque
+    BlockingQueue blockingQueue
+    BlockingDeque blockingDeque
 
 }
