@@ -31,6 +31,9 @@
 - [What is Javaxcel?](#what-is-javaxcel)
 - [Modules](#modules)
 - [Getting started](#getting-started)
+    - [Maven](#maven)
+    - [Gradle](#gradle)
+    - [Usage](#usage)
 
 <br><br>
 
@@ -76,7 +79,7 @@ implementation 'com.github.javaxcel:javaxcel-core:x.y.z'
 implementation 'org.apache.poi:poi-ooxml:a.b.c'
 ```
 
-<br>
+### Usage
 
 ```java
 // Creates an instance of Javaxcel.
