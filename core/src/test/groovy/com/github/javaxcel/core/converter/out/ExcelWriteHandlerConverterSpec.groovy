@@ -298,8 +298,8 @@ class ExcelWriteHandlerConverterSpec extends Specification {
         where:
         fieldName                      | value                                    || expected
         "iterable_array_integer"       | [[1], [2, 3], null, [4], []]             || "[[1], [2, 3], , [4], []]"
-        "array_collection_bigDecimal"  | [null, [1024], [64, -128]]               || "[, [1024], [64, -128]]"
         "list_list_array_array_string" | [[[["A"], ["B"]], [["C"]]], [[["D"]]]]   || "[[[[A], [B]], [[C]]], [[[D]]]]"
+        "array_collection_bigDecimal"  | [null, [1024], [64, -128]]               || "[, [1024], [64, -128]]"
         "array_array_set_double"       | [[[3.14D, 2.178D]], [], [[-1.168D]]]     || "[[[3.14, 2.178]], [], [[-1.168]]]"
         "array_queue_raw"              | [new LinkedList([1, 'A', 0.1, "alpha"])] || "[[1, A, 0.1, alpha]]"
     }

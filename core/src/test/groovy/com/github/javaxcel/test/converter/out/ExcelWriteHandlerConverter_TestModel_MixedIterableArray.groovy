@@ -20,8 +20,8 @@ package com.github.javaxcel.test.converter.out
 class ExcelWriteHandlerConverter_TestModel_MixedIterableArray {
 
     Iterable<Integer[]> iterable_array_integer
-    Collection<BigDecimal>[] array_collection_bigDecimal
     List<List<String[][]>> list_list_array_array_string
+    Collection<BigDecimal>[] array_collection_bigDecimal
     Set<Double>[][] array_array_set_double
     Queue[] array_queue_raw
 
