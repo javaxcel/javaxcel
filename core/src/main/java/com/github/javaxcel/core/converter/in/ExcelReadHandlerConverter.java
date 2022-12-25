@@ -165,7 +165,6 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
             if (componentType.isArray()) {
                 element = handleArray(field, concreteType, dimension - 1, string);
             } else {
-                // TODO: why...? Allows empty string to handler for non-array type.
                 element = handleConcrete(field, componentType, string);
             }
 

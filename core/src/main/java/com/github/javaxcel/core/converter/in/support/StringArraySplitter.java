@@ -130,7 +130,7 @@ public class StringArraySplitter {
             list.add(sb.toString());
         }
 
-        // Adds empty string as the last element.
+        // Adds an empty string as null on the last element.
         if (src.endsWith(this.delimiter + this.closer)) {
             list.add("");
         }
