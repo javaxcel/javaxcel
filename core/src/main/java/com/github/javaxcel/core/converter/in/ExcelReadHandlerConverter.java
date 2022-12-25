@@ -111,6 +111,16 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
 
         switch (resolution.getKind()) {
             case ARRAY:
+                Asserts.that(type)
+                        .describedAs("Mixed array and iterable is not supported: {0}", field)
+                        .thrownBy(UnsupportedOperationException::new)
+                        .isNotNull()
+                        // Field.genericType is different from Field.type, when component type of an array is not concrete.
+                        .isInstanceOf(Class.class)
+                        .isSameAs(field.getType())
+                        // Checks if component type of an array is Iterable like Iterable[].
+                        .isNot(it -> Iterable.class.isAssignableFrom(ArrayUtils.resolveActualComponentType((Class<?>) it)));
+
                 Class<?> concreteType = FieldTypeResolver.resolveConcreteType(type);
 
                 // Finds dimension of the array by Type.typeName that has string "[]" when it is array.
@@ -130,11 +140,6 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
     }
 
     private Object handleArray(Field field, Class<?> concreteType, int dimension, String value) {
-        Asserts.that(concreteType)
-                .describedAs("Mixed array and iterable is not supported: {0}", field)
-                .thrownBy(UnsupportedOperationException::new)
-                .isNotNull()
-                .isNot(Iterable.class::isAssignableFrom);
         Asserts.that(dimension)
                 .describedAs("Dimension of an array must be positive: {0}", dimension)
                 .isNotNull()

@@ -31,6 +31,7 @@ import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_Enum
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_GenericArray
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_Iterable
+import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_MixedIterableArray
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_RawIterable
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_VariantIterable
 import spock.lang.Specification
@@ -336,6 +337,31 @@ class ExcelReadHandlerConverterSpec extends Specification {
         "chars"    | ['A', 'B', 'C']
         "strings"  | ["alpha", "beta"]
         "locales"  | [[Locale.US], [Locale.KOREA]]
+    }
+
+    // -------------------------------------------------------------------------------------------------
+
+    def "Fails to convert into mixed Iterable and array"() {
+        given:
+        def variables = [(fieldName): value]
+        def field = ExcelReadHandlerConverter_TestModel_MixedIterableArray.getDeclaredField(fieldName)
+        def analyses = analyze(field.declaringClass.declaredFields, ExcelReadAnalyzer.FIELD_ACCESS)
+
+        when:
+        def converter = new ExcelReadHandlerConverter(analyses, new DefaultExcelTypeHandlerRegistry())
+        converter.convert(variables, field)
+
+        then:
+        def e = thrown(UnsupportedOperationException)
+        e.message.startsWith("Mixed array and iterable is not supported: $field")
+
+        where:
+        fieldName                      | value
+        "iterable_array_integer"       | "[[1], [2], [3, 4]]"
+        "list_list_array_array_string" | "[[[[A], [B]], [[C]]], [[[D]]]]"
+        "array_collection_bigDecimal"  | "[, [1024], [64, -128]]"
+        "array_array_set_double"       | "[[[3.14, 2.178]], [], [[-1.168]]]"
+        "array_queue_raw"              | "[[1, A, 0.1, alpha]]"
     }
 
     // -------------------------------------------------------------------------------------------------
