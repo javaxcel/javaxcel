@@ -29,7 +29,7 @@
 ## Table of Contents
 
 - [What is Javaxcel?](#what-is-javaxcel)
-- [Modules](./core/README.md)
+- [Modules](#modules)
 - [Getting started](#getting-started)
 
 <br><br>
