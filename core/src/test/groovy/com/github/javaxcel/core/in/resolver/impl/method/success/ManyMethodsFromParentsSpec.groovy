@@ -20,9 +20,11 @@ import com.github.javaxcel.core.annotation.ExcelModelCreator
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelMethodResolver
 import io.github.imsejin.common.tool.RandomString
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.lang.reflect.Method
 
+@Subject(ExcelModelMethodResolver)
 class ManyMethodsFromParentsSpec extends Specification {
 
     def "Resolves a method"() {

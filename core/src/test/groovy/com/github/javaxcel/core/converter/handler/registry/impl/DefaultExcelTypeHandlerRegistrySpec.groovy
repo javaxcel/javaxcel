@@ -23,7 +23,9 @@ import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegis
 import com.github.javaxcel.test.converter.handler.impl.ObjectTypeHandler
 import io.github.imsejin.common.util.ReflectionUtils
 import spock.lang.Specification
+import spock.lang.Subject
 
+@Subject(DefaultExcelTypeHandlerRegistry)
 class DefaultExcelTypeHandlerRegistrySpec extends Specification {
 
     def "Gets a handler by type"() {

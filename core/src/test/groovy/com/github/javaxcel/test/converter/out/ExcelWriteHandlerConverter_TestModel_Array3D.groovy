@@ -16,9 +16,12 @@
 
 package com.github.javaxcel.test.converter.out
 
+import com.github.javaxcel.core.converter.out.ExcelWriteHandlerConverter
 import io.github.imsejin.common.assertion.Asserts
 import io.github.imsejin.common.util.ArrayUtils
+import spock.lang.Subject
 
+@Subject(ExcelWriteHandlerConverter)
 class ExcelWriteHandlerConverter_TestModel_Array3D {
 
     ExcelWriteHandlerConverter_TestModel_Array3D(Object array) {

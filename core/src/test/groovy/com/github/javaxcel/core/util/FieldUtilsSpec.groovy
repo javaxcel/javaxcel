@@ -20,6 +20,7 @@ import com.github.javaxcel.core.annotation.ExcelColumn
 import com.github.javaxcel.core.annotation.ExcelModel
 import io.github.imsejin.common.util.ReflectionUtils
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.nio.file.AccessMode
 import java.security.cert.CRLReason
@@ -28,6 +29,7 @@ import java.util.function.Function
 
 import static java.util.stream.Collectors.toMap
 
+@Subject(FieldUtils)
 class FieldUtilsSpec extends Specification {
 
     def "Gets the targeted fields from the class"() {

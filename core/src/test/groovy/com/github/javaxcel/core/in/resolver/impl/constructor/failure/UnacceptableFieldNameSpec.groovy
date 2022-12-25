@@ -20,7 +20,9 @@ import com.github.javaxcel.core.annotation.ExcelModelCreator.FieldName
 import com.github.javaxcel.core.exception.InvalidExcelModelCreatorException
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelConstructorResolver
 import spock.lang.Specification
+import spock.lang.Subject
 
+@Subject(ExcelModelConstructorResolver)
 class UnacceptableFieldNameSpec extends Specification {
 
     def "Resolves a method"() {

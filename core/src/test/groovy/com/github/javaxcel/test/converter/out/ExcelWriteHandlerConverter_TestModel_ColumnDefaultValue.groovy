@@ -17,7 +17,10 @@
 package com.github.javaxcel.test.converter.out
 
 import com.github.javaxcel.core.annotation.ExcelColumn
+import com.github.javaxcel.core.converter.out.ExcelWriteHandlerConverter
+import spock.lang.Subject
 
+@Subject(ExcelWriteHandlerConverter)
 @SuppressWarnings("unused")
 class ExcelWriteHandlerConverter_TestModel_ColumnDefaultValue {
 

@@ -19,7 +19,9 @@ package com.github.javaxcel.core.in.resolver.impl.constructor.failure
 import com.github.javaxcel.core.exception.InvalidExcelModelCreatorException
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelConstructorResolver
 import spock.lang.Specification
+import spock.lang.Subject
 
+@Subject(ExcelModelConstructorResolver)
 class DuplicatedParamTypeAndUnmatchedParamNameSpec extends Specification {
 
     def "Resolves a method"() {

@@ -24,12 +24,14 @@ import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer
 import com.github.javaxcel.core.annotation.ExcelColumn
 import com.github.javaxcel.core.annotation.ExcelReadExpression
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.lang.reflect.Field
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 
+@Subject(ExcelReadExpressionConverter)
 class ExcelReadExpressionConverterSpec extends Specification {
 
     def "Converts field value through expression"() {

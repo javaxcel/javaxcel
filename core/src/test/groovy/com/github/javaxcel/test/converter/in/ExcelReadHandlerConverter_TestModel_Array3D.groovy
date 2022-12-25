@@ -16,6 +16,10 @@
 
 package com.github.javaxcel.test.converter.in
 
+import com.github.javaxcel.core.converter.in.ExcelReadHandlerConverter
+import spock.lang.Subject
+
+@Subject(ExcelReadHandlerConverter)
 @SuppressWarnings("unused")
 class ExcelReadHandlerConverter_TestModel_Array3D {
 

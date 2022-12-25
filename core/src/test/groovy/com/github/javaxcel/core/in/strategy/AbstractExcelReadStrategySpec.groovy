@@ -17,7 +17,9 @@
 package com.github.javaxcel.core.in.strategy
 
 import spock.lang.Specification
+import spock.lang.Subject
 
+@Subject(AbstractExcelReadStrategy)
 class AbstractExcelReadStrategySpec extends Specification {
 
     def "test"() {

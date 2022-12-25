@@ -20,6 +20,7 @@ import com.github.javaxcel.core.converter.in.support.FieldTypeResolver.TypeResol
 import com.github.javaxcel.test.converter.in.support.FieldTypeResolver_TestModel_1
 import com.github.javaxcel.test.converter.in.support.FieldTypeResolver_TestModel_2
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.lang.reflect.Field
 import java.lang.reflect.Type
@@ -28,6 +29,7 @@ import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Ki
 import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.CONCRETE
 import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.ITERABLE
 
+@Subject(FieldTypeResolver)
 class FieldTypeResolverSpec extends Specification {
 
     def "Resolves a concrete type of the field"() {

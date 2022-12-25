@@ -21,7 +21,9 @@ import com.github.javaxcel.core.exception.InvalidExcelModelCreatorException
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelMethodResolver
 import groovy.transform.PackageScope
 import spock.lang.Specification
+import spock.lang.Subject
 
+@Subject(ExcelModelMethodResolver)
 class NonPublicModifierSpec extends Specification {
 
     def "Resolves a method"() {

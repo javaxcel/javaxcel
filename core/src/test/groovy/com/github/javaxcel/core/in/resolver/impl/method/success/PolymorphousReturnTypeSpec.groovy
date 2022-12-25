@@ -19,9 +19,11 @@ package com.github.javaxcel.core.in.resolver.impl.method.success
 import com.github.javaxcel.core.annotation.ExcelModelCreator
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelMethodResolver
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.lang.reflect.Method
 
+@Subject(ExcelModelMethodResolver)
 class PolymorphousReturnTypeSpec extends Specification {
 
     def "Resolves a method"() {

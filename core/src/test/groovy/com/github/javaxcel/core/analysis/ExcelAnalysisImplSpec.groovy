@@ -22,7 +22,9 @@ import com.github.javaxcel.test.converter.handler.impl.ObjectTypeHandler
 import com.github.javaxcel.test.converter.handler.impl.TimeUnitTypeHandler
 import groovy.transform.EqualsAndHashCode
 import spock.lang.Specification
+import spock.lang.Subject
 
+@Subject(ExcelAnalysisImpl)
 class ExcelAnalysisImplSpec extends Specification {
 
     def "Gets the field"() {

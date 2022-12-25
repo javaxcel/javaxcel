@@ -21,9 +21,11 @@ import com.github.javaxcel.core.annotation.ExcelIgnore
 import com.github.javaxcel.core.annotation.ExcelModel
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelConstructorResolver
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.lang.reflect.Constructor
 
+@Subject(ExcelModelConstructorResolver)
 class DuplicatedParamTypeAndUnmatchedParamNameButIgnoredFieldSpec extends Specification {
 
     def "Resolves a method"() {

@@ -25,9 +25,11 @@ import com.github.javaxcel.core.in.strategy.impl.UseSetters
 import com.github.javaxcel.core.util.FieldUtils
 import groovy.transform.EqualsAndHashCode
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.util.concurrent.TimeUnit
 
+@Subject(ExcelModelCreationProcessor)
 class ExcelModelCreationProcessorSpec extends Specification {
 
     def "Creates a excel model"() {

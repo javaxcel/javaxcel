@@ -35,6 +35,7 @@ import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_RawIterable
 import com.github.javaxcel.test.converter.in.ExcelReadHandlerConverter_TestModel_VariantIterable
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.lang.reflect.Field
 import java.nio.file.AccessMode
@@ -42,6 +43,7 @@ import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.LinkedBlockingDeque
 import java.util.concurrent.TimeUnit
 
+@Subject(ExcelReadHandlerConverter)
 class ExcelReadHandlerConverterSpec extends Specification {
 
     def "Converts into 1D array"() {

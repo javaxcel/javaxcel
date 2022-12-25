@@ -26,12 +26,14 @@ import com.github.javaxcel.core.annotation.ExcelModel
 import com.github.javaxcel.core.annotation.ExcelWriteExpression
 import groovy.transform.EqualsAndHashCode
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.lang.reflect.Field
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 
+@Subject(ExcelWriteExpressionConverter)
 class ExcelWriteExpressionConverterSpec extends Specification {
 
     def "Converts field value through expression"() {

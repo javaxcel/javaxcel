@@ -20,10 +20,12 @@ import com.github.javaxcel.core.annotation.ExcelModelCreator
 import com.github.javaxcel.core.exception.AmbiguousExcelModelCreatorException
 import io.github.imsejin.common.tool.RandomString
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.lang.reflect.Constructor
 import java.lang.reflect.Method
 
+@Subject(AbstractExcelModelExecutableResolver)
 class AbstractExcelModelExecutableResolverSpec extends Specification {
 
     def "succeed"() {

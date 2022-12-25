@@ -20,9 +20,11 @@ import com.github.javaxcel.core.annotation.ExcelModelCreator
 import com.github.javaxcel.core.exception.AmbiguousExcelModelCreatorException
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelMethodResolver
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.nio.file.AccessMode
 
+@Subject(ExcelModelMethodResolver)
 class TooManyAnnotatedMethodsSpec extends Specification {
 
     def "Resolves a method"() {

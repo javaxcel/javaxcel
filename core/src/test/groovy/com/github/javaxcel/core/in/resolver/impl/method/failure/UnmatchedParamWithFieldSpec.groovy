@@ -21,10 +21,12 @@ import com.github.javaxcel.core.annotation.ExcelModelCreator.FieldName
 import com.github.javaxcel.core.exception.InvalidExcelModelCreatorException
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelMethodResolver
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.nio.file.AccessMode
 import java.util.concurrent.TimeUnit
 
+@Subject(ExcelModelMethodResolver)
 class UnmatchedParamWithFieldSpec extends Specification {
 
     def "Resolves a method"() {

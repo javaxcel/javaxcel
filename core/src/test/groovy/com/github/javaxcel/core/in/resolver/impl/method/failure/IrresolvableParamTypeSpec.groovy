@@ -20,7 +20,9 @@ import com.github.javaxcel.core.annotation.ExcelModelCreator
 import com.github.javaxcel.core.exception.InvalidExcelModelCreatorException
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelMethodResolver
 import spock.lang.Specification
+import spock.lang.Subject
 
+@Subject(ExcelModelMethodResolver)
 class IrresolvableParamTypeSpec extends Specification {
 
     def "Resolves a method"() {

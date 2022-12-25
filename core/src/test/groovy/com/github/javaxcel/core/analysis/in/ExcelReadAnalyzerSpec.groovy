@@ -4,12 +4,14 @@ import com.github.javaxcel.core.annotation.ExcelReadExpression
 import com.github.javaxcel.core.converter.handler.registry.impl.DefaultExcelTypeHandlerRegistry
 import com.github.javaxcel.core.in.strategy.impl.UseSetters
 import spock.lang.Specification
+import spock.lang.Subject
 
 import static com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer.EXPRESSION
 import static com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer.FIELD_ACCESS
 import static com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer.HANDLER
 import static com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer.SETTER
 
+@Subject(ExcelReadAnalyzer)
 class ExcelReadAnalyzerSpec extends Specification {
 
     def "Constraints for flag"() {

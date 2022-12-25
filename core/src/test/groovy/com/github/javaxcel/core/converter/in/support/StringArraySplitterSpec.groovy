@@ -1,7 +1,9 @@
 package com.github.javaxcel.core.converter.in.support
 
 import spock.lang.Specification
+import spock.lang.Subject
 
+@Subject(StringArraySplitter)
 class StringArraySplitterSpec extends Specification {
 
     def "Splits a string as array shallowly"() {

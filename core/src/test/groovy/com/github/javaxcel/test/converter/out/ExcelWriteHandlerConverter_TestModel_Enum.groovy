@@ -16,9 +16,13 @@
 
 package com.github.javaxcel.test.converter.out
 
+import com.github.javaxcel.core.converter.out.ExcelWriteHandlerConverter
+import spock.lang.Subject
+
 import java.nio.file.AccessMode
 import java.util.concurrent.TimeUnit
 
+@Subject(ExcelWriteHandlerConverter)
 @SuppressWarnings("unused")
 class ExcelWriteHandlerConverter_TestModel_Enum {
 

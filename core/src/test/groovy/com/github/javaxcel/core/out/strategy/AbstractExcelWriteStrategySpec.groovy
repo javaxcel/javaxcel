@@ -20,7 +20,9 @@ import com.github.javaxcel.core.out.strategy.impl.AutoResizedColumns
 import com.github.javaxcel.core.out.strategy.impl.Filter
 import com.github.javaxcel.core.out.strategy.impl.SheetName
 import spock.lang.Specification
+import spock.lang.Subject
 
+@Subject(AbstractExcelWriteStrategy)
 class AbstractExcelWriteStrategySpec extends Specification {
 
     def "test"() {

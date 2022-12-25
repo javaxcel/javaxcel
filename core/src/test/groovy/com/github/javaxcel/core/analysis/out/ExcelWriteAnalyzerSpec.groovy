@@ -18,6 +18,7 @@ import com.github.javaxcel.core.out.strategy.impl.DefaultValue
 import com.github.javaxcel.core.out.strategy.impl.UseGetters
 import com.github.javaxcel.core.util.FieldUtils
 import spock.lang.Specification
+import spock.lang.Subject
 
 import static com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta.Source.COLUMN
 import static com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta.Source.MODEL
@@ -28,6 +29,7 @@ import static com.github.javaxcel.core.analysis.out.ExcelWriteAnalyzer.FIELD_ACC
 import static com.github.javaxcel.core.analysis.out.ExcelWriteAnalyzer.GETTER
 import static com.github.javaxcel.core.analysis.out.ExcelWriteAnalyzer.HANDLER
 
+@Subject(ExcelWriteAnalyzer)
 class ExcelWriteAnalyzerSpec extends Specification {
 
     def "Constraints for flag"() {

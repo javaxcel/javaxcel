@@ -18,11 +18,13 @@ package com.github.javaxcel.core.in.resolver.impl.constructor.success
 
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelConstructorResolver
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.lang.reflect.Constructor
 import java.nio.file.Path
 import java.nio.file.Paths
 
+@Subject(ExcelModelConstructorResolver)
 class LackOfParamCountSpec extends Specification {
 
     def "Resolves a method"() {

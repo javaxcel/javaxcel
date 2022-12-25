@@ -27,6 +27,7 @@ import lombok.Cleanup
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.xssf.streaming.SXSSFWorkbook
 import spock.lang.Specification
+import spock.lang.Subject
 import spock.lang.TempDir
 
 import java.nio.file.Files
@@ -35,6 +36,7 @@ import java.util.concurrent.TimeUnit
 
 import static java.util.stream.Collectors.toList
 
+@Subject(MapReader)
 class MapReaderSpec extends Specification {
 
     @TempDir

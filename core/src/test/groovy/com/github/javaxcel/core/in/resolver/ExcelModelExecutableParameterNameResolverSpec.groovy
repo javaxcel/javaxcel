@@ -18,12 +18,14 @@ package com.github.javaxcel.core.in.resolver
 
 import com.github.javaxcel.core.annotation.ExcelModelCreator.FieldName
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
+@Subject(ExcelModelExecutableParameterNameResolver)
 class ExcelModelExecutableParameterNameResolverSpec extends Specification {
 
     def "Resolves parameters of the executable"() {

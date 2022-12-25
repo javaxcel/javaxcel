@@ -17,7 +17,10 @@
 package com.github.javaxcel.test.converter.out
 
 import com.github.javaxcel.core.annotation.ExcelModel
+import com.github.javaxcel.core.converter.out.ExcelWriteHandlerConverter
+import spock.lang.Subject
 
+@Subject(ExcelWriteHandlerConverter)
 @SuppressWarnings("unused")
 @ExcelModel(defaultValue = "<null>")
 class ExcelWriteHandlerConverter_TestModel_ModelDefaultValue {
