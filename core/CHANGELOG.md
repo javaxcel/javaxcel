@@ -37,8 +37,7 @@
 - 🚚 Move: package `util.resolver` to `in.resolver`
 - 🚚 Move: packages of implementation `ExcelTypeHandler`
 - 🚚 Rename: implementations of converter
-- ⚡️ Improve: support for handling field `Iterable` by converter
-- 🔨 Modify: utility `FieldUtils.resolveActualType(Field)`
+- ⚡️ Improve: support for handling field `java.lang.Iterable` by converter
 - 🔨 Modify: default policy of sheet name that increases suffix at 0 is changed to increase at 1.
 - 🔨 Modify: type of parameter `convert(Map<String, Object>, Field)` in `ExcelReadConverter` is changed
   to `convert(Map<String, String>, Field)`
@@ -57,7 +56,7 @@
 
 ### Troubleshooting
 
-- 🐞 Fix:
+- 🐞 Fix: resolution of method as a model creator due to already annotated one on super class
 
 ### Dependencies
 
@@ -90,8 +89,8 @@
 
 ### Troubleshooting
 
-- 🐞 Fix: wrong import (`java.util.logging.Filter` => `com.github.javaxcel.core.out.strategy.impl.Filter`) in `ModelWriter`
-  , `MapWriter`
+- 🐞 Fix: wrong import in `ModelWriter`, `MapWriter` — from `java.util.logging.Filter`
+  to `com.github.javaxcel.core.out.strategy.impl.Filter`
 - 🐞 Fix: compile error on jdk 9+ by using internal package `sun.util.locale.*` in `LocaleTypeHandler`
 
 ### Dependencies
