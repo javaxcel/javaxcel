@@ -22,8 +22,8 @@ import com.github.javaxcel.core.annotation.ExcelModelCreator;
 import com.github.javaxcel.core.converter.in.ExcelReadConverter;
 import com.github.javaxcel.core.exception.NoTargetedFieldException;
 import com.github.javaxcel.core.in.resolver.ExcelModelExecutableParameterNameResolver;
-import com.github.javaxcel.core.util.FieldUtils;
 import com.github.javaxcel.core.in.resolver.ExcelModelExecutableParameterNameResolver.ResolvedParameter;
+import com.github.javaxcel.core.util.FieldUtils;
 import io.github.imsejin.common.assertion.Asserts;
 import io.github.imsejin.common.util.CollectionUtils;
 import io.github.imsejin.common.util.ReflectionUtils;
@@ -45,6 +45,8 @@ import static java.util.stream.Collectors.toList;
  * @param <T> type of model
  */
 public class ExcelModelCreationProcessor<T> {
+
+    private static final Object[] EMPTY_INITIAL_ARGUMENTS = new Object[0];
 
     private final List<Field> fields;
 
@@ -200,7 +202,14 @@ public class ExcelModelCreationProcessor<T> {
      * @param mock mock model
      */
     private Object[] resolveInitialArguments(Map<String, Object> mock) {
-        Object[] arguments = new Object[this.resolvedParameters.size()];
+        int argumentCount = this.resolvedParameters.size();
+
+        // Reduces unnecessary cost of the creation.
+        if (argumentCount == 0) {
+            return EMPTY_INITIAL_ARGUMENTS;
+        }
+
+        Object[] arguments = new Object[argumentCount];
 
         for (int i = 0; i < arguments.length; i++) {
             ResolvedParameter resolvedParam = this.resolvedParameters.get(i);
