@@ -29,6 +29,7 @@
 ## Table of Contents
 
 - [What is Javaxcel?](#what-is-javaxcel)
+- [Modules](./core/README.md)
 - [Getting started](#getting-started)
 
 <br><br>
@@ -39,6 +40,11 @@ Javaxcel is a supporter for exporting `java.util.List` to spreadsheets and impor
 using [Apache POI](https://github.com/apache/poi).
 
 <br><br>
+
+# Modules
+
+- [javaxcel-core](./core/README.md): Supporter for export and import of Excel file.
+- [javaxcel-styler](./styler/README.md): Configurer for decoration of `CellStyle` with simple usage.
 
 # Getting started
 
@@ -91,4 +97,4 @@ try (InputStream in = new FileInputStream(src);
 }
 ```
 
-Code with simple usage.
+Use Apache POI with simple code.
