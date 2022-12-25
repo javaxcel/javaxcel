@@ -61,7 +61,6 @@ public abstract class AbstractExcelAnalyzer implements ExcelAnalyzer {
             analysis.setDefaultMeta(defaultMeta);
 
             // Analyzes handler for the field.
-//            Class<?> concreteType = FieldUtils.resolveActualType(field);
             Class<?> concreteType = FieldTypeResolver.resolveConcreteType(field);
             ExcelTypeHandler<?> handler = this.registry.getHandler(concreteType);
             if (handler != null) {
