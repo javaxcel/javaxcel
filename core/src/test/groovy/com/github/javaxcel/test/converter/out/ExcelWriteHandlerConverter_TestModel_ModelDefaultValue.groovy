@@ -18,8 +18,8 @@ package com.github.javaxcel.test.converter.out
 
 import com.github.javaxcel.core.annotation.ExcelModel
 
-@ExcelModel(defaultValue = "<null>")
 @SuppressWarnings("unused")
+@ExcelModel(defaultValue = "<null>")
 class ExcelWriteHandlerConverter_TestModel_ModelDefaultValue {
 
     boolean _boolean
@@ -30,6 +30,16 @@ class ExcelWriteHandlerConverter_TestModel_ModelDefaultValue {
     long _long
     float _float
     double _double
+
+    Boolean boolean_wrapper
+    Byte byte_wrapper
+    Short short_wrapper
+    Character char_wrapper
+    Integer int_wrapper
+    Long long_wrapper
+    Float float_wrapper
+    Double double_wrapper
+
     String string
     Locale locale
     Object[] objects

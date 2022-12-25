@@ -45,6 +45,30 @@ class ExcelReadHandlerConverter_TestModel_DefaultValue {
     @ExcelColumn(defaultValue = "-2.718281828459045")
     double _double
 
+    @ExcelColumn(defaultValue = "true")
+    Boolean boolean_wrapper
+
+    @ExcelColumn(defaultValue = "-128")
+    Byte byte_wrapper
+
+    @ExcelColumn(defaultValue = "-32768")
+    Short short_wrapper
+
+    @ExcelColumn(defaultValue = "B")
+    Character char_wrapper
+
+    @ExcelColumn(defaultValue = "-1048576")
+    Integer int_wrapper
+
+    @ExcelColumn(defaultValue = "1073741824")
+    Long long_wrapper
+
+    @ExcelColumn(defaultValue = "-3.141592")
+    Float float_wrapper
+
+    @ExcelColumn(defaultValue = "2.718281828459045")
+    Double double_wrapper
+
     @ExcelColumn(defaultValue = "[1]")
     String string
 

@@ -356,21 +356,29 @@ class ExcelWriteHandlerConverterSpec extends Specification {
         actual == expected
 
         where:
-        fieldName  | expected
-        "_boolean" | "false"
-        "_byte"    | "0"
-        "_short"   | "0"
-        "_char"    | "\u0000"
-        "_int"     | "0"
-        "_long"    | "0"
-        "_float"   | "0.0"
-        "_double"  | "0.0"
-        "string"   | "<null>"
-        "locale"   | "<null>"
-        "objects"  | "<null>"
-        "chars"    | "<null>"
-        "strings"  | "<null>"
-        "locales"  | "<null>"
+        fieldName         | expected
+        "_boolean"        | "false"
+        "_byte"           | "0"
+        "_short"          | "0"
+        "_char"           | "\u0000"
+        "_int"            | "0"
+        "_long"           | "0"
+        "_float"          | "0.0"
+        "_double"         | "0.0"
+        "boolean_wrapper" | "<null>"
+        "byte_wrapper"    | "<null>"
+        "short_wrapper"   | "<null>"
+        "char_wrapper"    | "<null>"
+        "int_wrapper"     | "<null>"
+        "long_wrapper"    | "<null>"
+        "float_wrapper"   | "<null>"
+        "double_wrapper"  | "<null>"
+        "string"          | "<null>"
+        "locale"          | "<null>"
+        "objects"         | "<null>"
+        "chars"           | "<null>"
+        "strings"         | "<null>"
+        "locales"         | "<null>"
     }
 
     def "Converts through default value on column"() {
@@ -389,21 +397,29 @@ class ExcelWriteHandlerConverterSpec extends Specification {
         actual == expected
 
         where:
-        fieldName  | expected
-        "_boolean" | "false"
-        "_byte"    | "0"
-        "_short"   | "0"
-        "_char"    | "\u0000"
-        "_int"     | "0"
-        "_long"    | "0"
-        "_float"   | "0.0"
-        "_double"  | "0.0"
-        "string"   | "[1]"
-        "locale"   | "en_US"
-        "objects"  | "[]"
-        "chars"    | "[A, B, C]"
-        "strings"  | "[alpha, beta]"
-        "locales"  | "[[en_US], [ko_KR]]"
+        fieldName         | expected
+        "_boolean"        | "false"
+        "_byte"           | "0"
+        "_short"          | "0"
+        "_char"           | "\u0000"
+        "_int"            | "0"
+        "_long"           | "0"
+        "_float"          | "0.0"
+        "_double"         | "0.0"
+        "boolean_wrapper" | "true"
+        "byte_wrapper"    | "-128"
+        "short_wrapper"   | "-32768"
+        "char_wrapper"    | "B"
+        "int_wrapper"     | "-1048576"
+        "long_wrapper"    | "1073741824"
+        "float_wrapper"   | "-3.141592"
+        "double_wrapper"  | "2.718281828459045"
+        "string"          | "[1]"
+        "locale"          | "en_US"
+        "objects"         | "[]"
+        "chars"           | "[A, B, C]"
+        "strings"         | "[alpha, beta]"
+        "locales"         | "[[en_US], [ko_KR]]"
     }
 
     def "Converts CharSequence"() {

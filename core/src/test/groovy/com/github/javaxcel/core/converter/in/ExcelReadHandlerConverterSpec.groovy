@@ -322,21 +322,29 @@ class ExcelReadHandlerConverterSpec extends Specification {
         actual == expected.asType(field.type)
 
         where:
-        fieldName  | expected
-        "_boolean" | true
-        "_byte"    | 127
-        "_short"   | 32767
-        "_char"    | 'A'
-        "_int"     | 1048576
-        "_long"    | -1073741824
-        "_float"   | 3.141592
-        "_double"  | -2.718281828459045
-        "string"   | "[1]"
-        "locale"   | Locale.US
-        "objects"  | []
-        "chars"    | ['A', 'B', 'C']
-        "strings"  | ["alpha", "beta"]
-        "locales"  | [[Locale.US], [Locale.KOREA]]
+        fieldName         | expected
+        "_boolean"        | true
+        "_byte"           | 127
+        "_short"          | 32767
+        "_char"           | 'A'
+        "_int"            | 1048576
+        "_long"           | -1073741824L
+        "_float"          | 3.141592F
+        "_double"         | -2.718281828459045D
+        "boolean_wrapper" | true
+        "byte_wrapper"    | -128
+        "short_wrapper"   | -32768
+        "char_wrapper"    | 'B'
+        "int_wrapper"     | -1048576
+        "long_wrapper"    | 1073741824L
+        "float_wrapper"   | -3.141592F
+        "double_wrapper"  | 2.718281828459045D
+        "string"          | "[1]"
+        "locale"          | Locale.US
+        "objects"         | []
+        "chars"           | ['A', 'B', 'C']
+        "strings"         | ["alpha", "beta"]
+        "locales"         | [[Locale.US], [Locale.KOREA]]
     }
 
     // -------------------------------------------------------------------------------------------------
