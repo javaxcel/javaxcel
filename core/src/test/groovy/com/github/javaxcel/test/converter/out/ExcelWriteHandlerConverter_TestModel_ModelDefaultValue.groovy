@@ -16,51 +16,25 @@
 
 package com.github.javaxcel.test.converter.out
 
-import com.github.javaxcel.core.annotation.ExcelColumn
+import com.github.javaxcel.core.annotation.ExcelModel
 
+@ExcelModel(defaultValue = "<null>")
 @SuppressWarnings("unused")
-class ExcelWriteHandlerConverter_TestModel_DefaultValue {
+class ExcelWriteHandlerConverter_TestModel_ModelDefaultValue {
 
-    @ExcelColumn(defaultValue = "true")
     boolean _boolean
-
-    @ExcelColumn(defaultValue = "127")
     byte _byte
-
-    @ExcelColumn(defaultValue = "32767")
     short _short
-
-    @ExcelColumn(defaultValue = "A")
     char _char
-
-    @ExcelColumn(defaultValue = "1048576")
     int _int
-
-    @ExcelColumn(defaultValue = "-1073741824")
     long _long
-
-    @ExcelColumn(defaultValue = "3.141592")
     float _float
-
-    @ExcelColumn(defaultValue = "-2.718281828459045")
     double _double
-
-    @ExcelColumn(defaultValue = "[1]")
     String string
-
-    @ExcelColumn(defaultValue = "en_US")
     Locale locale
-
-    @ExcelColumn(defaultValue = "[]")
     Object[] objects
-
-    @ExcelColumn(defaultValue = "[A, B, C]")
     char[] chars
-
-    @ExcelColumn(defaultValue = "[alpha, beta]")
     List<String> strings
-
-    @ExcelColumn(defaultValue = "[[en_US], [ko_KR]]")
     List<List<Locale>> locales
 
 }

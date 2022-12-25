@@ -28,9 +28,11 @@ import com.github.javaxcel.test.converter.handler.impl.TimeUnitTypeHandler
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Array1D
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Array2D
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Array3D
+import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_ColumnDefaultValue
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Enum
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_GenericArray
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Iterable
+import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_ModelDefaultValue
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_RawIterable
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_VariantIterable
 import groovy.transform.EqualsAndHashCode
@@ -332,8 +334,11 @@ class ExcelWriteHandlerConverterSpec extends Specification {
         "timeUnit"   | TimeUnit.NANOSECONDS  || "ns"
     }
 
-    def "Returns default value"() {
+    def "Converts through default value on model"() {
         given:
+        def model = new ExcelWriteHandlerConverter_TestModel_ModelDefaultValue()
+
+        and:
         def analyses = analyze(model.class.declaredFields, ExcelWriteAnalyzer.GETTER)
         def field = model.class.getDeclaredField(fieldName)
 
@@ -345,11 +350,54 @@ class ExcelWriteHandlerConverterSpec extends Specification {
         actual == expected
 
         where:
-        fieldName | model                                || expected
-        "id"      | new DefaultValueModel(id: 12)        || "12"
-        "id"      | new DefaultValueModel(id: null)      || "-1"
-        "name"    | new DefaultValueModel(name: "alpha") || "alpha"
-        "name"    | new DefaultValueModel(name: null)    || "<null>"
+        fieldName  | expected
+        "_boolean" | "false"
+        "_byte"    | "0"
+        "_short"   | "0"
+        "_char"    | "\u0000"
+        "_int"     | "0"
+        "_long"    | "0"
+        "_float"   | "0.0"
+        "_double"  | "0.0"
+        "string"   | "<null>"
+        "locale"   | "<null>"
+        "objects"  | "<null>"
+        "chars"    | "<null>"
+        "strings"  | "<null>"
+        "locales"  | "<null>"
+    }
+
+    def "Converts through default value on column"() {
+        given:
+        def model = new ExcelWriteHandlerConverter_TestModel_ColumnDefaultValue()
+
+        and:
+        def analyses = analyze(model.class.declaredFields, ExcelWriteAnalyzer.GETTER)
+        def field = model.class.getDeclaredField(fieldName)
+
+        when:
+        def converter = new ExcelWriteHandlerConverter(analyses, new DefaultExcelTypeHandlerRegistry())
+        def actual = converter.convert(model, field)
+
+        then:
+        actual == expected
+
+        where:
+        fieldName  | expected
+        "_boolean" | "false"
+        "_byte"    | "0"
+        "_short"   | "0"
+        "_char"    | "\u0000"
+        "_int"     | "0"
+        "_long"    | "0"
+        "_float"   | "0.0"
+        "_double"  | "0.0"
+        "string"   | "[1]"
+        "locale"   | "en_US"
+        "objects"  | "[]"
+        "chars"    | "[A, B, C]"
+        "strings"  | "[alpha, beta]"
+        "locales"  | "[[en_US], [ko_KR]]"
     }
 
     // -------------------------------------------------------------------------------------------------
@@ -372,14 +420,6 @@ class ExcelWriteHandlerConverterSpec extends Specification {
     }
 
     // -------------------------------------------------------------------------------------------------
-
-    @ExcelModel(defaultValue = "<null>")
-    @EqualsAndHashCode
-    private static class DefaultValueModel {
-        @ExcelColumn(defaultValue = "-1")
-        Long id
-        String name
-    }
 
     @EqualsAndHashCode
     private static class IterableArray {
