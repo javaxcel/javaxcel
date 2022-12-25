@@ -92,7 +92,7 @@ public class ExcelWriteHandlerConverter implements ExcelWriteConverter {
         Object value = getValueOf(model, field);
 
         // Returns default value if the value is null or empty string.
-        if (isNullOrEmpty(value)) {
+        if (isNullOrEmptyString(value)) {
             ExcelAnalysis analysis = this.analysisMap.get(field);
             String defaultValue = analysis.getDefaultMeta().getValue();
 
@@ -126,7 +126,7 @@ public class ExcelWriteHandlerConverter implements ExcelWriteConverter {
         }
     }
 
-    private static boolean isNullOrEmpty(@Nullable Object object) {
+    private static boolean isNullOrEmptyString(@Nullable Object object) {
         if (object == null) {
             return true;
         }

@@ -16,6 +16,7 @@
 
 package com.github.javaxcel.core.converter.in.support;
 
+import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 import io.github.imsejin.common.util.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,35 +26,10 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.List;
-import java.util.NavigableSet;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.BlockingQueue;
 
 import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.CONCRETE;
 
 public class FieldTypeResolver {
-
-    private static final List<Class<?>> RESOLVABLE_ITERABLE_TYPES = Collections.unmodifiableList(Arrays.asList(
-            BlockingDeque.class,
-            BlockingQueue.class,
-            Deque.class,
-            Queue.class,
-            NavigableSet.class,
-            SortedSet.class,
-            Set.class,
-            List.class,
-            Collection.class,
-            Iterable.class
-    ));
 
     public static Class<?> resolveConcreteType(Field field) {
         return resolveConcreteType(field.getGenericType());
@@ -201,23 +177,7 @@ public class FieldTypeResolver {
         }
 
         @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            TypeResolution that = (TypeResolution) o;
-
-            return kind == that.kind
-                    && currentType.equals(that.currentType)
-                    && Objects.equals(elementType, that.elementType)
-                    && Objects.equals(iterableType, that.iterableType);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(kind, currentType, elementType, iterableType);
-        }
-
-        @Override
+        @ExcludeFromGeneratedJacocoReport
         public String toString() {
             return "TypeResolution(kind=" + kind + ", currentType=" + currentType + ", elementType=" + elementType + ", iterableType=" + iterableType + ')';
         }

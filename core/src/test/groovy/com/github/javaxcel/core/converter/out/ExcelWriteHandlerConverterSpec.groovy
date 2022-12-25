@@ -28,14 +28,15 @@ import com.github.javaxcel.test.converter.handler.impl.TimeUnitTypeHandler
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Array1D
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Array2D
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Array3D
+import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_CharSequences
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_ColumnDefaultValue
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Enum
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_GenericArray
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Iterable
+import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_MixedIterableArray
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_ModelDefaultValue
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_RawIterable
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_VariantIterable
-import groovy.transform.EqualsAndHashCode
 import spock.lang.Specification
 
 import java.lang.reflect.Field
@@ -205,17 +206,17 @@ class ExcelWriteHandlerConverterSpec extends Specification {
         actual == expected
 
         where:
-        fieldName                      | value                                   || expected
-        "iterable_integer"             | []                                      || "[]"
-        "iterable_integer"             | [74, 0, -12]                            || "[74, 0, -12]"
-        "collection_long"              | [0, 9720, -8715]                        || "[0, 9720, -8715]"
-        "set_locale"                   | [Locale.US, Locale.KOREA, Locale.JAPAN] || "[en_US, ko_KR, ja_JP]"
-        "collection_list_long"         | [[]]                                    || "[[]]"
-        "collection_list_long"         | [[241832184], null, [748015106], []]    || "[[241832184], , [748015106], []]"
-        "list_string"                  | ["alpha", "beta"]                       || "[alpha, beta]"
-        "iterable_bigDecimal"          | [-0.7215, 3.141592, null]               || "[-0.7215, 3.141592, ]"
-        "list_iterable_string"         | [["-9", "-3"], ["-1", "0"], ["3", "9"]] || "[[-9, -3], [-1, 0], [3, 9]]"
-        "iterable_iterable_bigDecimal" | [[9.155, 12.784, -0.019], [], [6.218]]  || "[[9.155, 12.784, -0.019], [], [6.218]]"
+        fieldName                      | value                                    || expected
+        "iterable_integer"             | []                                       || "[]"
+        "iterable_integer"             | [74, 0, -12]                             || "[74, 0, -12]"
+        "collection_long"              | [0, 9720, -8715]                         || "[0, 9720, -8715]"
+        "set_locale"                   | [Locale.US, Locale.KOREA, Locale.JAPAN]  || "[en_US, ko_KR, ja_JP]"
+        "collection_list_long"         | [[]]                                     || "[[]]"
+        "collection_list_long"         | [[241832184], null, [748015106], [null]] || "[[241832184], , [748015106], []]"
+        "list_string"                  | ["alpha", "beta"]                        || "[alpha, beta]"
+        "iterable_bigDecimal"          | [-0.7215, 3.141592, null]                || "[-0.7215, 3.141592, ]"
+        "list_iterable_string"         | [["-9", "-3"], ["-1", ""], ["3", "9"]]   || "[[-9, -3], [-1, ], [3, 9]]"
+        "iterable_iterable_bigDecimal" | [[9.155, 12.784, -0.019], [], [6.218]]   || "[[9.155, 12.784, -0.019], [], [6.218]]"
     }
 
     def "Converts variant sub-interfaces of Iterable"() {
@@ -280,6 +281,10 @@ class ExcelWriteHandlerConverterSpec extends Specification {
 
     def "Converts mixed Iterable and array"() {
         given:
+        def model = new ExcelWriteHandlerConverter_TestModel_MixedIterableArray()
+        model[fieldName] = value
+
+        and:
         def analyses = analyze(model.class.declaredFields, ExcelWriteAnalyzer.FIELD_ACCESS)
         def field = model.class.getDeclaredField(fieldName)
 
@@ -291,11 +296,12 @@ class ExcelWriteHandlerConverterSpec extends Specification {
         actual == expected
 
         where:
-        fieldName           | model                                                                       || expected
-        "collection_array"  | new IterableArray(collection_array: [])                                     || "[]"
-        "collection_array"  | new IterableArray(collection_array: [[], [1, 2, 3], [4], null, [5, 6]])     || "[[], [1, 2, 3], [4], , [5, 6]]"
-        "list_2d_array"     | new IterableArray(list_2d_array: [[["a"], ["b"]], [["c", "d"]], [["e"]]])   || "[[[a], [b]], [[c, d]], [[e]]]"
-        "iterable_iterable" | new IterableArray(iterable_iterable: [[2.5, 3.2], null, [-0.14, null], []]) || "[[2.5, 3.2], , [-0.14, ], []]"
+        fieldName                      | value                                    || expected
+        "iterable_array_integer"       | [[1], [2, 3], null, [4], []]             || "[[1], [2, 3], , [4], []]"
+        "array_collection_bigDecimal"  | [null, [1024], [64, -128]]               || "[, [1024], [64, -128]]"
+        "list_list_array_array_string" | [[[["A"], ["B"]], [["C"]]], [[["D"]]]]   || "[[[[A], [B]], [[C]]], [[[D]]]]"
+        "array_array_set_double"       | [[[3.14D, 2.178D]], [], [[-1.168D]]]     || "[[[3.14, 2.178]], [], [[-1.168]]]"
+        "array_queue_raw"              | [new LinkedList([1, 'A', 0.1, "alpha"])] || "[[1, A, 0.1, alpha]]"
     }
 
     def "Converts enum by custom handler"() {
@@ -400,6 +406,30 @@ class ExcelWriteHandlerConverterSpec extends Specification {
         "locales"  | "[[en_US], [ko_KR]]"
     }
 
+    def "Converts CharSequence"() {
+        given:
+        def model = new ExcelWriteHandlerConverter_TestModel_CharSequences()
+        model[fieldName] = value
+
+        and:
+        def analyses = analyze(model.class.declaredFields, ExcelWriteAnalyzer.GETTER)
+        def field = model.class.getDeclaredField(fieldName)
+
+        when:
+        def converter = new ExcelWriteHandlerConverter(analyses, new DefaultExcelTypeHandlerRegistry())
+        def actual = converter.convert(model, field)
+
+        then:
+        actual == expected
+
+        where:
+        fieldName       | value                      || expected
+        "charSequence"  | null                       || null
+        "stringBuilder" | new StringBuilder("alpha") || "alpha"
+        "stringBuffer"  | new StringBuffer()         || null
+        "string"        | "beta"                     || "beta"
+    }
+
     // -------------------------------------------------------------------------------------------------
 
     private static Iterable<ExcelAnalysis> analyze(Field[] fields, int flags) {
@@ -417,15 +447,6 @@ class ExcelWriteHandlerConverterSpec extends Specification {
 
             analysis
         }
-    }
-
-    // -------------------------------------------------------------------------------------------------
-
-    @EqualsAndHashCode
-    private static class IterableArray {
-        Collection<int[]> collection_array
-        List<String>[][] list_2d_array
-        Iterable<Iterable<BigDecimal>> iterable_iterable
     }
 
 }

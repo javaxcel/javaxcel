@@ -158,7 +158,7 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
 
             Object element;
             if (componentType.isArray()) {
-                element = string.isEmpty() ? null : handleArray(field, concreteType, dimension - 1, string);
+                element = handleArray(field, concreteType, dimension - 1, string);
             } else {
                 // TODO: why...? Allows empty string to handler for non-array type.
                 element = handleConcrete(field, componentType, string);
@@ -203,7 +203,7 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
 
             Object element;
             if (kind == Kind.ITERABLE) {
-                element = string.isEmpty() ? null : handleIterable(field, resolution, string);
+                element = handleIterable(field, resolution, string);
             } else {
                 // Allows empty string to handler for non-array type.
                 Class<?> clazz = (Class<?>) resolution.getCurrentType();

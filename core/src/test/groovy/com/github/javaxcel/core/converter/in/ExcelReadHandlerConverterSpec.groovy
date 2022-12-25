@@ -201,7 +201,7 @@ class ExcelReadHandlerConverterSpec extends Specification {
 
         where:
         fieldName                      | value                                    || expected
-        "iterable_integer"             | "[]"                                     || []
+        "iterable_integer"             | null                                     || null
         "iterable_integer"             | "[74, 0, -12]"                           || [74, 0, -12]
         "collection_long"              | "[0, 9720, -8715]"                       || [0, 9720, -8715]
         "set_locale"                   | "[en_US, ko_KR, ja_JP]"                  || [Locale.US, Locale.KOREA, Locale.JAPAN]
