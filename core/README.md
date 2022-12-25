@@ -33,6 +33,7 @@
     13. [Resolution of constructor and method](#resolution-of-constructor-and-method)
     13. [Add a handler for custom type](#add-a-handler-for-custom-type)
     14. [Support java.util.Map](#support-javautilmap)
+    15. [Integrate with excel-streaming-reader](#integrate-with-excel-streaming-reader)
 
 <br><br>
 
@@ -1065,3 +1066,16 @@ The result is
   }
 ]
 ```
+
+## Integrate with excel-streaming-reader
+
+```java
+File src = new File("/data", "products.xlsx");
+Workbook workbook = StreamingReader.builder().open(src);
+
+List<Product> products = Javaxcel.newInstance()
+        .reader(workbook, Product.class)
+        .read();
+```
+
+Javaxcel supports integration with [excel-streaming-reader](https://github.com/pjfanning/excel-streaming-reader).
