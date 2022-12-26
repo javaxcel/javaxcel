@@ -23,7 +23,9 @@ import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
 /**
- * Gets property value of model through getter.
+ * Strategy for getting value from property of model through getter
+ *
+ * @since 0.9.0
  */
 public class UseGetters extends AbstractExcelWriteStrategy {
 

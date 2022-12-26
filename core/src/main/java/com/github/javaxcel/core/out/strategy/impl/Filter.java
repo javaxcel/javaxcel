@@ -22,6 +22,11 @@ import com.github.javaxcel.core.out.core.impl.MapWriter;
 import com.github.javaxcel.core.out.core.impl.ModelWriter;
 import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
 
+/**
+ * Strategy for filter on header when writing
+ *
+ * @since 0.8.0
+ */
 public class Filter extends AbstractExcelWriteStrategy {
 
     private final boolean frozenPane;
@@ -30,6 +35,7 @@ public class Filter extends AbstractExcelWriteStrategy {
      * Strategy for filter on header.
      *
      * @param frozenPane if true, row and column on header is fixed
+     * @since 0.8.2
      */
     public Filter(boolean frozenPane) {
         this.frozenPane = frozenPane;

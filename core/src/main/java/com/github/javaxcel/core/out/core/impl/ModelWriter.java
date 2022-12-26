@@ -64,7 +64,7 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 /**
- * Excel writer for model.
+ * Excel writer for model
  *
  * @param <T> type of model
  */

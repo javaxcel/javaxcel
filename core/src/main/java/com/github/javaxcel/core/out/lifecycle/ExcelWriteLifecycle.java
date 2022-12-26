@@ -19,6 +19,12 @@ package com.github.javaxcel.core.out.lifecycle;
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
+/**
+ * Lifecycle of Excel writer
+ *
+ * @param <T> type of model
+ * @since 0.8.0
+ */
 @ExcludeFromGeneratedJacocoReport
 public interface ExcelWriteLifecycle<T> {
 

@@ -27,6 +27,11 @@ import io.github.imsejin.common.assertion.Asserts;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Strategy for style of header when writing
+ *
+ * @since 0.8.0
+ */
 public class HeaderStyles extends AbstractExcelWriteStrategy {
 
     private final List<ExcelStyleConfig> styleConfigs;

@@ -47,7 +47,9 @@ import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
 /**
- * Excel writer for {@link Map}.
+ * Excel writer for {@link Map}
+ *
+ * @since 0.5.0
  */
 @SuppressWarnings("unchecked")
 public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {

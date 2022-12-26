@@ -24,9 +24,12 @@ import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
 /**
- * This will automatically create rows up to the maximum number of rows
- * and hide them. This action takes more time and makes file size bigger
- * than it doesn't.
+ * Strategy for style of hidden extra rows when writing
+ *
+ * <p> This strategy will automatically create rows up to the maximum number of rows and hide them.
+ * This action takes more time and makes file size bigger than it doesn't.
+ *
+ * @since 0.8.0
  */
 public class HiddenExtraRows extends AbstractExcelWriteStrategy {
 

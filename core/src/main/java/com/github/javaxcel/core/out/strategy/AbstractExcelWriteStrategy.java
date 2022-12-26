@@ -2,6 +2,11 @@ package com.github.javaxcel.core.out.strategy;
 
 import java.util.Objects;
 
+/**
+ * Abstract strategy for Excel writer
+ *
+ * @since 0.8.0
+ */
 public abstract class AbstractExcelWriteStrategy implements ExcelWriteStrategy {
 
     @Override

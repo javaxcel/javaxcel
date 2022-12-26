@@ -26,6 +26,11 @@ import io.github.imsejin.common.util.StringUtils;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Strategy for header names when writing
+ *
+ * @since 0.8.0
+ */
 public class HeaderNames extends AbstractExcelWriteStrategy {
 
     private final List<String> values;

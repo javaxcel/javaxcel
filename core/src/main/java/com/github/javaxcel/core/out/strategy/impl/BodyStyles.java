@@ -27,6 +27,11 @@ import io.github.imsejin.common.assertion.Asserts;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Strategy for style of body when writing
+ *
+ * @since 0.8.0
+ */
 public class BodyStyles extends AbstractExcelWriteStrategy {
 
     private final List<ExcelStyleConfig> styleConfigs;

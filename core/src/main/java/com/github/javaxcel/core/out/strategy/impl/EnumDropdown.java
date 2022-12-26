@@ -22,6 +22,11 @@ import com.github.javaxcel.core.out.core.impl.ModelWriter;
 import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
+/**
+ * Strategy for dropdown on cell value as constant of enum when writing
+ *
+ * @since 0.8.0
+ */
 public class EnumDropdown extends AbstractExcelWriteStrategy {
 
     @Override

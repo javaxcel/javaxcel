@@ -24,6 +24,11 @@ import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
 import io.github.imsejin.common.assertion.Asserts;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Strategy for default value as cell value when writing
+ *
+ * @since 0.8.0
+ */
 public class DefaultValue extends AbstractExcelWriteStrategy {
 
     private final String value;

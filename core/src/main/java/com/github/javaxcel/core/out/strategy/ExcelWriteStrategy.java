@@ -18,6 +18,11 @@ package com.github.javaxcel.core.out.strategy;
 
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 
+/**
+ * Strategy for Excel writer
+ *
+ * @since 0.8.0
+ */
 public interface ExcelWriteStrategy {
 
     boolean isSupported(ExcelWriteContext<?> context);

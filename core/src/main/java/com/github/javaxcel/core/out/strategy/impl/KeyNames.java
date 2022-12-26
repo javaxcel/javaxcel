@@ -29,6 +29,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Strategy for mapping key names with header names when writing
+ *
+ * @since 0.8.0
+ */
 public class KeyNames extends AbstractExcelWriteStrategy {
 
     private final Map<String, Object> keyMap;

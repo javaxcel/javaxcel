@@ -24,6 +24,11 @@ import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
 import io.github.imsejin.common.assertion.Asserts;
 import org.apache.poi.ss.util.WorkbookUtil;
 
+/**
+ * Strategy for sheet name
+ *
+ * @since 0.8.0
+ */
 public class SheetName extends AbstractExcelWriteStrategy {
 
     private final String value;

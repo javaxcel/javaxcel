@@ -21,6 +21,12 @@ import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 import java.io.OutputStream;
 import java.util.List;
 
+/**
+ * Excel writer
+ *
+ * @param <T> type of model
+ * @since 0.5.0
+ */
 public interface ExcelWriter<T> {
 
     /**

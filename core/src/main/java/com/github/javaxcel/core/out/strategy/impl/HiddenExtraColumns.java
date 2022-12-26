@@ -23,6 +23,11 @@ import com.github.javaxcel.core.out.core.impl.ModelWriter;
 import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
+/**
+ * Strategy for style of hidden extra columns when writing
+ *
+ * @since 0.8.0
+ */
 public class HiddenExtraColumns extends AbstractExcelWriteStrategy {
 
     public boolean isSupported(ExcelWriteContext<?> context) {

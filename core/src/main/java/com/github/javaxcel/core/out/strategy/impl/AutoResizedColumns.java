@@ -24,7 +24,11 @@ import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
 /**
- * Makes all columns fit their content.
+ * Strategy for style of resizing width of columns when writing
+ *
+ * <p> This strategy will make all columns fit their content.
+ *
+ * @since 0.8.0
  */
 public class AutoResizedColumns extends AbstractExcelWriteStrategy {
 

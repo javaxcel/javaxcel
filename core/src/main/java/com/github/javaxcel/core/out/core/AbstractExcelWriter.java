@@ -46,7 +46,8 @@ import static java.util.stream.Collectors.toMap;
 /**
  * Abstract Excel writer
  *
- * @param <T> type of Excel model
+ * @param <T> type of model
+ * @since 0.5.0
  */
 public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWriteLifecycle<T> {
 
