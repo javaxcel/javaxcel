@@ -73,15 +73,16 @@ public class ExcelWriteExpressionConverter implements ExcelWriteConverter {
             // Makes instance of expression a cache.
             Cache cache = new Cache(analysis);
             if (analysis.hasFlag(ExcelWriteAnalyzer.EXPRESSION)) {
-                // DO NOT CHECK IF @ExcelWriteExpression.value IS EMPTY STRING.
-                // BECAUSE THE ANNOTATION HAS ONLY ONE MANDATORY ATTRIBUTE.
+                // DO NOT CHECK IF @ExcelWriteExpression.value IS EMPTY STRING,
+                // BECAUSE THE ANNOTATION HAS ONLY ONE MANDATORY ATTRIBUTE AND
+                // IT MEANS THAT VALUE MUST BE VALID IF THE ANNOTATION IS ON A FIELD.
                 // THIS CLASS IS RESPONSIBLE FOR INFORMING USER OF FAILURE OF PARSING EXPRESSION.
                 ExcelWriteExpression annotation = field.getAnnotation(ExcelWriteExpression.class);
                 cache.expression = EXPRESSION_PARSER.parseExpression(annotation.value());
 
                 // HOWEVER, @ExcelColumn.defaultValue IS NOT MANDATORY ATTRIBUTE
                 // AND ALSO THE ANNOTATION CAN BE USED FOR OTHER PURPOSES.
-                // SO YOU SHOULD MAKE SURE THAT THE VALUE IS SPECIFIED EXPLICITLY.
+                // SO YOU SHOULD MAKE SURE THAT THE VALUE IS SPECIFIED EXPLICITLY BY USER.
                 DefaultMeta defaultMeta = analysis.getDefaultMeta();
                 String defaultValue = defaultMeta.getValue();
                 if (defaultMeta.getSource() == Source.COLUMN && !StringUtils.isNullOrEmpty(defaultValue)) {
