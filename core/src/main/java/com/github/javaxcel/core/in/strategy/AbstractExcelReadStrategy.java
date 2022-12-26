@@ -2,6 +2,11 @@ package com.github.javaxcel.core.in.strategy;
 
 import java.util.Objects;
 
+/**
+ * Abstract strategy for Excel reader
+ *
+ * @since 0.8.0
+ */
 public abstract class AbstractExcelReadStrategy implements ExcelReadStrategy {
 
     @Override

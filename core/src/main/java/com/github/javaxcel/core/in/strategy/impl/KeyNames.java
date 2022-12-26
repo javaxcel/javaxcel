@@ -28,6 +28,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Strategy for mapping header names with key names when reading
+ *
+ * @since 0.8.0
+ */
 public class KeyNames extends AbstractExcelReadStrategy {
 
     private final List<String> headerNames;

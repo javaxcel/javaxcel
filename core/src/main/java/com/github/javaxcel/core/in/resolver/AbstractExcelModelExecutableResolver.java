@@ -21,10 +21,10 @@ import com.github.javaxcel.core.exception.AmbiguousExcelModelCreatorException;
 import com.github.javaxcel.core.exception.InvalidExcelModelCreatorException;
 import com.github.javaxcel.core.exception.JavaxcelException;
 import com.github.javaxcel.core.exception.NoResolvableExcelModelCreatorException;
+import com.github.javaxcel.core.in.resolver.ExcelModelExecutableParameterNameResolver.ResolvedParameter;
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelConstructorResolver;
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelMethodResolver;
 import com.github.javaxcel.core.util.FieldUtils;
-import com.github.javaxcel.core.in.resolver.ExcelModelExecutableParameterNameResolver.ResolvedParameter;
 import io.github.imsejin.common.assertion.Asserts;
 
 import java.lang.reflect.Constructor;
@@ -42,6 +42,13 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
+/**
+ * Abstract resolver for model creator
+ *
+ * @param <T> type of model
+ * @param <E> type of executable
+ * @since 0.8.0
+ */
 public abstract class AbstractExcelModelExecutableResolver<T, E extends Executable> {
 
     protected final Class<T> modelType;

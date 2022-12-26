@@ -30,6 +30,12 @@ import java.util.List;
 
 import static java.util.Comparator.comparing;
 
+/**
+ * Resolver for constructor as model creator
+ *
+ * @param <T> type of model
+ * @since 0.8.0
+ */
 public class ExcelModelConstructorResolver<T> extends AbstractExcelModelExecutableResolver<T, Constructor<T>> {
 
     private static final Class<?> EXECUTABLE_TYPE = Constructor.class;

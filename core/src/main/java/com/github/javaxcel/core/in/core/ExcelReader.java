@@ -20,6 +20,12 @@ import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 
 import java.util.List;
 
+/**
+ * Excel reader
+ *
+ * @param <T> type of model
+ * @since 0.5.0
+ */
 public interface ExcelReader<T> {
 
     /**

@@ -23,7 +23,9 @@ import com.github.javaxcel.core.in.strategy.AbstractExcelReadStrategy;
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
 /**
- * Makes the conversion from imitated model into real model parallel.
+ * Strategy for parallel reading
+ *
+ * <p> Makes the conversion from imitated model into real model parallel.
  *
  * <p> We recommend processing in parallel only when
  * dealing with large data. The following table is a benchmark.
@@ -41,6 +43,8 @@ import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
  *     | 150,000    | 3m 28s     | 2m 1s    |
  *     +------------+------------+----------+
  * </code></pre>
+ *
+ * @since 0.8.0
  */
 public class Parallel extends AbstractExcelReadStrategy {
 

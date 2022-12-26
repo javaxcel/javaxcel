@@ -33,6 +33,11 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * Resolver for parameter name of model creator
+ *
+ * @since 0.8.0
+ */
 public class ExcelModelExecutableParameterNameResolver {
 
     private final Executable executable;

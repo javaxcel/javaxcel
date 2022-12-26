@@ -23,7 +23,9 @@ import com.github.javaxcel.core.in.strategy.AbstractExcelReadStrategy;
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
 /**
- * Sets value into property of model through setter.
+ * Strategy for setting value into property of model through setter
+ *
+ * @since 0.9.0
  */
 public class UseSetters extends AbstractExcelReadStrategy {
 

@@ -48,6 +48,9 @@ import static java.util.stream.Collectors.toMap;
 
 /**
  * Abstract Excel reader
+ *
+ * @param <T> type of model
+ * @since 0.5.0
  */
 public abstract class AbstractExcelReader<T> implements ExcelReader<T>, ExcelReadLifecycle<T> {
 

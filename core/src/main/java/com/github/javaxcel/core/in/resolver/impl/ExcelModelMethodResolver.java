@@ -28,6 +28,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Resolver for method as model creator
+ *
+ * @param <T> type of model
+ * @since 0.8.0
+ */
 public class ExcelModelMethodResolver<T> extends AbstractExcelModelExecutableResolver<T, Method> {
 
     public ExcelModelMethodResolver(Class<T> modelType) {

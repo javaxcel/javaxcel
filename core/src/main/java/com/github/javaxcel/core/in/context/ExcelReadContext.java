@@ -30,9 +30,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Context that has objects used on reading Excel file.
+ * Context that has objects used on reading Excel file
  *
  * @param <T> type of model
+ * @since 0.8.0
  */
 public class ExcelReadContext<T> {
 

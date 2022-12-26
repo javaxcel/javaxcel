@@ -23,6 +23,11 @@ import com.github.javaxcel.core.in.core.impl.ModelReader;
 import com.github.javaxcel.core.in.strategy.AbstractExcelReadStrategy;
 import io.github.imsejin.common.assertion.Asserts;
 
+/**
+ * Strategy for limitation of the number of models when reading
+ *
+ * @since 0.8.0
+ */
 public class Limit extends AbstractExcelReadStrategy {
 
     private final int value;

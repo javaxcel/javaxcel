@@ -45,7 +45,7 @@ import java.util.Map;
 import static java.util.stream.Collectors.toList;
 
 /**
- * Excel reader for model.
+ * Excel reader for model
  *
  * @param <T> type of model
  */

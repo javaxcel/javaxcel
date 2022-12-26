@@ -19,6 +19,12 @@ package com.github.javaxcel.core.in.lifecycle;
 import com.github.javaxcel.core.in.context.ExcelReadContext;
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
+/**
+ * Lifecycle of Excel reader
+ *
+ * @param <T> type of model
+ * @since 0.8.0
+ */
 @ExcludeFromGeneratedJacocoReport
 public interface ExcelReadLifecycle<T> {
 

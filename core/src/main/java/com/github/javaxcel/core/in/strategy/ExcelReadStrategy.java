@@ -18,6 +18,11 @@ package com.github.javaxcel.core.in.strategy;
 
 import com.github.javaxcel.core.in.context.ExcelReadContext;
 
+/**
+ * Strategy for Excel reader
+ *
+ * @since 0.8.0
+ */
 public interface ExcelReadStrategy {
 
     boolean isSupported(ExcelReadContext<?> context);

@@ -28,7 +28,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Excel reader for {@link Map}.
+ * Excel reader for {@link Map}
+ *
+ * @since 0.5.0
  */
 @SuppressWarnings("unchecked")
 public class MapReader extends AbstractExcelReader<Map<String, String>> {
