@@ -39,35 +39,48 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.function.Function;
 
-@SuppressWarnings("rawtypes")
-public class CollectionSupplier {
+/**
+ * Processor for creation of collection
+ *
+ * @since 0.9.0
+ */
+public class CollectionCreationProcessor {
 
-    private static final Map<Class<? extends Iterable>, Function<Integer, Collection<?>>> SUPPLIER_MAP;
+    @SuppressWarnings("rawtypes")
+    private static final Map<Class<? extends Iterable>, Function<Integer, Collection<?>>> CREATION_MAP;
 
     static {
-        Map<Class<? extends Iterable>, Function<Integer, Collection<?>>> supplierMap = new HashMap<>();
+        @SuppressWarnings("rawtypes")
+        Map<Class<? extends Iterable>, Function<Integer, Collection<?>>> creationMap = new HashMap<>();
 
-        supplierMap.put(BlockingDeque.class, LinkedBlockingDeque::new);
-        supplierMap.put(BlockingQueue.class, ArrayBlockingQueue::new);
-        supplierMap.put(Deque.class, ArrayDeque::new);
-        supplierMap.put(Queue.class, n -> new LinkedList<>());
-        supplierMap.put(NavigableSet.class, n -> new TreeSet<>());
-        supplierMap.put(SortedSet.class, n -> new TreeSet<>());
-        supplierMap.put(Set.class, HashSet::new);
-        supplierMap.put(List.class, ArrayList::new);
-        supplierMap.put(Collection.class, ArrayList::new);
-        supplierMap.put(Iterable.class, ArrayList::new);
+        creationMap.put(Iterable.class, ArrayList::new);
+        creationMap.put(Collection.class, ArrayList::new);
+        creationMap.put(List.class, ArrayList::new);
+        creationMap.put(Set.class, HashSet::new);
+        creationMap.put(SortedSet.class, n -> new TreeSet<>());
+        creationMap.put(NavigableSet.class, n -> new TreeSet<>());
+        creationMap.put(Queue.class, n -> new LinkedList<>());
+        creationMap.put(Deque.class, ArrayDeque::new);
+        creationMap.put(BlockingQueue.class, ArrayBlockingQueue::new);
+        creationMap.put(BlockingDeque.class, LinkedBlockingDeque::new);
 
-        Asserts.that(supplierMap)
+        Asserts.that(creationMap)
                 .isNotNull()
                 .isNotEmpty()
                 .asKeySet()
                 .allMatch(Class::isInterface);
 
-        SUPPLIER_MAP = Collections.unmodifiableMap(supplierMap);
+        CREATION_MAP = Collections.unmodifiableMap(creationMap);
     }
 
-    public static Collection<?> supply(Class<?> iterableType, int capacity) {
+    /**
+     * Creates a new collection.
+     *
+     * @param iterableType type of Iterable
+     * @param capacity     initial capacity of the collection
+     * @return collection
+     */
+    public static Collection<?> create(Class<?> iterableType, int capacity) {
         Asserts.that(iterableType)
                 .isNotNull()
                 .is(Iterable.class::isAssignableFrom)
@@ -75,19 +88,19 @@ public class CollectionSupplier {
 
         // BlockingQueue, BlockingDeque doesn't allow zero as its capacity.
         if (capacity == 0) {
-            capacity++;
+            capacity = 1;
         }
 
         Asserts.that(capacity)
                 .isNotNull()
                 .isPositive();
 
-        Function<Integer, Collection<?>> function = SUPPLIER_MAP.get(iterableType);
-        if (function == null) {
-            throw new UnsupportedOperationException("CollectionSupplier cannot support a type: " + iterableType);
+        Function<Integer, Collection<?>> creator = CREATION_MAP.get(iterableType);
+        if (creator == null) {
+            throw new UnsupportedOperationException("CollectionCreationProcessor cannot support a type: " + iterableType);
         }
 
-        return function.apply(capacity);
+        return creator.apply(capacity);
     }
 
 }
