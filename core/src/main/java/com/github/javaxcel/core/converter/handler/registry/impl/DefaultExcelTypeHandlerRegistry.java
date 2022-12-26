@@ -51,6 +51,8 @@ import com.github.javaxcel.core.converter.handler.impl.util.UUIDTypeHandler;
  * Default registry of handlers.
  *
  * <p> This have the handlers which is supported by default.
+ *
+ * @since 0.8.0
  */
 public class DefaultExcelTypeHandlerRegistry extends ExcelTypeHandlerRegistryImpl {
 

@@ -22,6 +22,11 @@ import io.github.imsejin.common.constant.DateType;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalQuery;
 
+/**
+ * Handler for type of {@link LocalDateTime}
+ *
+ * @since 0.8.0
+ */
 public class LocalDateTimeTypeHandler extends AbstractTemporalAccessorTypeHandler<LocalDateTime> {
 
     public LocalDateTimeTypeHandler() {

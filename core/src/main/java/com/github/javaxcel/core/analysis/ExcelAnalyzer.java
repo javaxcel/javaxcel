@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * Analyzer for preparing the fields to handle for Excel
+ *
+ * @since 0.9.0
  */
 public interface ExcelAnalyzer {
 

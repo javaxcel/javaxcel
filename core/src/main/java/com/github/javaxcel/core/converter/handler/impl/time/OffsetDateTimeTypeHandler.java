@@ -22,6 +22,11 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalQuery;
 
+/**
+ * Handler for type of {@link OffsetDateTime}
+ *
+ * @since 0.8.0
+ */
 public class OffsetDateTimeTypeHandler extends AbstractTemporalAccessorTypeHandler<OffsetDateTime> {
 
     public OffsetDateTimeTypeHandler() {

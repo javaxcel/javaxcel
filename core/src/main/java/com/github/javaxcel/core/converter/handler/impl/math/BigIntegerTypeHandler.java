@@ -20,6 +20,11 @@ import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 
 import java.math.BigInteger;
 
+/**
+ * Handler for type of {@link BigInteger}
+ *
+ * @since 0.8.0
+ */
 public class BigIntegerTypeHandler extends AbstractExcelTypeHandler<BigInteger> {
 
     public BigIntegerTypeHandler() {

@@ -29,12 +29,29 @@ import java.lang.reflect.WildcardType;
 
 import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.CONCRETE;
 
+/**
+ * Resolver for type of field
+ *
+ * @since 0.9.0
+ */
 public class FieldTypeResolver {
 
+    /**
+     * Resolves a concrete type from the field.
+     *
+     * @param field field of model
+     * @return concrete type
+     */
     public static Class<?> resolveConcreteType(Field field) {
         return resolveConcreteType(field.getGenericType());
     }
 
+    /**
+     * Resolves a concrete type from the type.
+     *
+     * @param type generic type of field
+     * @return concrete type
+     */
     public static Class<?> resolveConcreteType(Type type) {
         TypeResolution resolution;
         do {
@@ -140,10 +157,20 @@ public class FieldTypeResolver {
 
     // -------------------------------------------------------------------------------------------------
 
+    /**
+     * Kind of resolved type
+     *
+     * @since 0.9.0
+     */
     public enum Kind {
         ARRAY, ITERABLE, CONCRETE
     }
 
+    /**
+     * Resolution of type
+     *
+     * @since 0.9.0
+     */
     public static final class TypeResolution {
         private final Kind kind;
         private final Type currentType;
@@ -158,19 +185,39 @@ public class FieldTypeResolver {
             this.iterableType = (Class<? extends Iterable<?>>) iterableType;
         }
 
+        /**
+         * Returns the kind of resolved type.
+         *
+         * @return kind of type
+         */
         public Kind getKind() {
             return this.kind;
         }
 
+        /**
+         * Returns the resolved type.
+         *
+         * @return resolved type
+         */
         public Type getCurrentType() {
             return this.currentType;
         }
 
+        /**
+         * Returns the type of element.
+         *
+         * @return type of element or {@code null} if the kind is {@code CONCRETE}
+         */
         @Nullable
         public Type getElementType() {
             return this.elementType;
         }
 
+        /**
+         * Returns the specific type of iterable.
+         *
+         * @return specific type of iterable or {@code null} if the kind is not {@code ITERABLE}
+         */
         @Nullable
         public Class<? extends Iterable<?>> getIterableType() {
             return this.iterableType;

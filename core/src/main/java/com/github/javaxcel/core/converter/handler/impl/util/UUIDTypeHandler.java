@@ -20,6 +20,11 @@ import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 
 import java.util.UUID;
 
+/**
+ * Handler for type of {@link UUID}
+ *
+ * @since 0.8.0
+ */
 public class UUIDTypeHandler extends AbstractExcelTypeHandler<UUID> {
 
     public UUIDTypeHandler() {

@@ -20,6 +20,11 @@ import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 
 import java.util.Locale;
 
+/**
+ * Handler for type of {@link Locale}
+ *
+ * @since 0.8.0
+ */
 public class LocaleTypeHandler extends AbstractExcelTypeHandler<Locale> {
 
     private static final String DELIMITER = "_";

@@ -21,6 +21,11 @@ import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Handler for type of {@link URL}
+ *
+ * @since 0.8.0
+ */
 public class URLTypeHandler extends AbstractExcelTypeHandler<URL> {
 
     public URLTypeHandler() {

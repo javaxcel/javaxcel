@@ -20,6 +20,11 @@ import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 
 import java.io.File;
 
+/**
+ * Handler for type of {@link File}
+ *
+ * @since 0.8.0
+ */
 public class FileTypeHandler extends AbstractExcelTypeHandler<File> {
 
     public FileTypeHandler() {

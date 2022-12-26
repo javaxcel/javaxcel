@@ -22,6 +22,11 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalQuery;
 
+/**
+ * Handler for type of {@link YearMonth}
+ *
+ * @since 0.9.0
+ */
 public class YearMonthTypeHandler extends AbstractTemporalAccessorTypeHandler<YearMonth> {
 
     public YearMonthTypeHandler() {

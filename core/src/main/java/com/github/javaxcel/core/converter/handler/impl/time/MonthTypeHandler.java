@@ -22,6 +22,11 @@ import io.github.imsejin.common.constant.DateType;
 import java.time.Month;
 import java.time.temporal.TemporalQuery;
 
+/**
+ * Handler for type of {@link Month}
+ *
+ * @since 0.9.0
+ */
 public class MonthTypeHandler extends AbstractTemporalAccessorTypeHandler<Month> {
 
     public MonthTypeHandler() {

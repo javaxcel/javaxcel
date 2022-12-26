@@ -41,6 +41,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * Converter for writing Excel with expression(SpEL)
+ *
+ * @since 0.4.0
+ */
 public class ExcelWriteExpressionConverter implements ExcelWriteConverter {
 
     private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();

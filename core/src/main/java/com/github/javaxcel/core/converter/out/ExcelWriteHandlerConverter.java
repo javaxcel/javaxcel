@@ -35,6 +35,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * Converter for writing Excel with type handler
+ *
+ * @since 0.4.0
+ */
 public class ExcelWriteHandlerConverter implements ExcelWriteConverter {
 
     private final ExcelTypeHandlerRegistry registry;

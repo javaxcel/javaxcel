@@ -28,6 +28,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Container of converters for writing Excel as candidates
+ *
+ * <p> This container has converters as candidates. When it takes the parameters to convert,
+ * it chooses a candidate that can handle the parameters.
+ *
+ * @since 0.7.0
+ */
 public final class ExcelWriteConverters implements ExcelWriteConverter {
 
     private final List<ExcelWriteConverter> candidates;

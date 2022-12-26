@@ -36,6 +36,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Converter for reading Excel with expression(SpEL)
+ *
+ * @since 0.4.0
+ */
 public class ExcelReadExpressionConverter implements ExcelReadConverter {
 
     private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();

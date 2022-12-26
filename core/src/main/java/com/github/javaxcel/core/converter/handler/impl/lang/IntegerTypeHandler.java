@@ -18,6 +18,11 @@ package com.github.javaxcel.core.converter.handler.impl.lang;
 
 import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 
+/**
+ * Handler for type of {@link Integer}
+ *
+ * @since 0.8.0
+ */
 public class IntegerTypeHandler extends AbstractExcelTypeHandler<Integer> {
 
     public IntegerTypeHandler() {

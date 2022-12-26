@@ -26,6 +26,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalQuery;
 
+/**
+ * Abstract handler for type of {@link TemporalAccessor}
+ *
+ * @since 0.8.0
+ */
 public abstract class AbstractTemporalAccessorTypeHandler<T extends TemporalAccessor> extends AbstractExcelTypeHandler<T> {
 
     private final DateTimeFormatter defaultFormatter;

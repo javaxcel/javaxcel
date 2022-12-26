@@ -21,6 +21,11 @@ import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Handler for type of {@link Path}
+ *
+ * @since 0.8.0
+ */
 public class PathTypeHandler extends AbstractExcelTypeHandler<Path> {
 
     public PathTypeHandler() {

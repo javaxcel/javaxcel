@@ -24,6 +24,8 @@ import java.util.List;
 
 /**
  * Splitter of string which is array-like
+ *
+ * @since 0.9.0
  */
 public class StringArraySplitter {
 
@@ -53,7 +55,7 @@ public class StringArraySplitter {
      */
     public StringArraySplitter(char opener, char closer, String delimiter) {
         Asserts.that(delimiter)
-                .describedAs("StringSplitter.delimiter is not allowed to be null or empty: '{0}'", delimiter)
+                .describedAs("StringArraySplitter.delimiter is not allowed to be null or empty: '{0}'", delimiter)
                 .isNotNull()
                 .isNotEmpty();
 

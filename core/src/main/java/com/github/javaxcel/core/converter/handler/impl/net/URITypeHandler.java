@@ -20,6 +20,11 @@ import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 
 import java.net.URI;
 
+/**
+ * Handler for type of {@link URI}
+ *
+ * @since 0.8.0
+ */
 public class URITypeHandler extends AbstractExcelTypeHandler<URI> {
 
     public URITypeHandler() {

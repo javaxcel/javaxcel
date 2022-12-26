@@ -22,6 +22,7 @@ import io.github.imsejin.common.assertion.Asserts;
  * Handler for type to help you to implement easily.
  *
  * @param <T> type of object to handle
+ * @since 0.8.0
  */
 public abstract class AbstractExcelTypeHandler<T> implements ExcelTypeHandler<T> {
 

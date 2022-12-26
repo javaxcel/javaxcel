@@ -43,6 +43,7 @@ import static java.util.stream.Collectors.toList;
  * Processor for creation of Excel model
  *
  * @param <T> type of model
+ * @since 0.9.0
  */
 public class ExcelModelCreationProcessor<T> {
 

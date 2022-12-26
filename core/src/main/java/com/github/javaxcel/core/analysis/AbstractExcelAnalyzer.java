@@ -20,7 +20,6 @@ import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta;
 import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
 import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
 import com.github.javaxcel.core.converter.in.support.FieldTypeResolver;
-import com.github.javaxcel.core.util.FieldUtils;
 import io.github.imsejin.common.assertion.Asserts;
 
 import java.lang.reflect.Field;
@@ -30,6 +29,8 @@ import java.util.List;
 
 /**
  * Abstract analyzer for preparing the fields to handle for Excel
+ *
+ * @since 0.9.0
  */
 public abstract class AbstractExcelAnalyzer implements ExcelAnalyzer {
 

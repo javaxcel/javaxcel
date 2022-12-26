@@ -7,6 +7,9 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
+/**
+ * @since 0.9.0
+ */
 public final class ExcelAnalysisImpl implements ExcelAnalysis {
 
     private final Field field;

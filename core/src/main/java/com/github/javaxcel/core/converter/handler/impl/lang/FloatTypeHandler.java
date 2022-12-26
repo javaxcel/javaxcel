@@ -18,6 +18,11 @@ package com.github.javaxcel.core.converter.handler.impl.lang;
 
 import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 
+/**
+ * Handler for type of {@link Float}
+ *
+ * @since 0.8.0
+ */
 public class FloatTypeHandler extends AbstractExcelTypeHandler<Float> {
 
     public FloatTypeHandler() {

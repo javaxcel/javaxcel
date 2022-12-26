@@ -20,7 +20,7 @@ import com.github.javaxcel.core.analysis.ExcelAnalysis;
 import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer;
 import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
 import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
-import com.github.javaxcel.core.converter.in.support.CollectionSupplier;
+import com.github.javaxcel.core.converter.in.support.CollectionCreationProcessor;
 import com.github.javaxcel.core.converter.in.support.FieldTypeResolver;
 import com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind;
 import com.github.javaxcel.core.converter.in.support.FieldTypeResolver.TypeResolution;
@@ -39,6 +39,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Converter for reading Excel with type handler
+ *
+ * @since 0.4.0
+ */
 public class ExcelReadHandlerConverter implements ExcelReadConverter {
 
     private static final StringArraySplitter SPLITTER = new StringArraySplitter(", ");
@@ -186,7 +191,7 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
                 .isInterface();
 
         String[] strings = SPLITTER.shallowSplit(value);
-        Collection<Object> collection = (Collection<Object>) CollectionSupplier.supply(
+        Collection<Object> collection = (Collection<Object>) CollectionCreationProcessor.create(
                 resolution.getIterableType(), strings.length);
 
         resolution = FieldTypeResolver.resolve(resolution.getElementType());

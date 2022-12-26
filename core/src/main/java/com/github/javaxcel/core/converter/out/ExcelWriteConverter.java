@@ -26,6 +26,8 @@ import java.lang.reflect.Field;
 
 /**
  * Converter for writing Excel
+ *
+ * @since 0.4.0
  */
 public interface ExcelWriteConverter {
 
@@ -34,6 +36,7 @@ public interface ExcelWriteConverter {
      *
      * @param field field of model
      * @return whether the field is supported
+     * @since 0.9.0
      */
     boolean supports(Field field);
 

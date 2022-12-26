@@ -16,10 +16,10 @@
 
 package com.github.javaxcel.core.analysis.in;
 
+import com.github.javaxcel.core.analysis.AbstractExcelAnalyzer;
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta;
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta.Source;
 import com.github.javaxcel.core.analysis.ExcelAnalysisImpl.DefaultMetaImpl;
-import com.github.javaxcel.core.analysis.AbstractExcelAnalyzer;
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelReadExpression;
 import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
@@ -32,6 +32,8 @@ import java.lang.reflect.Field;
 
 /**
  * Analyzer for reading Excel
+ *
+ * @since 0.9.0
  */
 public class ExcelReadAnalyzer extends AbstractExcelAnalyzer {
 

@@ -22,6 +22,11 @@ import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalQuery;
 
+/**
+ * Handler for type of {@link MonthDay}
+ *
+ * @since 0.9.0
+ */
 public class MonthDayTypeHandler extends AbstractTemporalAccessorTypeHandler<MonthDay> {
 
     public MonthDayTypeHandler() {

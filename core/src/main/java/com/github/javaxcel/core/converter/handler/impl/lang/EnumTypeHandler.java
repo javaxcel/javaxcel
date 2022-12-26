@@ -21,6 +21,11 @@ import com.github.javaxcel.core.util.FieldUtils;
 
 import java.lang.reflect.Field;
 
+/**
+ * Handler for type of {@link Enum}
+ *
+ * @since 0.8.0
+ */
 @SuppressWarnings("rawtypes")
 public class EnumTypeHandler extends AbstractExcelTypeHandler<Enum> {
 

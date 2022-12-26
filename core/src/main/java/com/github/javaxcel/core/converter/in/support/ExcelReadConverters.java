@@ -29,6 +29,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Container of converters for reading Excel as candidates
+ *
+ * <p> This container has converters as candidates. When it takes the parameters to convert,
+ * it chooses a candidate that can handle the parameters.
+ *
+ * @since 0.7.1
+ */
 public final class ExcelReadConverters implements ExcelReadConverter {
 
     private final List<ExcelReadConverter> candidates;

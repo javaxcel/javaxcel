@@ -24,6 +24,8 @@ import java.util.Set;
  * Registry of type handlers
  *
  * <p> This only allows the addition of handler, not modification and deletion of handler.
+ *
+ * @since 0.8.0
  */
 public interface ExcelTypeHandlerRegistry {
 

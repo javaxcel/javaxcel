@@ -29,6 +29,8 @@ import java.util.Set;
  * Simple implementation of handler registry.
  *
  * <p> This doesn't have any handlers by default.
+ *
+ * @since 0.8.0
  */
 public class ExcelTypeHandlerRegistryImpl implements ExcelTypeHandlerRegistry {
 

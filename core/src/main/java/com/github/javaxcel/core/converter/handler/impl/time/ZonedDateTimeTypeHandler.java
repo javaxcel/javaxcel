@@ -22,6 +22,11 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalQuery;
 
+/**
+ * Handler for type of {@link ZonedDateTime}
+ *
+ * @since 0.8.0
+ */
 public class ZonedDateTimeTypeHandler extends AbstractTemporalAccessorTypeHandler<ZonedDateTime> {
 
     public ZonedDateTimeTypeHandler() {

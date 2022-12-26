@@ -25,6 +25,8 @@ import java.lang.reflect.Field;
 
 /**
  * Result of the field from analyzer
+ *
+ * @since 0.9.0
  */
 public interface ExcelAnalysis {
 
@@ -84,6 +86,8 @@ public interface ExcelAnalysis {
 
     /**
      * Default meta information
+     *
+     * @since 0.9.0
      */
     interface DefaultMeta {
         /**
@@ -103,6 +107,8 @@ public interface ExcelAnalysis {
 
         /**
          * Source of default meta information
+         *
+         * @since 0.9.0
          */
         enum Source {
             /**

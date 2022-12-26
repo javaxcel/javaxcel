@@ -23,6 +23,11 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.temporal.TemporalQuery;
 
+/**
+ * Handler for type of {@link Instant}
+ *
+ * @since 0.9.0
+ */
 public class InstantTypeHandler extends AbstractTemporalAccessorTypeHandler<Instant> {
 
     public InstantTypeHandler() {

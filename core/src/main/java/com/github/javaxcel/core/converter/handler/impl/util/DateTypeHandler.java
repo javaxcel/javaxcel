@@ -28,7 +28,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Notice that {@link SimpleDateFormat} is not thread-safe.
+ * Handler for type of {@link Date}
+ *
+ * <p> Notice that {@link SimpleDateFormat} is not thread-safe.
+ *
+ * @since 0.8.0
  */
 public class DateTypeHandler extends AbstractExcelTypeHandler<Date> {
 

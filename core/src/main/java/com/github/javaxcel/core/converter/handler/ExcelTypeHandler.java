@@ -20,6 +20,7 @@ package com.github.javaxcel.core.converter.handler;
  * Handler for type to convert into string and from string.
  *
  * @param <T> type of object to handle
+ * @since 0.8.0
  */
 public interface ExcelTypeHandler<T> {
 

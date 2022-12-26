@@ -22,6 +22,11 @@ import io.github.imsejin.common.constant.DateType;
 import java.time.Year;
 import java.time.temporal.TemporalQuery;
 
+/**
+ * Handler for type of {@link Year}
+ *
+ * @since 0.9.0
+ */
 public class YearTypeHandler extends AbstractTemporalAccessorTypeHandler<Year> {
 
     public YearTypeHandler() {

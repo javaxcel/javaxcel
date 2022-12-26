@@ -19,6 +19,11 @@ package com.github.javaxcel.core.converter.in;
 import java.lang.reflect.Field;
 import java.util.Map;
 
+/**
+ * Converter for reading Excel
+ *
+ * @since 0.4.0
+ */
 public interface ExcelReadConverter {
 
     /**
@@ -26,6 +31,7 @@ public interface ExcelReadConverter {
      *
      * @param field field of model
      * @return whether the field is supported
+     * @since 0.9.0
      */
     boolean supports(Field field);
 
@@ -36,6 +42,7 @@ public interface ExcelReadConverter {
      *                  value is the model's field value
      * @param field     targeted field of model
      * @return value converted to the type of field
+     * @since 0.5.1
      */
     Object convert(Map<String, String> variables, Field field);
 

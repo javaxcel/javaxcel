@@ -16,10 +16,10 @@
 
 package com.github.javaxcel.core.analysis.out;
 
+import com.github.javaxcel.core.analysis.AbstractExcelAnalyzer;
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta;
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta.Source;
 import com.github.javaxcel.core.analysis.ExcelAnalysisImpl.DefaultMetaImpl;
-import com.github.javaxcel.core.analysis.AbstractExcelAnalyzer;
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelModel;
 import com.github.javaxcel.core.annotation.ExcelWriteExpression;
@@ -34,6 +34,8 @@ import java.lang.reflect.Field;
 
 /**
  * Analyzer for writing Excel
+ *
+ * @since 0.9.0
  */
 public class ExcelWriteAnalyzer extends AbstractExcelAnalyzer {
 

@@ -20,6 +20,11 @@ import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 
 import java.math.BigDecimal;
 
+/**
+ * Handler for type of {@link BigDecimal}
+ *
+ * @since 0.8.0
+ */
 public class BigDecimalTypeHandler extends AbstractExcelTypeHandler<BigDecimal> {
 
     public BigDecimalTypeHandler() {
