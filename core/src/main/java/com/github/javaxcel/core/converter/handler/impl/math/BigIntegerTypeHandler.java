@@ -44,41 +44,41 @@ public class BigIntegerTypeHandler extends AbstractExcelTypeHandler<BigInteger> 
      * <pre>
      *     {@code new BigInteger(String)}
      *
-     *     TOTAL = 6789.4045 ms
-     *     AVERAGE = 678.94045 ms
+     *     TOTAL = 5986.9188 ms
+     *     AVERAGE = 598.69188 ms
      *     ---------------
      *     ms        %
      *     ---------------
-     *     962.0761  14.17
-     *     757.3948  11.16
-     *     675.5414  9.95
-     *     786.0683  11.58
-     *     617.8743  9.10
-     *     649.5789  9.57
-     *     563.056   8.29
-     *     624.8379  9.20
-     *     603.3569  8.89
-     *     549.6199  8.10
+     *     851.6429  14.23
+     *     668.1394  11.16
+     *     602.9215  10.07
+     *     672.3112  11.23
+     *     551.5461  9.21
+     *     573.9861  9.59
+     *     488.5583  8.16
+     *     543.9001  9.08
+     *     537.2404  8.97
+     *     496.6728  8.30
      *
      *     ---------------
      *
      *     {@code BigInteger.valueOf(Long.parseLong(String))}
      *
-     *     TOTAL = 4703.5069 ms
-     *     AVERAGE = 470.35069 ms
+     *     TOTAL = 4128.9385 ms
+     *     AVERAGE = 412.89385 ms
      *     ---------------
      *     ms        %
      *     ---------------
-     *     637.7051  13.56
-     *     977.6699  20.79
-     *     393.7896  8.37
-     *     455.6069  9.69
-     *     344.7192  7.33
-     *     439.1477  9.34
-     *     348.1275  7.40
-     *     391.2891  8.32
-     *     359.5352  7.64
-     *     355.9167  7.57
+     *     505.5069  12.24
+     *     879.2133  21.29
+     *     386.4251  9.36
+     *     368.237   8.92
+     *     361.3653  8.75
+     *     342.8972  8.30
+     *     306.1711  7.42
+     *     294.0744  7.12
+     *     376.186   9.11
+     *     308.8622  7.48
      * </pre>
      *
      * @param value     string value
@@ -87,8 +87,12 @@ public class BigIntegerTypeHandler extends AbstractExcelTypeHandler<BigInteger> 
      */
     @Override
     public BigInteger read(String value, Object... arguments) {
-        long number = Long.parseLong(value);
-        return BigInteger.valueOf(number);
+        try {
+            long number = Long.parseLong(value);
+            return BigInteger.valueOf(number);
+        } catch (NumberFormatException ignored) {
+            return new BigInteger(value);
+        }
     }
 
 }

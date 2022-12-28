@@ -103,6 +103,7 @@ class ExcelTypeHandlerSpec extends Specification {
         new DoubleTypeHandler()         || new Double("1.141414")                                                       | "1.141414"
         new StringTypeHandler()         || "alpha-beta"                                                                 | "alpha-beta"
         // java.math
+        new BigIntegerTypeHandler()     || new BigInteger("102376402082487158456540")                                   | "102376402082487158456540"
         new BigIntegerTypeHandler()     || new BigInteger("82487158456540")                                             | "82487158456540"
         new BigDecimalTypeHandler()     || new BigDecimal("3.141592653580")                                             | "3.14159265358"
         // java.util
