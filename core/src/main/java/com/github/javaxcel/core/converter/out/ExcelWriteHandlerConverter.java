@@ -106,11 +106,19 @@ public class ExcelWriteHandlerConverter implements ExcelWriteConverter {
                 return null;
             }
 
+            // Returns the default value as it is, not using a handler.
             return defaultValue;
         }
 
         Class<?> type = field.getType();
-        return handleInternal(field, type, value);
+        String converted = handleInternal(field, type, value);
+
+        // Returns null if the converted value is null or empty string.
+        if (isNullOrEmptyString(converted)) {
+            return null;
+        }
+
+        return converted;
     }
 
     // -------------------------------------------------------------------------------------------------

@@ -30,6 +30,7 @@ import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestMod
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Array3D
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_CharSequences
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_ColumnDefaultValue
+import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Concrete
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Enum
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_GenericArray
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_Iterable
@@ -48,6 +49,51 @@ import java.util.concurrent.TimeUnit
 
 @Subject(ExcelWriteHandlerConverter)
 class ExcelWriteHandlerConverterSpec extends Specification {
+
+    def "Converts concrete types"() {
+        given:
+        def model = new ExcelWriteHandlerConverter_TestModel_Concrete()
+        model[fieldName] = value
+
+        and:
+        def field = model.class.getDeclaredField(fieldName)
+        def analyses = analyze(model.class.declaredFields, ExcelWriteAnalyzer.FIELD_ACCESS)
+
+        when:
+        def converter = new ExcelWriteHandlerConverter(analyses, new DefaultExcelTypeHandlerRegistry())
+        def actual = converter.convert(model, field)
+
+        then:
+        actual == expected
+
+        where:
+        fieldName  | value                || expected
+        "_boolean" | true                 || "true"
+        "_byte"    | 127                  || "127"
+        "_short"   | -32768               || "-32768"
+        "_char"    | ' '                  || " "
+        "_char"    | 'a'                  || "a"
+        "_int"     | -12                  || "-12"
+        "_long"    | 9720                 || "9720"
+        "_float"   | -1.14157F            || "-1.14157"
+        "_double"  | 3.141592D            || "3.141592"
+        "object"   | null                 || null
+        "object"   | new Object() {
+            String toString() { "" }
+        }                                 || null
+        "object"   | new Object() {
+            String toString() { "java.lang.Object@x" }
+        }                                 || "java.lang.Object@x"
+        "object"   | new StringBuilder()  || null
+        "object"   | new StringBuffer("") || null
+        "string"   | null                 || null
+        "string"   | ""                   || null
+        "string"   | "null"               || "null"
+        "string"   | "alpha"              || "alpha"
+        "locale"   | null                 || null
+        "locale"   | Locale.ROOT          || null
+        "locale"   | Locale.US            || "en_US"
+    }
 
     def "Converts 1D array"() {
         given:
