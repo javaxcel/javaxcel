@@ -46,8 +46,8 @@ using [Apache POI](https://github.com/apache/poi).
 
 # Modules
 
-- [javaxcel-core](./core/README.md): Supporter for export and import of Excel file.
-- [javaxcel-styler](./styler/README.md): Configurer for decoration of `CellStyle` with simple usage.
+- [javaxcel-core](./core/): Supporter for export and import of Excel file.
+- [javaxcel-styler](./styler/): Configurer for decoration of `CellStyle` with simple usage.
 
 <br><br>
 
