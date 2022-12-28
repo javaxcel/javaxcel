@@ -72,6 +72,7 @@
         <assertj.version>3.23.1</assertj.version>
         <spock.version>2.3-groovy-4.0</spock.version>
         <lombok.version>1.18.24</lombok.version>
+        <jmh.version>1.36</jmh.version>
         <byte-buddy.version>1.12.18</byte-buddy.version>
         <easy-random.version>4.3.0</easy-random.version>
         <excel-streaming-reader.version>4.0.4</excel-streaming-reader.version>
@@ -235,6 +236,14 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- JMH(Java Microbenchmark Harness) generator -->
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-generator-annprocess</artifactId>
+                <version>${jmh.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
