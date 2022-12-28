@@ -17,6 +17,7 @@
 package com.github.javaxcel.core.converter.handler.impl.math;
 
 import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
+import io.github.imsejin.common.util.NumberUtils;
 
 import java.math.BigInteger;
 
@@ -26,6 +27,8 @@ import java.math.BigInteger;
  * @since 0.8.0
  */
 public class BigIntegerTypeHandler extends AbstractExcelTypeHandler<BigInteger> {
+
+    private static final int THRESHOLD = NumberUtils.getNumOfPlaces(Long.MAX_VALUE);
 
     public BigIntegerTypeHandler() {
         super(BigInteger.class);
@@ -39,46 +42,23 @@ public class BigIntegerTypeHandler extends AbstractExcelTypeHandler<BigInteger> 
     /**
      * Returns a big integer by reading the string.
      *
-     * <p> The following table is a benchmark with each 2.5 million randomized numbers.
+     * <p> The following table is a benchmark of the way to implement on 20 or more digits of string.
+     * It doesn't seem to be a significant difference.
      *
      * <pre>
-     *     {@code new BigInteger(String)}
+     *     Benchmark                                   Mode  Cnt    Score    Error  Units
+     *     ------------------------------------------------------------------------------
+     *     new BigInteger(String)                      avgt    5  273.174 ± 37.939  ns/op
+     *     BigInteger.valueOf(Long.parseLong(String))  avgt    5  276.014 ±  5.460  ns/op
+     * </pre>
      *
-     *     TOTAL = 5986.9188 ms
-     *     AVERAGE = 598.69188 ms
-     *     ---------------
-     *     ms        %
-     *     ---------------
-     *     851.6429  14.23
-     *     668.1394  11.16
-     *     602.9215  10.07
-     *     672.3112  11.23
-     *     551.5461  9.21
-     *     573.9861  9.59
-     *     488.5583  8.16
-     *     543.9001  9.08
-     *     537.2404  8.97
-     *     496.6728  8.30
+     * <p> When a string consists of 19 or less digits, there is a significant difference.
      *
-     *     ---------------
-     *
-     *     {@code BigInteger.valueOf(Long.parseLong(String))}
-     *
-     *     TOTAL = 4128.9385 ms
-     *     AVERAGE = 412.89385 ms
-     *     ---------------
-     *     ms        %
-     *     ---------------
-     *     505.5069  12.24
-     *     879.2133  21.29
-     *     386.4251  9.36
-     *     368.237   8.92
-     *     361.3653  8.75
-     *     342.8972  8.30
-     *     306.1711  7.42
-     *     294.0744  7.12
-     *     376.186   9.11
-     *     308.8622  7.48
+     * <pre>
+     *     Benchmark                                   Mode  Cnt    Score    Error  Units
+     *     ------------------------------------------------------------------------------
+     *     new BigInteger(String)                      avgt    5  156.571 ± 3.964  ns/op
+     *     BigInteger.valueOf(Long.parseLong(String))  avgt    5   83.206 ± 8.982  ns/op
      * </pre>
      *
      * @param value     string value
@@ -87,12 +67,18 @@ public class BigIntegerTypeHandler extends AbstractExcelTypeHandler<BigInteger> 
      */
     @Override
     public BigInteger read(String value, Object... arguments) {
-        try {
+        if (value.length() <= THRESHOLD) {
             long number = Long.parseLong(value);
             return BigInteger.valueOf(number);
-        } catch (NumberFormatException ignored) {
-            return new BigInteger(value);
         }
+
+        // When a negative 19 digits:
+        if (value.charAt(0) == '-' && value.length() - 1 == THRESHOLD) {
+            long number = Long.parseLong(value);
+            return BigInteger.valueOf(number);
+        }
+
+        return new BigInteger(value);
     }
 
 }
