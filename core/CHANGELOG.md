@@ -38,6 +38,7 @@
 - 🚚 Move: packages of implementation `ExcelTypeHandler`
 - 🚚 Rename: implementations of converter
 - ⚡️ Improve: support for handling field `java.lang.Iterable` by converter
+- ⚡️ Improve: performance of `BigIntegerTypeHandler` on reading
 - 🔨 Modify: default policy of sheet name that increases suffix at 0 is changed to increase at 1.
 - 🔨 Modify: type of parameter `convert(Map<String, Object>, Field)` in `ExcelReadConverter` is changed
   to `convert(Map<String, String>, Field)`
@@ -45,6 +46,7 @@
   to `ExcelReader<Map<String, String>>`
 - 🔨 Modify: method `newInstance(ExcelTypeHandlerRegistry)` in `Javaxcel` is changed not to
   use `DefaultExcelTypeHandlerRegistry`.
+- 🔨 Modify: policy of converter `ExcelWriteHandlerConverter`
 
 ### New features
 
@@ -62,13 +64,15 @@
 
 - ➖ Remove: dependency `jsr305`
 - ➕ Add: intransitive dependency `annotations`
+- ➕ Add: test dependency `jmh-generator-annprocess`
+- ⬆️ Upgrade: intransitive dependency `spring-expression` from `5.3.18` to `5.3.24`
 - ⬆️ Upgrade: provided dependency `poi-ooxml` from `5.2.2` to `5.2.3`
-- ⬆️ Upgrade: dependency `common-utils` from `0.9.0` to `0.13.0`
+- ⬆️ Upgrade: dependency `common-utils` from `0.9.0` to `0.14.0`
 - ⬆️ Upgrade: test dependency `junit5` from `5.8.2` to `5.9.1`
 - ⬆️ Upgrade: test dependency `assertj-core` from `3.22.0` to `3.23.1`
 - ⬆️ Upgrade: test dependency `spock-core` from `2.1-groovy-3.0` to `2.3-groovy-4.0`
-- ⬆️ Upgrade: test dependency `byte-buddy` from `1.12.9` to `1.12.18`
-- ⬆️ Upgrade: test dependency `excel-streaming-reader` from `3.6.1` to `4.0.4`
+- ⬆️ Upgrade: test dependency `byte-buddy` from `1.12.9` to `1.12.20`
+- ⬆️ Upgrade: test dependency `excel-streaming-reader` from `3.6.1` to `4.0.5`
 - ⬆️ Upgrade: build dependency `gmavenplus-plugin` from `1.13.1` to `2.1.0`
 - ⬆️ Upgrade: build dependency `maven-jar-plugin` from `3.2.0` to `3.3.0`
 - ⬆️ Upgrade: build dependency `maven-javadoc-plugin` from `3.2.0` to `3.4.1`
