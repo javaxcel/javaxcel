@@ -1,12 +1,12 @@
 package com.github.javaxcel.core.model.creature;
 
+import com.github.javaxcel.core.TestUtils;
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelDateTimeFormat;
 import com.github.javaxcel.core.annotation.ExcelModel;
 import com.github.javaxcel.core.annotation.ExcelModelCreator;
 import com.github.javaxcel.core.annotation.ExcelReadExpression;
 import com.github.javaxcel.core.annotation.ExcelWriteExpression;
-import com.github.javaxcel.core.TestUtils;
 import com.github.javaxcel.core.internal.style.DefaultBodyStyleConfig;
 import com.github.javaxcel.core.internal.style.DefaultHeaderStyleConfig;
 import io.github.imsejin.common.tool.RandomString;

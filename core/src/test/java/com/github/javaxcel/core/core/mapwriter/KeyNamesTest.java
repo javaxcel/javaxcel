@@ -155,7 +155,7 @@ class KeyNamesTest extends MapWriterTester {
                 .collect(toList()))
                 .as("#2 All header names at each sheet must be sorted")
                 .containsExactlyElementsOf(Collections.nCopies(workbook.getNumberOfSheets(),
-                                testCase == TestCase.JUST_ORDERED ? orderedKeys : headerNames)
+                        testCase == TestCase.JUST_ORDERED ? orderedKeys : headerNames)
                         .stream().flatMap(List::stream).collect(toList()));
     }
 

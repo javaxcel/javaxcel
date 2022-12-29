@@ -16,8 +16,8 @@
 
 package com.github.javaxcel.core.core.modelreader;
 
-import com.github.javaxcel.core.annotation.ExcelModelCreator;
 import com.github.javaxcel.core.TestUtils;
+import com.github.javaxcel.core.annotation.ExcelModelCreator;
 import com.github.javaxcel.core.core.ModelReaderTester;
 import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
 import com.github.javaxcel.core.util.ExcelUtils;
