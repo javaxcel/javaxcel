@@ -31,8 +31,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
 
@@ -85,7 +85,7 @@ public abstract class MapReaderTester {
     }
 
     protected void givenCreateFile(GivenModel givenModel) throws Exception {
-        givenModel.outputStream = new FileOutputStream(givenModel.file);
+        givenModel.outputStream = Files.newOutputStream(givenModel.file.toPath());
 
         String extension = FilenameUtils.getExtension(givenModel.file.getName());
         givenModel.workbook = extension.equals(ExcelUtils.EXCEL_97_EXTENSION)

@@ -34,8 +34,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -65,7 +65,7 @@ class ExpressionTest extends ModelWriterTester {
 
     @Override
     protected WhenModel given(GivenModel givenModel) throws Exception {
-        OutputStream out = new FileOutputStream(givenModel.getFile());
+        OutputStream out = Files.newOutputStream(givenModel.getFile().toPath());
         Workbook workbook = new SXSSFWorkbook();
 
         return new WhenModel(out, workbook, 4096);

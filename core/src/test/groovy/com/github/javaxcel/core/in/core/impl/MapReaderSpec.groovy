@@ -40,7 +40,7 @@ import static java.util.stream.Collectors.toList
 class MapReaderSpec extends Specification {
 
     @TempDir
-    Path path
+    private Path path
 
     def "test"() {
         given:
@@ -49,7 +49,7 @@ class MapReaderSpec extends Specification {
         def numOfMocks = 1024
         def maps = (0..<numOfMocks).collect { TestUtils.randomizeMap(keys) }
         def filePath = path.resolve("maps-${System.currentTimeMillis()}.xlsx")
-        def out = new FileOutputStream(filePath.toFile())
+        def out = Files.newOutputStream(filePath)
 
         when:
         Javaxcel.newInstance()
@@ -76,7 +76,7 @@ class MapReaderSpec extends Specification {
 
         // Create excel file
         stopwatch.start("create '%s' file", file.name)
-        @Cleanup def out = new FileOutputStream(file)
+        @Cleanup def out = Files.newOutputStream(file.toPath())
         @Cleanup def workbook = new HSSFWorkbook()
         stopwatch.stop()
 
@@ -95,7 +95,7 @@ class MapReaderSpec extends Specification {
 
         when: "Read excel file"
         stopwatch.start("read %,d maps", numOfMocks)
-        @Cleanup def newWorkbook = new HSSFWorkbook(new FileInputStream(file))
+        @Cleanup def newWorkbook = new HSSFWorkbook(Files.newInputStream(file.toPath()))
         def actual = Javaxcel.newInstance().reader(newWorkbook).read()
         stopwatch.stop()
         println stopwatch.statistics

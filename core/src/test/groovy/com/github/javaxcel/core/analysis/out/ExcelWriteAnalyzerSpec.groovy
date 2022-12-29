@@ -7,7 +7,6 @@ import com.github.javaxcel.core.converter.handler.impl.lang.LongTypeHandler
 import com.github.javaxcel.core.converter.handler.impl.lang.StringTypeHandler
 import com.github.javaxcel.core.converter.handler.impl.math.BigDecimalTypeHandler
 import com.github.javaxcel.core.converter.handler.impl.math.BigIntegerTypeHandler
-import com.github.javaxcel.core.converter.handler.impl.util.LocaleTypeHandler
 import com.github.javaxcel.core.converter.handler.impl.util.UUIDTypeHandler
 import com.github.javaxcel.core.converter.handler.registry.impl.DefaultExcelTypeHandlerRegistry
 import com.github.javaxcel.core.model.sample.ComplexSample

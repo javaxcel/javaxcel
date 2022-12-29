@@ -49,8 +49,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -111,7 +111,7 @@ class DecorationTest extends ModelWriterTester {
 
     @Override
     protected WhenModel given(GivenModel givenModel) throws Exception {
-        OutputStream out = new FileOutputStream(givenModel.getFile());
+        OutputStream out = Files.newOutputStream(givenModel.getFile().toPath());
         Workbook workbook = getWorkbookByType(givenModel.getType());
 
         return new WhenModel(out, workbook, 1024);

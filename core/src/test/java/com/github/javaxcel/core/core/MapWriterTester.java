@@ -32,8 +32,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -68,7 +68,7 @@ public abstract class MapWriterTester {
     }
 
     protected WhenModel given(GivenModel givenModel) throws Exception {
-        OutputStream out = new FileOutputStream(givenModel.file);
+        OutputStream out = Files.newOutputStream(givenModel.file.toPath());
 
         String extension = FilenameUtils.getExtension(givenModel.file.getName());
         Workbook workbook;

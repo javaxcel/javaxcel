@@ -36,8 +36,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -63,7 +63,7 @@ class SheetManipulationTest extends ModelWriterTester {
 
     @Override
     protected WhenModel given(GivenModel givenModel) throws Exception {
-        OutputStream out = new FileOutputStream(givenModel.getFile());
+        OutputStream out = Files.newOutputStream(givenModel.getFile().toPath());
         Workbook workbook = new HSSFWorkbook();
 
         return new WhenModel(out, workbook, 1024);

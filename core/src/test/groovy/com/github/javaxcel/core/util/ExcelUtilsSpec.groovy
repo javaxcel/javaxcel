@@ -42,7 +42,7 @@ class ExcelUtilsSpec extends Specification {
             def extension = workbook instanceof HSSFWorkbook ? EXCEL_97_EXTENSION : EXCEL_2007_EXTENSION
             def fileName = "${new RandomString().nextString(8)}.$extension"
             def tempFile = tempPath.resolve(fileName)
-            workbook.write(new FileOutputStream(tempFile.toFile()))
+            workbook.write(Files.newOutputStream(tempFile))
             tempFile
         }
 

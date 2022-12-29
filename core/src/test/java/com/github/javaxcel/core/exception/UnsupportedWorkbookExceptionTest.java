@@ -16,7 +16,6 @@
 
 package com.github.javaxcel.core.exception;
 
-import com.github.javaxcel.core.exception.UnsupportedWorkbookException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
