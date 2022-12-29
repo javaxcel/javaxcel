@@ -1,6 +1,6 @@
 # Table of Contents
 
-- [v0.9.0](#v090):
+- [v0.9.0](#v090): 2022-12-29
 - [v0.2.1](#v021): 2020-09-07
 - [v0.1.0](#v010): 2020-08-30
 
@@ -31,23 +31,17 @@
 - 🚚 Rename: method `offset(CellStyle, Font, Offset)` to `setOffset(CellStyle, Font, Offset)` in `Fonts`
 - 🔨 Modify: return type of `getValue()` in `Underline` from `short` to `byte`
 
-### New features
-
-### Troubleshooting
-
-- 🐞 Fix:
-
 ### Dependencies
 
 - ➖ Remove: dependency `jsr305`
 - ➕ Add: intransitive dependency `annotations`
 - ⬆️ Upgrade: provided dependency `poi-ooxml` from `5.2.2` to `5.2.3`
-- ⬆️ Upgrade: dependency `common-utils` from `0.9.0` to `0.13.0`
+- ⬆️ Upgrade: dependency `common-utils` from `0.9.0` to `0.14.0`
 - ⬆️ Upgrade: test dependency `junit5` from `5.8.2` to `5.9.1`
 - ⬆️ Upgrade: test dependency `assertj-core` from `3.22.0` to `3.23.1`
 - ⬆️ Upgrade: test dependency `spock-core` from `2.1-groovy-3.0` to `2.3-groovy-4.0`
-- ⬆️ Upgrade: test dependency `byte-buddy` from `1.12.9` to `1.12.18`
-- ⬆️ Upgrade: test dependency `excel-streaming-reader` from `3.6.1` to `4.0.4`
+- ⬆️ Upgrade: test dependency `byte-buddy` from `1.12.9` to `1.12.20`
+- ⬆️ Upgrade: test dependency `excel-streaming-reader` from `3.6.1` to `4.0.5`
 - ⬆️ Upgrade: build dependency `gmavenplus-plugin` from `1.13.1` to `2.1.0`
 - ⬆️ Upgrade: build dependency `maven-jar-plugin` from `3.2.0` to `3.3.0`
 - ⬆️ Upgrade: build dependency `maven-javadoc-plugin` from `3.2.0` to `3.4.1`
