@@ -108,7 +108,7 @@ class ExcelReadExpressionConverterSpec extends Specification {
         double d
         @ExcelReadExpression("#o ?: ''")
         Object o
-        @ExcelColumn(defaultValue = "'nullable'")
+        @ExcelColumn(defaultValue = "nullable")
         @ExcelReadExpression("#s")
         String s
         @ExcelReadExpression("new java.math.BigInteger('-' + #bi)")

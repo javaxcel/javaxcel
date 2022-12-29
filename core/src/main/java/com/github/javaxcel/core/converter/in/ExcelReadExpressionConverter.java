@@ -17,8 +17,6 @@
 package com.github.javaxcel.core.converter.in;
 
 import com.github.javaxcel.core.analysis.ExcelAnalysis;
-import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta;
-import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta.Source;
 import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer;
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelReadExpression;
@@ -35,6 +33,7 @@ import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Converter for reading Excel with expression(SpEL)
@@ -45,7 +44,7 @@ public class ExcelReadExpressionConverter implements ExcelReadConverter {
 
     private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
 
-    private final Map<Field, Cache> analysisMap;
+    private final Map<Field, Cache> cacheMap;
 
     public ExcelReadExpressionConverter(Iterable<ExcelAnalysis> analyses) {
         Asserts.that(analyses)
@@ -54,7 +53,7 @@ public class ExcelReadExpressionConverter implements ExcelReadConverter {
                 .describedAs("ExcelReadExpressionConverter.analyses is not allowed to be empty")
                 .is(them -> them.iterator().hasNext());
 
-        Map<Field, Cache> analysisMap = new HashMap<>();
+        Map<Field, Cache> cacheMap = new HashMap<>();
 
         for (ExcelAnalysis analysis : analyses) {
             Field field = analysis.getField();
@@ -64,30 +63,22 @@ public class ExcelReadExpressionConverter implements ExcelReadConverter {
             if (analysis.hasFlag(ExcelReadAnalyzer.EXPRESSION)) {
                 // DO NOT CHECK IF @ExcelReadExpression.value IS EMPTY STRING,
                 // BECAUSE THE ANNOTATION HAS ONLY ONE MANDATORY ATTRIBUTE AND
-                // IT MEANS THAT VALUE MUST BE VALID IF THE ANNOTATION IS ON A FIELD.
+                // IT MEANS THAT MUST BE A VALID VALUE IF THE ANNOTATION IS ON A FIELD.
                 // THIS CLASS IS RESPONSIBLE FOR INFORMING USER OF FAILURE OF PARSING EXPRESSION.
                 ExcelReadExpression annotation = field.getAnnotation(ExcelReadExpression.class);
-                cache.expression = EXPRESSION_PARSER.parseExpression(annotation.value());
-
-                // HOWEVER, @ExcelColumn.defaultValue IS NOT MANDATORY ATTRIBUTE
-                // AND ALSO THE ANNOTATION CAN BE USED FOR OTHER PURPOSES.
-                // SO YOU SHOULD MAKE SURE THAT THE VALUE IS SPECIFIED EXPLICITLY BY USER.
-                DefaultMeta defaultMeta = analysis.getDefaultMeta();
-                String defaultExpressionString = defaultMeta.getValue();
-                if (defaultMeta.getSource() == Source.COLUMN && !StringUtils.isNullOrEmpty(defaultExpressionString)) {
-                    cache.expressionForDefault = EXPRESSION_PARSER.parseExpression(defaultExpressionString);
-                }
+                Expression expression = EXPRESSION_PARSER.parseExpression(annotation.value());
+                cache.setExpression(expression);
             }
 
-            analysisMap.put(field, cache);
+            cacheMap.put(field, cache);
         }
 
-        this.analysisMap = Collections.unmodifiableMap(analysisMap);
+        this.cacheMap = Collections.unmodifiableMap(cacheMap);
     }
 
     @Override
     public boolean supports(Field field) {
-        ExcelAnalysis analysis = this.analysisMap.get(field).analysis;
+        ExcelAnalysis analysis = this.cacheMap.get(field).analysis;
         return analysis.hasFlag(ExcelReadAnalyzer.EXPRESSION);
     }
 
@@ -100,6 +91,39 @@ public class ExcelReadExpressionConverter implements ExcelReadConverter {
     @Nullable
     @Override
     public Object convert(Map<String, String> variables, Field field) {
+        Object value = convertInternal(variables, field);
+
+        // Returns the result of expression.
+        if (!isNullOrEmptyString(value)) {
+            return value;
+        }
+
+        // If a result of expression is empty string, replaces it with null.
+        Cache cache = this.cacheMap.get(field);
+        String defaultValue = cache.getAnalysis().getDefaultMeta().getValue();
+
+        // Returns null if the default value is not specified.
+        if (StringUtils.isNullOrEmpty(defaultValue)) {
+            return null;
+        }
+
+        // Replaces the value with the default value from variables.
+        Map<String, String> newVariables = new HashMap<>(variables);
+        newVariables.put(field.getName(), defaultValue);
+
+        // Converts the default value through expression again.
+        value = convertInternal(newVariables, field);
+
+        // Returns null if the value converted by default is also null or empty string.
+        if (isNullOrEmptyString(value)) {
+            return null;
+        }
+
+        // Returns the result of expression.
+        return value;
+    }
+
+    private Object convertInternal(Map<String, String> variables, Field field) {
         // To read in parallel, instantiates on each call of this method.
         // Don't set root object to prevent user from assigning value
         // to the field of model with the way we don't intend.
@@ -108,38 +132,8 @@ public class ExcelReadExpressionConverter implements ExcelReadConverter {
         // Enables to use value of the field as "#FIELD_NAME" in @ExcelReadExpression.
         variables.forEach(context::setVariable);
 
-        Cache cache = this.analysisMap.get(field);
-        Object value = cache.expression.getValue(context, field.getType());
-
-        // If return value of expression is empty string, replaces the value with null.
-        if (isNullOrEmptyString(value)) {
-            value = null;
-        }
-
-        // Returns the return value of expression.
-        if (value != null) {
-            return value;
-        }
-
-        // Checks if the value is null or empty string.
-        // Returns null if default expression is not defined.
-        if (cache.expressionForDefault == null) {
-            return null;
-        }
-
-        // Returns default value if the value is null or empty string.
-        // TODO: Consider that integration with @ExcelColumn.defaultValue, @ExcelWriteExpression and @ExcelReadExpression.
-        // TODO: @ExcelColumn.defaultValue is considered as a stringified value, not expression.
-        // TODO: So the original expression is executed one more with that value.
-        // There is no access to fields(variables) on default expression.
-        Object defaultValue = cache.expressionForDefault.getValue(field.getType());
-
-        // Returns null if the default value is also null or empty string.
-        if (isNullOrEmptyString(defaultValue)) {
-            return null;
-        }
-
-        return defaultValue;
+        Cache cache = this.cacheMap.get(field);
+        return Objects.requireNonNull(cache.getExpression(), "Never throw").getValue(context, field.getType());
     }
 
     // -------------------------------------------------------------------------------------------------
@@ -158,13 +152,25 @@ public class ExcelReadExpressionConverter implements ExcelReadConverter {
 
     private static class Cache {
         private final ExcelAnalysis analysis;
-        @Nullable
         private Expression expression;
-        @Nullable
-        private Expression expressionForDefault;
 
         private Cache(ExcelAnalysis analysis) {
-            this.analysis = analysis;
+            this.analysis = Objects.requireNonNull(analysis,
+                    () -> getClass().getSimpleName() + ".analysis cannot be null");
+        }
+
+        public ExcelAnalysis getAnalysis() {
+            return this.analysis;
+        }
+
+        @Nullable
+        public Expression getExpression() {
+            return this.expression;
+        }
+
+        public void setExpression(Expression expression) {
+            this.expression = Objects.requireNonNull(expression,
+                    () -> getClass().getSimpleName() + ".expression cannot be null");
         }
     }
 

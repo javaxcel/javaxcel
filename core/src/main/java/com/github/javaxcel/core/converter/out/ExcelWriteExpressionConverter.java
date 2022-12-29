@@ -17,14 +17,11 @@
 package com.github.javaxcel.core.converter.out;
 
 import com.github.javaxcel.core.analysis.ExcelAnalysis;
-import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta;
-import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta.Source;
 import com.github.javaxcel.core.analysis.out.ExcelWriteAnalyzer;
 import com.github.javaxcel.core.annotation.ExcelWriteExpression;
 import com.github.javaxcel.core.util.FieldUtils;
 import io.github.imsejin.common.assertion.Asserts;
 import io.github.imsejin.common.util.ReflectionUtils;
-import io.github.imsejin.common.util.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
@@ -40,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 /**
  * Converter for writing Excel with expression(SpEL)
@@ -54,7 +52,7 @@ public class ExcelWriteExpressionConverter implements ExcelWriteConverter {
 
     private final Map<Field, Method> getterMap;
 
-    private final Map<Field, Cache> analysisMap;
+    private final Map<Field, Cache> cacheMap;
 
     public ExcelWriteExpressionConverter(Iterable<ExcelAnalysis> analyses) {
         Asserts.that(analyses)
@@ -65,49 +63,41 @@ public class ExcelWriteExpressionConverter implements ExcelWriteConverter {
 
         List<Field> fields = new ArrayList<>();
         Map<Field, Method> getterMap = new HashMap<>();
-        Map<Field, Cache> analysisMap = new HashMap<>();
+        Map<Field, Cache> cacheMap = new HashMap<>();
 
         for (ExcelAnalysis analysis : analyses) {
             Field field = analysis.getField();
 
-            // Makes instance of expression a cache.
+            // Caches an expression for the field.
             Cache cache = new Cache(analysis);
             if (analysis.hasFlag(ExcelWriteAnalyzer.EXPRESSION)) {
                 // DO NOT CHECK IF @ExcelWriteExpression.value IS EMPTY STRING,
                 // BECAUSE THE ANNOTATION HAS ONLY ONE MANDATORY ATTRIBUTE AND
-                // IT MEANS THAT VALUE MUST BE VALID IF THE ANNOTATION IS ON A FIELD.
+                // IT MEANS THAT MUST BE A VALID VALUE IF THE ANNOTATION IS ON A FIELD.
                 // THIS CLASS IS RESPONSIBLE FOR INFORMING USER OF FAILURE OF PARSING EXPRESSION.
                 ExcelWriteExpression annotation = field.getAnnotation(ExcelWriteExpression.class);
-                cache.expression = EXPRESSION_PARSER.parseExpression(annotation.value());
-
-                // HOWEVER, @ExcelColumn.defaultValue IS NOT MANDATORY ATTRIBUTE
-                // AND ALSO THE ANNOTATION CAN BE USED FOR OTHER PURPOSES.
-                // SO YOU SHOULD MAKE SURE THAT THE VALUE IS SPECIFIED EXPLICITLY BY USER.
-                DefaultMeta defaultMeta = analysis.getDefaultMeta();
-                String defaultValue = defaultMeta.getValue();
-                if (defaultMeta.getSource() == Source.COLUMN && !StringUtils.isNullOrEmpty(defaultValue)) {
-                    cache.expressionForDefault = EXPRESSION_PARSER.parseExpression(defaultValue);
-                }
+                Expression expression = EXPRESSION_PARSER.parseExpression(annotation.value());
+                cache.setExpression(expression);
             }
 
-            // Makes getter a cache.
+            // Caches a getter for the field.
             if (analysis.hasFlag(ExcelWriteAnalyzer.GETTER)) {
                 Method getter = FieldUtils.resolveGetter(field);
                 getterMap.put(field, getter);
             }
 
             fields.add(field);
-            analysisMap.put(field, cache);
+            cacheMap.put(field, cache);
         }
 
         this.fields = Collections.unmodifiableList(fields);
         this.getterMap = Collections.unmodifiableMap(getterMap);
-        this.analysisMap = Collections.unmodifiableMap(analysisMap);
+        this.cacheMap = Collections.unmodifiableMap(cacheMap);
     }
 
     @Override
     public boolean supports(Field field) {
-        ExcelAnalysis analysis = this.analysisMap.get(field).analysis;
+        ExcelAnalysis analysis = this.cacheMap.get(field).getAnalysis();
         return analysis.hasFlag(ExcelWriteAnalyzer.EXPRESSION);
     }
 
@@ -125,45 +115,30 @@ public class ExcelWriteExpressionConverter implements ExcelWriteConverter {
         Map<String, Object> variables = getVariablesOf(model, field);
         variables.forEach(context::setVariable);
 
-        Cache cache = this.analysisMap.get(field);
-        Object value = cache.expression.getValue(context);
+        Cache cache = this.cacheMap.get(field);
+        Object value = Objects.requireNonNull(cache.getExpression(), "Never throw").getValue(context);
 
-        // If a return value of expression is empty string, replaces the value with null.
-        if (isNullOrEmptyString(value)) {
-            value = null;
-        }
-
-        // Returns the return value of expression.
-        if (value != null) {
+        // Returns the result of expression.
+        if (!isNullOrEmptyString(value)) {
             // Forces the evaluated value to be a string
             // even if desired return type of expression is not String.
             return value.toString();
         }
 
-        // Checks if the value is null or empty string.
-        // Returns null if default expression is not defined.
-        if (cache.expressionForDefault == null) {
-            return null;
-        }
+        String defaultValue = cache.getAnalysis().getDefaultMeta().getValue();
 
-        // TODO: I think that expressionForDefault is not needed when writing.
-        // There is no access to fields(variables) on default expression.
-        Object defaultValue = cache.expressionForDefault.getValue();
-
-        // Returns null if the default value is also null or empty string.
+        // Returns null if the converted value is null or empty string.
         if (isNullOrEmptyString(defaultValue)) {
             return null;
         }
 
-        // Forces the evaluated value to be a string
-        // even if desired return type of expression is not String.
-        return defaultValue.toString();
+        return defaultValue;
     }
 
     // -------------------------------------------------------------------------------------------------
 
     private Map<String, Object> getVariablesOf(Object model, Field field) {
-        ExcelAnalysis analysis = this.analysisMap.get(field).analysis;
+        ExcelAnalysis analysis = this.cacheMap.get(field).analysis;
 
         if (analysis.hasFlag(ExcelWriteAnalyzer.FIELD_ACCESS)) {
             return FieldUtils.toMap(model, this.fields);
@@ -198,13 +173,25 @@ public class ExcelWriteExpressionConverter implements ExcelWriteConverter {
 
     private static class Cache {
         private final ExcelAnalysis analysis;
-        @Nullable
         private Expression expression;
-        @Nullable
-        private Expression expressionForDefault;
 
         private Cache(ExcelAnalysis analysis) {
-            this.analysis = analysis;
+            this.analysis = Objects.requireNonNull(analysis,
+                    () -> getClass().getSimpleName() + ".analysis cannot be null");
+        }
+
+        public ExcelAnalysis getAnalysis() {
+            return this.analysis;
+        }
+
+        @Nullable
+        public Expression getExpression() {
+            return this.expression;
+        }
+
+        public void setExpression(Expression expression) {
+            this.expression = Objects.requireNonNull(expression,
+                    () -> getClass().getSimpleName() + ".expression cannot be null");
         }
     }
 

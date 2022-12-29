@@ -80,9 +80,9 @@ class ExcelWriteExpressionConverterSpec extends Specification {
         where:
         fieldName | model                                || expected
         "id"      | new DefaultValueModel(id: 12)        || '$24'
-        "id"      | new DefaultValueModel(id: null)      || "$Long.MIN_VALUE"
+        "id"      | new DefaultValueModel(id: null)      || "-9223372036854775808"
         "name"    | new DefaultValueModel(name: "alpha") || "{alpha}"
-        "name"    | new DefaultValueModel(name: null)    || null // @ExcelModel.defaultValue is ignored on ExcelWriteExpressionConverter
+        "name"    | new DefaultValueModel(name: null)    || "<null>" // @ExcelModel.defaultValue
     }
 
     def "Converts through expression, but always returns null"() {
@@ -162,7 +162,7 @@ class ExcelWriteExpressionConverterSpec extends Specification {
     @ExcelModel(defaultValue = "<null>")
     @EqualsAndHashCode
     private static class DefaultValueModel {
-        @ExcelColumn(defaultValue = "T(Long).MIN_VALUE")
+        @ExcelColumn(defaultValue = "-9223372036854775808")
         @ExcelWriteExpression('#id == null ? null : "$" + (#id * 2)')
         Long id
         @ExcelWriteExpression("#name == null or #name.isEmpty() ? null : '{' + #name + '}'")
@@ -170,7 +170,6 @@ class ExcelWriteExpressionConverterSpec extends Specification {
     }
 
     private static class NullModel {
-        @ExcelColumn(defaultValue = "null")
         @ExcelWriteExpression("null")
         Object object
         @ExcelColumn(defaultValue = "")

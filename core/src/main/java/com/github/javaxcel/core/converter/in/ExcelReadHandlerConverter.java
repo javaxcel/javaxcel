@@ -97,7 +97,7 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
             String defaultValue = analysis.getDefaultMeta().getValue();
 
             if (StringUtils.isNullOrEmpty(defaultValue)) {
-                // When you don't explicitly define default value.
+                // When the default value is not specified.
                 if (type instanceof Class) {
                     return ClassUtils.initialValueOf((Class<?>) type);
                 }

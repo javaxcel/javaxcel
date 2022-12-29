@@ -47,9 +47,9 @@ public class Human extends Creature {
     @ExcelReadExpression("T(java.time.LocalTime).parse(#birthTime, T(java.time.format.DateTimeFormatter).ofPattern('HH/mm/ss.SSS'))")
     private LocalTime birthTime;
 
-    @ExcelColumn(name = "Place of Birth", defaultValue = "new java.util.UUID(0, 0)")
+    @ExcelColumn(name = "Place of Birth", defaultValue = "00000000-0000-0000-0000-000000000000")
     @ExcelWriteExpression("T(com.github.javaxcel.core.Converter).capitalize(#placeOfBirth, '-')")
-    @ExcelReadExpression("#placeOfBirth?.toLowerCase()") // null-safe operator '?.'
+    @ExcelReadExpression("T(java.util.UUID).fromString(#placeOfBirth)")
     private UUID placeOfBirth;
 
     @ExcelColumn(name = "Rest Seconds of Life")

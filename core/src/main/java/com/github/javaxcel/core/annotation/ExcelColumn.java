@@ -71,21 +71,19 @@ public @interface ExcelColumn {
      *
      * <p> <b>When writing</b> a value of the field which is null or empty string, converter replaces it
      * with this default value. <b>When reading</b> a cell value from Excel file which is null or empty string,
-     * converter replaces it with this default value.
+     * converter tries to convert this default value instead of it.
      *
-     * <p> <u>If the field is also annotated with {@link ExcelWriteExpression} or {@link ExcelReadExpression},
-     * this value is considered as a expression(SpEL).</u> The expression has no variables.
+     * <pre><code>
+     *      // Converted through handler.
+     *      &#064;ExcelColumn(defaultValue = "00000000-0000-0000-0000-000000000000")
+     *      private UUID uuid;
      *
-     * <pre>{@code
-     *      // Regarded as a string.
-     *      @ExcelColumn(defaultValue = "[alpha, beta]")
-     *      private List<String> strings;
-     *
-     *      // Regarded as a expression.
-     *      @ExcelColumn(defaultValue = "T(java.util.Arrays).asList('alpha', 'beta')")
-     *      @ExcelWriteExpression("#strings?.subList(1)")
-     *      private List<String> strings;
-     * }</pre>
+     *      // Converted through expression.
+     *      &#064;ExcelColumn(defaultValue = "0:0")
+     *      &#064;ExcelWriteExpression("#uuid.mostSignificantBits + ':' + #uuid.leastSignificantBits")
+     *      &#064;ExcelReadExpression("new java.util.UUID(#uuid.split(':')[0], #uuid.split(':')[1])")
+     *      private UUID uuid;
+     * </code></pre>
      *
      * <p> This is ineffective to a field whose type is primitive, <b>when writing</b>.
      * Because primitive type doesn't allow {@code null}.
