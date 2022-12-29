@@ -88,8 +88,8 @@ Javaxcel javaxcel = Javaxcel.newInstance();
 File src = new File("/data", "old-products.xls");
 File dest = new File("/data", "new-products.xlsx");
 
-try (InputStream in = new FileInputStream(src);
-        OutputStream out = new FileOutputStream(dest);
+try (InputStream in = Files.newInputStream(src.toPath());
+        OutputStream out = Files.newOutputStream(dest.toPath());
         Workbook oldWorkbook = new HSSFWorkbook(in);
         Workbook newWorkbook = new SXSSFWorkbook()) {
     // Reads all the sheets and returns data as a list.

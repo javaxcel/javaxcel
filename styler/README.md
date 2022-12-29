@@ -71,7 +71,7 @@ public class DefaultHeaderStyleConfig implements ExcelStyleConfig {
 ```java
 File file = new File("/data", "result.xlsx");
 
-try (FileOutputStream out = new FileOutputStream(file);
+try (OutputStream out = Files.newOutputStream(file.toPath());
         Workbook workbook = new XSSFWorkbook()) {
     Cell cell;
     

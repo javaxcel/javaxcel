@@ -101,7 +101,7 @@ There is a list that contains a `Product`.
 
 ```java
 File dest = new File("/data", "products.xlsx")
-OutputStream out = new FileOutputStream(dest);
+OutputStream out = Files.newOutputStream(dest.toPath());
 Workbook workbook = new SXSSFWorkbook();
 
 Javaxcel.newInstance()
