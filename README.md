@@ -13,8 +13,8 @@
     <a href="https://codecov.io/gh/javaxcel/javaxcel">
         <img alt="Codecov branch" src="https://img.shields.io/codecov/c/github/javaxcel/javaxcel/release?label=code%20coverage&style=flat-square&token=X7ZO535W9K"/>
     </a>
-    <a href="https://search.maven.org/artifact/com.github.javaxcel/javaxcel-core">
-        <img alt="Maven Central" src="https://img.shields.io/maven-central/v/com.github.javaxcel/javaxcel-core?style=flat-square">
+    <a href="https://search.maven.org/artifact/com.github.javaxcel/javaxcel">
+        <img alt="Maven Central" src="https://img.shields.io/maven-central/v/com.github.javaxcel/javaxcel?style=flat-square">
     </a>
     <br/>
     <a href="https://lgtm.com/projects/g/javaxcel/javaxcel/context:java">
