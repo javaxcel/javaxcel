@@ -33,8 +33,6 @@ import com.github.javaxcel.core.out.strategy.impl.EnumDropdown;
 import com.github.javaxcel.core.out.strategy.impl.Filter;
 import com.github.javaxcel.core.out.strategy.impl.HeaderNames;
 import com.github.javaxcel.core.out.strategy.impl.HeaderStyles;
-import com.github.javaxcel.core.out.strategy.impl.HiddenExtraColumns;
-import com.github.javaxcel.core.out.strategy.impl.HiddenExtraRows;
 import com.github.javaxcel.core.util.ExcelUtils;
 import com.github.javaxcel.core.util.FieldUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
@@ -391,8 +389,6 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
         if (this.enumDropdownMap != null) {
             createDropdowns(context.getSheet());
         }
-        resolveHiddenExtraRows(context);
-        resolveHiddenExtraColumns(context);
     }
 
     /**
@@ -408,19 +404,6 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
             // Sets validation with the dropdown items at the reference.
             ExcelUtils.setValidation(sheet, helper, ref, them);
         });
-    }
-
-
-    private void resolveHiddenExtraRows(ExcelWriteContext<T> context) {
-        if (context.getStrategyMap().containsKey(HiddenExtraRows.class)) {
-            ExcelUtils.hideExtraRows(context.getSheet(), context.getChunk().size() + 1);
-        }
-    }
-
-    private void resolveHiddenExtraColumns(ExcelWriteContext<T> context) {
-        if (context.getStrategyMap().containsKey(HiddenExtraColumns.class)) {
-            ExcelUtils.hideExtraColumns(context.getSheet(), this.fields.size());
-        }
     }
 
 }

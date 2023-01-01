@@ -21,6 +21,8 @@ import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.lifecycle.ExcelWriteLifecycle;
 import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 import com.github.javaxcel.core.out.strategy.impl.AutoResizedColumns;
+import com.github.javaxcel.core.out.strategy.impl.HiddenExtraColumns;
+import com.github.javaxcel.core.out.strategy.impl.HiddenExtraRows;
 import com.github.javaxcel.core.out.strategy.impl.SheetName;
 import com.github.javaxcel.core.util.ExcelUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
@@ -61,7 +63,7 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
      */
     protected static final ExcelStyleConfig DEFAULT_STYLE_CONFIG = new NoStyleConfig();
 
-    final ExcelWriteContext<T> context;
+    private final ExcelWriteContext<T> context;
 
     private int[] columnWidths;
 
@@ -155,6 +157,8 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
 
             // Applies the options.
             applyAutoResizedColumns();
+            applyHiddenExtraRows();
+            applyHiddenExtraColumns();
         }
 
         save(out);
@@ -251,6 +255,18 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
         for (int i = 0; i < this.columnWidths.length; i++) {
             int width = ((int) (this.columnWidths[i] * 1.14388F)) * 256;
             this.context.getSheet().setColumnWidth(i, width);
+        }
+    }
+
+    private void applyHiddenExtraRows() {
+        if (this.context.getStrategyMap().containsKey(HiddenExtraRows.class)) {
+            ExcelUtils.hideExtraRows(this.context.getSheet(), this.context.getChunk().size() + 1);
+        }
+    }
+
+    private void applyHiddenExtraColumns() {
+        if (this.context.getStrategyMap().containsKey(HiddenExtraColumns.class)) {
+            ExcelUtils.hideExtraColumns(this.context.getSheet(), getColumnCount());
         }
     }
 

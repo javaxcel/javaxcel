@@ -23,8 +23,6 @@ import com.github.javaxcel.core.out.strategy.impl.BodyStyles;
 import com.github.javaxcel.core.out.strategy.impl.DefaultValue;
 import com.github.javaxcel.core.out.strategy.impl.Filter;
 import com.github.javaxcel.core.out.strategy.impl.HeaderStyles;
-import com.github.javaxcel.core.out.strategy.impl.HiddenExtraColumns;
-import com.github.javaxcel.core.out.strategy.impl.HiddenExtraRows;
 import com.github.javaxcel.core.out.strategy.impl.KeyNames;
 import com.github.javaxcel.core.util.ExcelUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
@@ -237,19 +235,6 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
         }
 
         return null;
-    }
-
-    @Override
-    public void postWriteSheet(ExcelWriteContext<Map<String, Object>> context) {
-        Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> strategyMap = context.getStrategyMap();
-        Sheet sheet = context.getSheet();
-
-        if (strategyMap.containsKey(HiddenExtraRows.class)) {
-            ExcelUtils.hideExtraRows(sheet, context.getChunk().size() + 1);
-        }
-        if (strategyMap.containsKey(HiddenExtraColumns.class)) {
-            ExcelUtils.hideExtraColumns(sheet, this.keys.size());
-        }
     }
 
 }
