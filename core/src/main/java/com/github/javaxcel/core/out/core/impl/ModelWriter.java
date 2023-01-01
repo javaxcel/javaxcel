@@ -41,6 +41,7 @@ import com.github.javaxcel.core.util.FieldUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
 import com.github.javaxcel.styler.NoStyleConfig;
 import io.github.imsejin.common.assertion.Asserts;
+import io.github.imsejin.common.util.ArrayUtils;
 import io.github.imsejin.common.util.CollectionUtils;
 import io.github.imsejin.common.util.ReflectionUtils;
 import io.github.imsejin.common.util.StringUtils;
@@ -55,7 +56,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -187,7 +187,7 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
 
             ExcelStyleConfig[] headerConfigs = headerStyleConfigs.toArray(new ExcelStyleConfig[0]);
             CellStyle[] headerStyles = ExcelUtils.toCellStyles(workbook, headerConfigs);
-            context.setHeaderStyles(Arrays.asList(headerStyles));
+            context.setHeaderStyles(headerStyles);
 
             return;
         }
@@ -203,7 +203,7 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
                     .mapToObj(i -> headerConfig).toArray(ExcelStyleConfig[]::new);
 
             CellStyle[] headerStyles = ExcelUtils.toCellStyles(workbook, headerConfigs);
-            context.setHeaderStyles(Arrays.asList(headerStyles));
+            context.setHeaderStyles(headerStyles);
         }
 
         // Unless configure header styles with ExcelModel, creates empty arrays.
@@ -253,7 +253,7 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
 
             ExcelStyleConfig[] bodyConfigs = bodyStyleConfigs.toArray(new ExcelStyleConfig[0]);
             CellStyle[] bodyStyles = ExcelUtils.toCellStyles(workbook, bodyConfigs);
-            context.setBodyStyles(Arrays.asList(bodyStyles));
+            context.setBodyStyles(bodyStyles);
 
             return;
         }
@@ -269,7 +269,7 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
                     .mapToObj(i -> bodyConfig).toArray(ExcelStyleConfig[]::new);
 
             CellStyle[] bodyStyles = ExcelUtils.toCellStyles(workbook, bodyConfigs);
-            context.setBodyStyles(Arrays.asList(bodyStyles));
+            context.setBodyStyles(bodyStyles);
         }
 
         // Unless configure body styles with ExcelModel, creates empty arrays.
@@ -342,7 +342,7 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
                 .describedAs("headerNames cannot have duplicated elements: {0}", headerNames)
                 .doesNotHaveDuplicates();
 
-        List<CellStyle> headerStyles = context.getHeaderStyles();
+        CellStyle[] headerStyles = context.getHeaderStyles();
 
         // Names the header given values.
         final int headerCount = headerNames.size();
@@ -352,16 +352,16 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
             Cell cell = row.createCell(i);
             cell.setCellValue(headerName);
 
-            if (CollectionUtils.isNullOrEmpty(headerStyles)) {
+            if (ArrayUtils.isNullOrEmpty(headerStyles)) {
                 continue;
             }
 
             // Sets common style to all header cells or each style to each header cell.
             CellStyle headerStyle;
-            if (headerStyles.size() == 1) {
-                headerStyle = headerStyles.get(0);
+            if (headerStyles.length == 1) {
+                headerStyle = headerStyles[0];
             } else {
-                headerStyle = headerStyles.get(i);
+                headerStyle = headerStyles[i];
             }
 
             // There is possibility that headerStyles has null elements, if you set NoStyleConfig.

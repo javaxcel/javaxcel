@@ -30,7 +30,7 @@ import com.github.javaxcel.core.out.strategy.impl.KeyNames;
 import com.github.javaxcel.core.util.ExcelUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
 import io.github.imsejin.common.assertion.Asserts;
-import io.github.imsejin.common.util.CollectionUtils;
+import io.github.imsejin.common.util.ArrayUtils;
 import io.github.imsejin.common.util.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -40,7 +40,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -155,7 +154,7 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
 
         ExcelStyleConfig[] headerConfigs = headerStyleConfigs.toArray(new ExcelStyleConfig[0]);
         CellStyle[] headerStyles = ExcelUtils.toCellStyles(context.getWorkbook(), headerConfigs);
-        context.setHeaderStyles(Arrays.asList(headerStyles));
+        context.setHeaderStyles(headerStyles);
     }
 
     private void setBodyStyles(ExcelWriteContext<Map<String, Object>> context) {
@@ -172,7 +171,7 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
 
         ExcelStyleConfig[] bodyConfigs = bodyStyleConfigs.toArray(new ExcelStyleConfig[0]);
         CellStyle[] bodyStyles = ExcelUtils.toCellStyles(context.getWorkbook(), bodyConfigs);
-        context.setBodyStyles(Arrays.asList(bodyStyles));
+        context.setBodyStyles(bodyStyles);
     }
 
     @Override
@@ -195,7 +194,7 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
         Row row = context.getSheet().createRow(0);
 
         List<String> headerNames = this.headerNames == null ? this.keys : this.headerNames;
-        List<CellStyle> headerStyles = context.getHeaderStyles();
+        CellStyle[] headerStyles = context.getHeaderStyles();
 
         // Names the header given values.
         final int headerCount = headerNames.size();
@@ -205,14 +204,18 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
             Cell cell = row.createCell(i);
             cell.setCellValue(headerName);
 
-            if (CollectionUtils.isNullOrEmpty(headerStyles)) continue;
+            if (ArrayUtils.isNullOrEmpty(headerStyles)) {
+                continue;
+            }
 
             // Sets common style to all header cells or each style to each header cell.
-            CellStyle headerStyle = headerStyles.size() == 1
-                    ? headerStyles.get(0) : headerStyles.get(i);
+            CellStyle headerStyle = headerStyles.length == 1
+                    ? headerStyles[0] : headerStyles[i];
 
             // There is possibility that headerStyles has null elements, if you set NoStyleConfig.
-            if (headerStyle != null) cell.setCellStyle(headerStyle);
+            if (headerStyle != null) {
+                cell.setCellStyle(headerStyle);
+            }
         }
     }
 

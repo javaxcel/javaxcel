@@ -164,7 +164,7 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
         Sheet sheet = context.getSheet();
 
         List<T> chunk = context.getChunk();
-        List<CellStyle> bodyStyles = context.getBodyStyles();
+        CellStyle[] bodyStyles = context.getBodyStyles();
         final int chunkSize = chunk.size();
         final int columnCount = getColumnCount();
 
@@ -183,16 +183,16 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
                     cell.setCellValue(cellValue);
                 }
 
-                if (CollectionUtils.isNullOrEmpty(bodyStyles)) {
+                if (ArrayUtils.isNullOrEmpty(bodyStyles)) {
                     continue;
                 }
 
                 // Sets styles to body's cell.
                 CellStyle bodyStyle;
-                if (bodyStyles.size() == 1) {
-                    bodyStyle = bodyStyles.get(0);
+                if (bodyStyles.length == 1) {
+                    bodyStyle = bodyStyles[0];
                 } else {
-                    bodyStyle = bodyStyles.get(j);
+                    bodyStyle = bodyStyles[j];
                 }
 
                 // There is possibility that bodyStyles has null elements, if you set NoStyleConfig.

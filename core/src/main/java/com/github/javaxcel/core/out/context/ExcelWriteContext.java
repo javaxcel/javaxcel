@@ -58,13 +58,13 @@ public class ExcelWriteContext<T> {
      * @see ExcelColumn#headerStyle()
      * @see ExcelModel#headerStyle()
      */
-    private List<CellStyle> headerStyles;
+    private CellStyle[] headerStyles;
 
     /**
      * @see ExcelColumn#bodyStyle()
      * @see ExcelModel#bodyStyle()
      */
-    private List<CellStyle> bodyStyles;
+    private CellStyle[] bodyStyles;
 
     public ExcelWriteContext(Workbook workbook, Class<T> modelType, Class<? extends ExcelWriter<T>> writerType) {
         Asserts.that(workbook)
@@ -153,11 +153,11 @@ public class ExcelWriteContext<T> {
         this.sheet = sheet;
     }
 
-    public List<CellStyle> getHeaderStyles() {
+    public CellStyle[] getHeaderStyles() {
         return this.headerStyles;
     }
 
-    public void setHeaderStyles(List<CellStyle> headerStyles) {
+    public void setHeaderStyles(CellStyle[] headerStyles) {
         Asserts.that(headerStyles)
                 .describedAs("ExcelWriteContext.headerStyles is not allowed to be null or empty: {0}", headerStyles)
                 .isNotNull().isNotEmpty();
@@ -165,11 +165,11 @@ public class ExcelWriteContext<T> {
         this.headerStyles = headerStyles;
     }
 
-    public List<CellStyle> getBodyStyles() {
+    public CellStyle[] getBodyStyles() {
         return this.bodyStyles;
     }
 
-    public void setBodyStyles(List<CellStyle> bodyStyles) {
+    public void setBodyStyles(CellStyle[] bodyStyles) {
         Asserts.that(bodyStyles)
                 .describedAs("ExcelWriteContext.bodyStyles is not allowed to be null or empty: {0}", bodyStyles)
                 .isNotNull().isNotEmpty();
