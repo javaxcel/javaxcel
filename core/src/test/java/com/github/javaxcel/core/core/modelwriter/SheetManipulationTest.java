@@ -73,7 +73,7 @@ class SheetManipulationTest extends ModelWriterTester {
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected void whenWriteWorkbook(GivenModel givenModel, WhenModel whenModel, ThenModel thenModel) {
         TestUtils.JAVAXCEL.writer(whenModel.getWorkbook(), givenModel.getType())
-                .options(new SheetName("Rainbow"), new AutoResizedColumns(), new HiddenExtraRows(), new HiddenExtraColumns())
+                .options(new SheetName("Rainbow"), new AutoResizedColumns(false), new HiddenExtraRows(), new HiddenExtraColumns())
                 .write(whenModel.getOutputStream(), (List) thenModel.getModels());
     }
 

@@ -102,7 +102,7 @@ class DecorationTest extends MapWriterTester {
         // java.lang.RuntimeException: Column info records are out of order
         TestUtils.JAVAXCEL.writer(whenModel.getWorkbook())
                 .options(new SheetName("Rainbow"),
-                        new AutoResizedColumns(),
+                        new AutoResizedColumns(true),
                         new HiddenExtraRows(),
                         new HiddenExtraColumns(),
                         new HeaderStyles(new DefaultHeaderStyleConfig()),

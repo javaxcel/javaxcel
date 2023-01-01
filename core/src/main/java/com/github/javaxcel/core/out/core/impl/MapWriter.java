@@ -19,7 +19,6 @@ package com.github.javaxcel.core.out.core.impl;
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.core.AbstractExcelWriter;
 import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
-import com.github.javaxcel.core.out.strategy.impl.AutoResizedColumns;
 import com.github.javaxcel.core.out.strategy.impl.BodyStyles;
 import com.github.javaxcel.core.out.strategy.impl.DefaultValue;
 import com.github.javaxcel.core.out.strategy.impl.Filter;
@@ -245,10 +244,6 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
         Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> strategyMap = context.getStrategyMap();
         Sheet sheet = context.getSheet();
 
-        // Adjusts rows and columns.
-        if (strategyMap.containsKey(AutoResizedColumns.class)) {
-            ExcelUtils.autoResizeColumns(sheet, this.keys.size());
-        }
         if (strategyMap.containsKey(HiddenExtraRows.class)) {
             ExcelUtils.hideExtraRows(sheet, context.getChunk().size() + 1);
         }

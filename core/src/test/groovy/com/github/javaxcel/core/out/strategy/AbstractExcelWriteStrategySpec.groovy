@@ -31,18 +31,18 @@ class AbstractExcelWriteStrategySpec extends Specification {
         def strategy = new Filter(false)
 
         when:
-        set.add null
-        set.add strategy
-        set.add new AutoResizedColumns()
+        set.add(null)
+        set.add(strategy)
+        set.add(new AutoResizedColumns(false))
 
         then:
         set.size() == 3
 
         when:
-        set.add null
-        set.add strategy
-        set.add new AutoResizedColumns()
-        set.add new SheetName("a")
+        set.add(null)
+        set.add(strategy)
+        set.add(new AutoResizedColumns(false))
+        set.add(new SheetName("a"))
 
         then:
         set.size() == 4

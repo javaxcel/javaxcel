@@ -20,6 +20,7 @@ import com.github.javaxcel.core.exception.WritingExcelException;
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.lifecycle.ExcelWriteLifecycle;
 import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
+import com.github.javaxcel.core.out.strategy.impl.AutoResizedColumns;
 import com.github.javaxcel.core.out.strategy.impl.SheetName;
 import com.github.javaxcel.core.util.ExcelUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
@@ -61,6 +62,8 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
     protected static final ExcelStyleConfig DEFAULT_STYLE_CONFIG = new NoStyleConfig();
 
     final ExcelWriteContext<T> context;
+
+    private int[] columnWidths;
 
     /**
      * Creates a writer for model.
@@ -110,6 +113,8 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
         // Lifecycle method.
         prepare(this.context);
 
+        setupAutoResizeColumns();
+
         Workbook workbook = this.context.getWorkbook();
         final int maxRows = ExcelUtils.getMaxRows(workbook) - 1; // Subtracts 1 because of header row.
         List<List<T>> chunkedList = CollectionUtils.partitionBySize(list, maxRows);
@@ -147,12 +152,29 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
 
             // Lifecycle method.
             postWriteSheet(this.context);
+
+            // Applies the options.
+            applyAutoResizedColumns();
         }
 
         save(out);
 
         // Lifecycle method.
         complete(this.context);
+    }
+
+    private void setupAutoResizeColumns() {
+        ExcelWriteStrategy strategy = this.context.getStrategyMap().get(AutoResizedColumns.class);
+        if (strategy == null) {
+            return;
+        }
+
+        boolean manual = (boolean) strategy.execute(this.context);
+        if (!manual) {
+            return;
+        }
+
+        this.columnWidths = new int[getColumnCount()];
     }
 
     /**
@@ -178,6 +200,9 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
                 Cell cell = row.createCell(j);
                 String cellValue = createCellValue(model, j);
 
+                // Stores the max width of each cell.
+                storeColumnWidth(cellValue, j);
+
                 // Doesn't write even empty string.
                 if (!StringUtils.isNullOrEmpty(cellValue)) {
                     cell.setCellValue(cellValue);
@@ -200,6 +225,32 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
                     cell.setCellStyle(bodyStyle);
                 }
             }
+        }
+    }
+
+    private void storeColumnWidth(String cellValue, int columnIndex) {
+        if (ArrayUtils.isNullOrEmpty(this.columnWidths)) {
+            return;
+        }
+
+        int width = cellValue == null ? 0 : cellValue.length();
+        this.columnWidths[columnIndex] = Math.max(width, this.columnWidths[columnIndex]);
+    }
+
+    private void applyAutoResizedColumns() {
+        if (!this.context.getStrategyMap().containsKey(AutoResizedColumns.class)) {
+            return;
+        }
+
+        if (ArrayUtils.isNullOrEmpty(this.columnWidths)) {
+            ExcelUtils.autoResizeColumns(this.context.getSheet(), getColumnCount());
+            return;
+        }
+
+        // 1.14388 is a max character width of the "Serif" font and 256 font units.
+        for (int i = 0; i < this.columnWidths.length; i++) {
+            int width = ((int) (this.columnWidths[i] * 1.14388F)) * 256;
+            this.context.getSheet().setColumnWidth(i, width);
         }
     }
 

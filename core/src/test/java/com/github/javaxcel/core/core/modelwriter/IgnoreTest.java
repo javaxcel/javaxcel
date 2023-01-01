@@ -71,7 +71,7 @@ class IgnoreTest extends ModelWriterTester {
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected void whenWriteWorkbook(GivenModel givenModel, WhenModel whenModel, ThenModel thenModel) {
         TestUtils.JAVAXCEL.writer(whenModel.getWorkbook(), givenModel.getType())
-                .options(new AutoResizedColumns())
+                .options(new AutoResizedColumns(false))
                 .write(whenModel.getOutputStream(), (List) thenModel.getModels());
     }
 

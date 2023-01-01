@@ -28,7 +28,6 @@ import com.github.javaxcel.core.exception.NoTargetedFieldException;
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.core.AbstractExcelWriter;
 import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
-import com.github.javaxcel.core.out.strategy.impl.AutoResizedColumns;
 import com.github.javaxcel.core.out.strategy.impl.BodyStyles;
 import com.github.javaxcel.core.out.strategy.impl.EnumDropdown;
 import com.github.javaxcel.core.out.strategy.impl.Filter;
@@ -392,8 +391,6 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
         if (this.enumDropdownMap != null) {
             createDropdowns(context.getSheet());
         }
-
-        resolveAutoResizedColumns(context);
         resolveHiddenExtraRows(context);
         resolveHiddenExtraColumns(context);
     }
@@ -413,13 +410,6 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
         });
     }
 
-    private void resolveAutoResizedColumns(ExcelWriteContext<T> context) {
-        if (context.getStrategyMap().containsKey(AutoResizedColumns.class)) {
-            ExcelUtils.autoResizeColumns(context.getSheet(), this.fields.size());
-            Sheet sheet = context.getSheet();
-            sheet.getColumnWidth(0);
-        }
-    }
 
     private void resolveHiddenExtraRows(ExcelWriteContext<T> context) {
         if (context.getStrategyMap().containsKey(HiddenExtraRows.class)) {

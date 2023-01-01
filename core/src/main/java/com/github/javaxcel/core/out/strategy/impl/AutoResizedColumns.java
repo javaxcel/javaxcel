@@ -32,6 +32,18 @@ import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
  */
 public class AutoResizedColumns extends AbstractExcelWriteStrategy {
 
+    private final boolean manual;
+
+    /**
+     * Strategy for style of resizing column width.
+     *
+     * @param manual whether resize columns manually or not
+     * @since 0.9.1
+     */
+    public AutoResizedColumns(boolean manual) {
+        this.manual = manual;
+    }
+
     @Override
     public boolean isSupported(ExcelWriteContext<?> context) {
         Class<? extends ExcelWriter<?>> writerType = context.getWriterType();
@@ -41,7 +53,7 @@ public class AutoResizedColumns extends AbstractExcelWriteStrategy {
     @Override
     @ExcludeFromGeneratedJacocoReport
     public Object execute(ExcelWriteContext<?> context) {
-        throw new UnsupportedOperationException("ExcelWriteStrategy." + getClass().getSimpleName() + " is not supported");
+        return this.manual;
     }
 
 }
