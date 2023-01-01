@@ -260,6 +260,7 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
      * Returns the number of columns.
      *
      * @return number of columns
+     * @since 0.9.1
      */
     protected abstract int getColumnCount();
 
@@ -269,6 +270,7 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
      * @param model       Excel model
      * @param columnIndex index of the cell
      * @return cell value
+     * @since 0.9.1
      */
     @Nullable
     protected abstract String createCellValue(T model, int columnIndex);
