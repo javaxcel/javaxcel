@@ -418,7 +418,9 @@ public final class ExcelUtils {
     public static CellStyle toCellStyle(Workbook workbook, ExcelStyleConfig config) {
         // To save memory and prevent the number of cell styles in a workbook from increasing,
         // replaces redundant cell style with null.
-        if (config.getClass() == NoStyleConfig.class) return null;
+        if (config.getClass() == NoStyleConfig.class) {
+            return null;
+        }
 
         CellStyle cellStyle = workbook.createCellStyle();
         Configurer configurer = new Configurer(cellStyle, workbook.createFont());

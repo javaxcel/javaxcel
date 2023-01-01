@@ -135,7 +135,9 @@ public abstract class AbstractExcelReader<T> implements ExcelReader<T>, ExcelRea
 
         List<Sheet> sheets = ExcelUtils.getSheets(this.context.getWorkbook());
         for (Sheet sheet : sheets) {
-            if (this.context.getReadCount() == this.limit) break;
+            if (this.context.getReadCount() == this.limit) {
+                break;
+            }
 
             this.context.setSheet(sheet);
 
