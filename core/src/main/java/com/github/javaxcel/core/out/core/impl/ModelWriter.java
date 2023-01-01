@@ -42,7 +42,6 @@ import com.github.javaxcel.styler.ExcelStyleConfig;
 import com.github.javaxcel.styler.NoStyleConfig;
 import io.github.imsejin.common.assertion.Asserts;
 import io.github.imsejin.common.util.ArrayUtils;
-import io.github.imsejin.common.util.CollectionUtils;
 import io.github.imsejin.common.util.ReflectionUtils;
 import io.github.imsejin.common.util.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -55,7 +54,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -207,9 +205,11 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
         }
 
         // Unless configure header styles with ExcelModel, creates empty arrays.
-        List<CellStyle> headerStyles = CollectionUtils.ifNullOrEmpty(context.getHeaderStyles(), new ArrayList<>(this.fields.size()));
+        CellStyle[] headerStyles = ArrayUtils.isNullOrEmpty(context.getHeaderStyles())
+                ? new CellStyle[this.fields.size()]
+                : context.getHeaderStyles();
 
-        for (int i = 0; i < this.fields.size(); i++) {
+        for (int i = 0; i < headerStyles.length; i++) {
             Field field = this.fields.get(i);
             ExcelColumn excelColumn = field.getAnnotation(ExcelColumn.class);
 
@@ -225,16 +225,11 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
             }
 
             ExcelStyleConfig headerConfig = ReflectionUtils.instantiate(headerConfigType);
-            if (headerStyles.size() - 1 >= i) {
-                headerStyles.set(i, ExcelUtils.toCellStyle(workbook, headerConfig));
-            } else {
-                headerStyles.add(i, ExcelUtils.toCellStyle(workbook, headerConfig));
-            }
+            CellStyle cellStyle = ExcelUtils.toCellStyle(workbook, headerConfig);
+            headerStyles[i] = cellStyle;
         }
 
-        if (!headerStyles.isEmpty()) {
-            context.setHeaderStyles(headerStyles);
-        }
+        context.setHeaderStyles(headerStyles);
     }
 
     private void resolveBodyStyles(ExcelWriteContext<T> context) {
@@ -273,7 +268,9 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
         }
 
         // Unless configure body styles with ExcelModel, creates empty arrays.
-        List<CellStyle> bodyStyles = CollectionUtils.ifNullOrEmpty(context.getBodyStyles(), new ArrayList<>(this.fields.size()));
+        CellStyle[] bodyStyles = ArrayUtils.isNullOrEmpty(context.getBodyStyles())
+                ? new CellStyle[this.fields.size()]
+                : context.getBodyStyles();
 
         for (int i = 0; i < this.fields.size(); i++) {
             Field field = this.fields.get(i);
@@ -291,16 +288,11 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
             }
 
             ExcelStyleConfig bodyConfig = ReflectionUtils.instantiate(bodyConfigType);
-            if (bodyStyles.size() - 1 >= i) {
-                bodyStyles.set(i, ExcelUtils.toCellStyle(workbook, bodyConfig));
-            } else {
-                bodyStyles.add(i, ExcelUtils.toCellStyle(workbook, bodyConfig));
-            }
+            CellStyle cellStyle = ExcelUtils.toCellStyle(workbook, bodyConfig);
+            bodyStyles[i] = cellStyle;
         }
 
-        if (!bodyStyles.isEmpty()) {
-            context.setBodyStyles(bodyStyles);
-        }
+        context.setBodyStyles(bodyStyles);
     }
 
     @Override
