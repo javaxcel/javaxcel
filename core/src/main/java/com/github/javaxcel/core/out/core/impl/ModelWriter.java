@@ -51,6 +51,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -380,55 +381,29 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
     }
 
     @Override
-    protected void createBody(ExcelWriteContext<T> context) {
-        Sheet sheet = context.getSheet();
+    protected int getColumnCount() {
+        return this.fields.size();
+    }
 
+    @Nullable
+    @Override
+    protected String createCellValue(T model, int columnIndex) {
+        Field field = this.fields.get(columnIndex);
+
+        // Converts field value into the string.
+        return this.converter.convert(model, field);
+    }
+
+    @Override
+    public void postWriteSheet(ExcelWriteContext<T> context) {
         // Creates constraint for columns of enum.
         if (this.enumDropdownMap != null) {
-            createDropdowns(sheet);
+            createDropdowns(context.getSheet());
         }
 
-        List<T> chunk = context.getChunk();
-        List<CellStyle> bodyStyles = context.getBodyStyles();
-        final int chunkSize = chunk.size();
-        final int numOfFields = this.fields.size();
-
-        for (int i = 0; i < chunkSize; i++) {
-            T model = chunk.get(i);
-
-            // Skips the first row that is header.
-            Row row = sheet.createRow(i + 1);
-
-            for (int j = 0; j < numOfFields; j++) {
-                Field field = this.fields.get(j);
-                Cell cell = row.createCell(j);
-
-                // Converts field value into the string.
-                String value = this.converter.convert(model, field);
-
-                // Doesn't write even empty string.
-                if (!StringUtils.isNullOrEmpty(value)) {
-                    cell.setCellValue(value);
-                }
-
-                if (CollectionUtils.isNullOrEmpty(bodyStyles)) {
-                    continue;
-                }
-
-                // Sets styles to body's cell.
-                CellStyle bodyStyle;
-                if (bodyStyles.size() == 1) {
-                    bodyStyle = bodyStyles.get(0);
-                } else {
-                    bodyStyle = bodyStyles.get(j);
-                }
-
-                // There is possibility that bodyStyles has null elements, if you set NoStyleConfig.
-                if (bodyStyle != null) {
-                    cell.setCellStyle(bodyStyle);
-                }
-            }
-        }
+        resolveAutoResizedColumns(context);
+        resolveHiddenExtraRows(context);
+        resolveHiddenExtraColumns(context);
     }
 
     /**
@@ -446,16 +421,11 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
         });
     }
 
-    @Override
-    public void postWriteSheet(ExcelWriteContext<T> context) {
-        resolveAutoResizedColumns(context);
-        resolveHiddenExtraRows(context);
-        resolveHiddenExtraColumns(context);
-    }
-
     private void resolveAutoResizedColumns(ExcelWriteContext<T> context) {
         if (context.getStrategyMap().containsKey(AutoResizedColumns.class)) {
             ExcelUtils.autoResizeColumns(context.getSheet(), this.fields.size());
+            Sheet sheet = context.getSheet();
+            sheet.getColumnWidth(0);
         }
     }
 

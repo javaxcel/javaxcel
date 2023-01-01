@@ -38,6 +38,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -216,41 +217,24 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
     }
 
     @Override
-    protected void createBody(ExcelWriteContext<Map<String, Object>> context) {
-        Sheet sheet = context.getSheet();
-        List<Map<String, Object>> chunk = context.getChunk();
-        List<CellStyle> bodyStyles = context.getBodyStyles();
+    protected int getColumnCount() {
+        return this.keys.size();
+    }
 
-        final int chunkSize = chunk.size();
-        final int numOfKeys = this.keys.size();
+    @Nullable
+    @Override
+    protected String createCellValue(Map<String, Object> model, int columnIndex) {
+        Object value = model.get(this.keys.get(columnIndex));
 
-        for (int i = 0; i < chunkSize; i++) {
-            Map<String, Object> map = chunk.get(i);
-
-            // Skips the first row that is header.
-            Row row = sheet.createRow(i + 1);
-
-            for (int j = 0; j < numOfKeys; j++) {
-                Object value = map.get(this.keys.get(j));
-                Cell cell = row.createCell(j);
-
-                // Not allows empty string to be written.
-                if (value != null && !"".equals(value)) {
-                    cell.setCellValue(value.toString());
-                } else if (this.defaultValue != null) {
-                    cell.setCellValue(this.defaultValue);
-                }
-
-                if (CollectionUtils.isNullOrEmpty(bodyStyles)) continue;
-
-                // Sets styles to body's cell.
-                CellStyle bodyStyle = bodyStyles.size() == 1
-                        ? bodyStyles.get(0) : bodyStyles.get(j);
-
-                // There is possibility that bodyStyles has null elements, if you set NoStyleConfig.
-                if (bodyStyle != null) cell.setCellStyle(bodyStyle);
-            }
+        if (value != null) {
+            return value.toString();
         }
+
+        if (!StringUtils.isNullOrEmpty(this.defaultValue)) {
+            return this.defaultValue;
+        }
+
+        return null;
     }
 
     @Override

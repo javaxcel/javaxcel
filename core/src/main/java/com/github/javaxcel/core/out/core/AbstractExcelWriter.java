@@ -29,8 +29,12 @@ import io.github.imsejin.common.util.ArrayUtils;
 import io.github.imsejin.common.util.CollectionUtils;
 import io.github.imsejin.common.util.NumberUtils;
 import io.github.imsejin.common.util.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -152,6 +156,54 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
     }
 
     /**
+     * Creates the second row and below as body for each sheet.
+     *
+     * @param context context with current sheet and chunked models
+     */
+    protected final void createBody(ExcelWriteContext<T> context) {
+        Sheet sheet = context.getSheet();
+
+        List<T> chunk = context.getChunk();
+        List<CellStyle> bodyStyles = context.getBodyStyles();
+        final int chunkSize = chunk.size();
+        final int columnCount = getColumnCount();
+
+        for (int i = 0; i < chunkSize; i++) {
+            T model = chunk.get(i);
+
+            // Skips the first row that is header.
+            Row row = sheet.createRow(i + 1);
+
+            for (int j = 0; j < columnCount; j++) {
+                Cell cell = row.createCell(j);
+                String cellValue = createCellValue(model, j);
+
+                // Doesn't write even empty string.
+                if (!StringUtils.isNullOrEmpty(cellValue)) {
+                    cell.setCellValue(cellValue);
+                }
+
+                if (CollectionUtils.isNullOrEmpty(bodyStyles)) {
+                    continue;
+                }
+
+                // Sets styles to body's cell.
+                CellStyle bodyStyle;
+                if (bodyStyles.size() == 1) {
+                    bodyStyle = bodyStyles.get(0);
+                } else {
+                    bodyStyle = bodyStyles.get(j);
+                }
+
+                // There is possibility that bodyStyles has null elements, if you set NoStyleConfig.
+                if (bodyStyle != null) {
+                    cell.setCellStyle(bodyStyle);
+                }
+            }
+        }
+    }
+
+    /**
      * Saves models into an Excel file.
      *
      * @param out output stream
@@ -205,10 +257,20 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
     protected abstract void createHeader(ExcelWriteContext<T> context);
 
     /**
-     * Creates the second row and below as body for each sheet.
+     * Returns the number of columns.
      *
-     * @param context context with current sheet and chunked models
+     * @return number of columns
      */
-    protected abstract void createBody(ExcelWriteContext<T> context);
+    protected abstract int getColumnCount();
+
+    /**
+     * Returns the value as cell value.
+     *
+     * @param model       Excel model
+     * @param columnIndex index of the cell
+     * @return cell value
+     */
+    @Nullable
+    protected abstract String createCellValue(T model, int columnIndex);
 
 }
