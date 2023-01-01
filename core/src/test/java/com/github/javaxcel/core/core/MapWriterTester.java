@@ -51,12 +51,12 @@ public abstract class MapWriterTester {
 
         try {
             // when: 1
-            stopwatch.start("create %,d mocks", whenModel.numOfMocks);
+            stopwatch.start("create %,d mocks", whenModel.mockCount);
             ThenModel thenModel = whenCreateModels(givenModel, whenModel);
             stopwatch.stop();
 
             // when: 2
-            stopwatch.start("write %,d models", whenModel.numOfMocks);
+            stopwatch.start("write %,d models", whenModel.mockCount);
             whenWriteWorkbook(givenModel, whenModel, thenModel);
             stopwatch.stop();
 
@@ -84,13 +84,13 @@ public abstract class MapWriterTester {
         }
 
         Integer number = FieldUtils.resolveFirst(Integer.class, Objects.requireNonNull(givenModel.args));
-        int numOfMocks = number == null ? 8192 : number;
+        int mockCount = number == null ? 8192 : number;
 
-        return new WhenModel(out, workbook, numOfMocks);
+        return new WhenModel(out, workbook, mockCount);
     }
 
     protected ThenModel whenCreateModels(GivenModel givenModel, WhenModel whenModel) {
-        List<Map<String, Object>> models = TestUtils.getRandomMaps(whenModel.numOfMocks, 10);
+        List<Map<String, Object>> models = TestUtils.getRandomMaps(whenModel.mockCount, 10);
         return new ThenModel(models);
     }
 
@@ -118,7 +118,7 @@ public abstract class MapWriterTester {
         private final OutputStream outputStream;
         @NotNull
         private final Workbook workbook;
-        private int numOfMocks;
+        private int mockCount;
     }
 
     @Getter

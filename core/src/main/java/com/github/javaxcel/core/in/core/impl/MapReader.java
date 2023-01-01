@@ -63,9 +63,9 @@ public class MapReader extends AbstractExcelReader<Map<String, String>> {
         // If header names is empty, sets first row's values to it.
         List<String> headerNames = new ArrayList<>();
         for (Row header : context.getSheet()) {
-            int numOfColumns = header.getLastCellNum();
+            int columnCount = header.getLastCellNum();
 
-            for (int i = 0; i < numOfColumns; i++) {
+            for (int i = 0; i < columnCount; i++) {
                 Cell cell = header.getCell(i);
                 String cellValue = cell == null ? null : cell.getStringCellValue();
 

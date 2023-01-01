@@ -46,8 +46,8 @@ class MapReaderSpec extends Specification {
         given:
         def keys = ["A", "B", "C", "D", "E", "F"]
         def workbook = new SXSSFWorkbook()
-        def numOfMocks = 1024
-        def maps = (0..<numOfMocks).collect { TestUtils.randomizeMap(keys) }
+        def mockCount = 1024
+        def maps = (0..<mockCount).collect { TestUtils.randomizeMap(keys) }
         def filePath = path.resolve("maps-${System.currentTimeMillis()}.xlsx")
         def out = Files.newOutputStream(filePath)
 
@@ -61,7 +61,7 @@ class MapReaderSpec extends Specification {
 
         then:
         Files.exists(filePath)
-        ExcelUtils.getNumOfModels(workbook) == numOfMocks
+        ExcelUtils.getNumOfModels(workbook) == mockCount
         workbook[0][0].collect { it.stringCellValue } == keys
 
         cleanup:
@@ -81,20 +81,20 @@ class MapReaderSpec extends Specification {
         stopwatch.stop()
 
         // Create mocks
-        def numOfMocks = ExcelUtils.getMaxRows(workbook) + 10_000
-        stopwatch.start("create %,d mocks", numOfMocks)
-        def maps = (0..numOfMocks).collect { getRandomMap keys }
+        def mockCount = ExcelUtils.getMaxRows(workbook) + 10_000
+        stopwatch.start("create %,d mocks", mockCount)
+        def maps = (0..mockCount).collect { getRandomMap keys }
         stopwatch.stop()
 
         // Write excel file with mocks
-        stopwatch.start("write %,d maps", numOfMocks)
+        stopwatch.start("write %,d maps", mockCount)
         Javaxcel.newInstance().writer(workbook)
                 .options(new SheetName("Maps"), new HeaderNames(keys))
                 .write(out, maps)
         stopwatch.stop()
 
         when: "Read excel file"
-        stopwatch.start("read %,d maps", numOfMocks)
+        stopwatch.start("read %,d maps", mockCount)
         @Cleanup def newWorkbook = new HSSFWorkbook(Files.newInputStream(file.toPath()))
         def actual = Javaxcel.newInstance().reader(newWorkbook).read()
         stopwatch.stop()

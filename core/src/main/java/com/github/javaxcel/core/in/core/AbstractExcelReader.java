@@ -230,8 +230,8 @@ public abstract class AbstractExcelReader<T> implements ExcelReader<T>, ExcelRea
     private Map<String, String> readRow(Row row) {
         Map<String, String> map = new HashMap<>();
 
-        int numOfColumns = row.getLastCellNum();
-        for (int i = 0; i < numOfColumns; i++) {
+        int columnCount = row.getLastCellNum();
+        for (int i = 0; i < columnCount; i++) {
             Cell cell = row.getCell(i);
             if (cell == null) continue;
 

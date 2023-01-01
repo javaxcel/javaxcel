@@ -45,9 +45,9 @@ public abstract class ModelReaderTester {
     }
 
     // Template method.
-    protected final void run(File file, Class<?> type, Stopwatch stopwatch, int numOfMocks) throws Exception {
+    protected final void run(File file, Class<?> type, Stopwatch stopwatch, int mockCount) throws Exception {
         GivenModel givenModel = new GivenModel(file, type);
-        givenModel.numOfMocks = numOfMocks;
+        givenModel.mockCount = mockCount;
 
         WhenModel whenModel;
         try {
@@ -56,11 +56,11 @@ public abstract class ModelReaderTester {
             givenCreateFile(givenModel);
             stopwatch.stop();
             // given: 2
-            stopwatch.start("create %,d mocks", givenModel.numOfMocks);
+            stopwatch.start("create %,d mocks", givenModel.mockCount);
             whenModel = givenCreateMocks(givenModel);
             stopwatch.stop();
             // given: 3
-            stopwatch.start("write %,d models", givenModel.numOfMocks);
+            stopwatch.start("write %,d models", givenModel.mockCount);
             givenWriteModels(givenModel, whenModel);
             stopwatch.stop();
         } finally {
@@ -74,7 +74,7 @@ public abstract class ModelReaderTester {
             whenGetWorkbook(givenModel, whenModel);
             stopwatch.stop();
             // when: 2
-            stopwatch.start("read %,d models", givenModel.numOfMocks);
+            stopwatch.start("read %,d models", givenModel.mockCount);
             ThenModel thenModel = whenReadModels(givenModel, whenModel);
             stopwatch.stop();
 
@@ -94,7 +94,7 @@ public abstract class ModelReaderTester {
     }
 
     protected WhenModel givenCreateMocks(GivenModel givenModel) {
-        List<?> mocks = TestUtils.getMocks(givenModel.type, givenModel.numOfMocks);
+        List<?> mocks = TestUtils.getMocks(givenModel.type, givenModel.mockCount);
         return new WhenModel(mocks);
     }
 
@@ -141,7 +141,7 @@ public abstract class ModelReaderTester {
         private final Class<?> type;
         private OutputStream outputStream;
         private Workbook workbook;
-        private int numOfMocks;
+        private int mockCount;
     }
 
     @Getter

@@ -197,8 +197,8 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
         List<CellStyle> headerStyles = context.getHeaderStyles();
 
         // Names the header given values.
-        final int numOfHeaders = headerNames.size();
-        for (int i = 0; i < numOfHeaders; i++) {
+        final int headerCount = headerNames.size();
+        for (int i = 0; i < headerCount; i++) {
             String headerName = headerNames.get(i);
 
             Cell cell = row.createCell(i);

@@ -61,8 +61,8 @@ class IgnoreTest extends ModelWriterTester {
     @Override
     protected WhenModel given(GivenModel givenModel) throws Exception {
         WhenModel whenModel = super.given(givenModel);
-        final int numOfMocks = ExcelUtils.getMaxRows(whenModel.getWorkbook()) / 50;
-        whenModel.setNumOfMocks(numOfMocks);
+        final int mockCount = ExcelUtils.getMaxRows(whenModel.getWorkbook()) / 50;
+        whenModel.setMockCount(mockCount);
 
         return whenModel;
     }

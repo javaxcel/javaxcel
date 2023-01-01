@@ -55,7 +55,7 @@ class DefaultValueTest extends MapWriterTester {
 
     @Override
     protected ThenModel whenCreateModels(GivenModel givenModel, WhenModel whenModel) {
-        List<Map<String, Object>> models = TestUtils.getRandomMaps(whenModel.getNumOfMocks(), 10);
+        List<Map<String, Object>> models = TestUtils.getRandomMaps(whenModel.getMockCount(), 10);
         return new ThenModel(models);
     }
 

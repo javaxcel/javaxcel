@@ -109,22 +109,24 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
         Workbook workbook = this.context.getWorkbook();
         final int maxRows = ExcelUtils.getMaxRows(workbook) - 1; // Subtracts 1 because of header row.
         List<List<T>> chunkedList = CollectionUtils.partitionBySize(list, maxRows);
-        final int numOfSheets = NumberUtils.toPositive(chunkedList.size());
+        final int sheetCount = NumberUtils.toPositive(chunkedList.size());
 
         // Creates sheet names by this or implementation.
-        List<String> sheetNames = createSheetNames(this.context, numOfSheets);
+        List<String> sheetNames = createSheetNames(this.context, sheetCount);
         Asserts.that(sheetNames)
                 .describedAs("sheetNames is not allowed to be null or empty: {0}", sheetNames)
-                .isNotNull().isNotEmpty()
+                .isNotNull()
+                .isNotEmpty()
                 .describedAs("sheetNames cannot have null or blank element: {0}", sheetNames)
                 .noneMatch(StringUtils::isNullOrBlank)
                 .describedAs("sheetNames cannot have duplicated elements: {0}", sheetNames)
                 .doesNotHaveDuplicates()
-                .asSize().describedAs("sheetNames.size is not equal to numOfSheets: (sheetName.size: {0}, numOfSheets: {1})",
-                sheetNames.size(), numOfSheets)
-                .isEqualTo(numOfSheets);
+                .asSize()
+                .describedAs("sheetNames.size is not equal to sheetCount: (sheetName.size: {0}, sheetCount: {1})",
+                        sheetNames.size(), sheetCount)
+                .isEqualTo(sheetCount);
 
-        for (int i = 0; i < numOfSheets; i++) {
+        for (int i = 0; i < sheetCount; i++) {
             String sheetName = sheetNames.get(i);
             Sheet sheet = workbook.createSheet(sheetName);
 
@@ -171,24 +173,24 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
      *     <li>Sheet names don't be null or empty.</li>
      *     <li>Sheet names don't have null element.</li>
      *     <li>Sheet names don't have duplicated elements.</li>
-     *     <li>The number of sheet names is equal to numOfSheets.</li>
+     *     <li>The number of sheet names is equal to sheetCount.</li>
      * </ul>
      *
-     * @param context     context with current sheet and chunked models.
-     * @param numOfSheets the number of sheets
+     * @param context    context with current sheet and chunked models.
+     * @param sheetCount the number of sheets
      * @return sheet names
      * @throws IllegalArgumentException if sheet names is null or empty
      */
-    protected List<String> createSheetNames(ExcelWriteContext<T> context, int numOfSheets) {
+    protected List<String> createSheetNames(ExcelWriteContext<T> context, int sheetCount) {
         ExcelWriteStrategy strategy = context.getStrategyMap().get(SheetName.class);
         String sheetName = strategy == null ? "Sheet" : (String) strategy.execute(context);
 
-        if (numOfSheets < 2) {
+        if (sheetCount < 2) {
             return Collections.singletonList(sheetName);
         }
 
         List<String> sheetNames = new ArrayList<>();
-        for (int i = 1; i <= numOfSheets; i++) {
+        for (int i = 1; i <= sheetCount; i++) {
             sheetNames.add(sheetName + i);
         }
 

@@ -44,9 +44,9 @@ public abstract class MapReaderTester {
     }
 
     // Template method.
-    protected final void run(File file, Stopwatch stopwatch, int numOfMocks) throws Exception {
+    protected final void run(File file, Stopwatch stopwatch, int mockCount) throws Exception {
         GivenModel givenModel = new GivenModel(file);
-        givenModel.numOfMocks = numOfMocks;
+        givenModel.mockCount = mockCount;
 
         WhenModel whenModel;
         try {
@@ -55,11 +55,11 @@ public abstract class MapReaderTester {
             givenCreateFile(givenModel);
             stopwatch.stop();
             // given: 2
-            stopwatch.start("create %,d mocks", givenModel.numOfMocks);
+            stopwatch.start("create %,d mocks", givenModel.mockCount);
             whenModel = givenCreateMocks(givenModel);
             stopwatch.stop();
             // given: 3
-            stopwatch.start("write %,d maps", givenModel.numOfMocks);
+            stopwatch.start("write %,d maps", givenModel.mockCount);
             givenWriteMaps(givenModel, whenModel);
             stopwatch.stop();
         } finally {
@@ -73,7 +73,7 @@ public abstract class MapReaderTester {
             whenGetWorkbook(givenModel, whenModel);
             stopwatch.stop();
             // when: 2
-            stopwatch.start("read %,d maps", givenModel.numOfMocks);
+            stopwatch.start("read %,d maps", givenModel.mockCount);
             ThenModel thenModel = whenReadMaps(givenModel, whenModel);
             stopwatch.stop();
 
@@ -93,7 +93,7 @@ public abstract class MapReaderTester {
     }
 
     protected WhenModel givenCreateMocks(GivenModel givenModel) {
-        List<Map<String, Object>> mocks = TestUtils.getRandomMaps(givenModel.numOfMocks, 5);
+        List<Map<String, Object>> mocks = TestUtils.getRandomMaps(givenModel.mockCount, 5);
         return new WhenModel(mocks);
     }
 
@@ -136,7 +136,7 @@ public abstract class MapReaderTester {
         private final File file;
         private OutputStream outputStream;
         private Workbook workbook;
-        private int numOfMocks;
+        private int mockCount;
     }
 
     @Getter

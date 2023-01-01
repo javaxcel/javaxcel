@@ -48,12 +48,12 @@ public abstract class ModelWriterTester {
 
         try {
             // when: 1
-            stopwatch.start("create %,d mocks", whenModel.numOfMocks);
+            stopwatch.start("create %,d mocks", whenModel.mockCount);
             ThenModel thenModel = whenCreateModels(givenModel, whenModel);
             stopwatch.stop();
 
             // when: 2
-            stopwatch.start("write %,d models", whenModel.numOfMocks);
+            stopwatch.start("write %,d models", whenModel.mockCount);
             whenWriteWorkbook(givenModel, whenModel, thenModel);
             stopwatch.stop();
 
@@ -84,7 +84,7 @@ public abstract class ModelWriterTester {
     }
 
     protected ThenModel whenCreateModels(GivenModel givenModel, WhenModel whenModel) {
-        List<?> models = TestUtils.getMocks(givenModel.type, whenModel.numOfMocks);
+        List<?> models = TestUtils.getMocks(givenModel.type, whenModel.mockCount);
         return new ThenModel(models);
     }
 
@@ -115,7 +115,7 @@ public abstract class ModelWriterTester {
         private final OutputStream outputStream;
         @NotNull
         private final Workbook workbook;
-        private int numOfMocks;
+        private int mockCount;
     }
 
     @Getter

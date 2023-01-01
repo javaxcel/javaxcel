@@ -93,7 +93,7 @@ class DecorationTest extends MapWriterTester {
 
     @Override
     protected ThenModel whenCreateModels(GivenModel givenModel, WhenModel whenModel) {
-        List<Map<String, Object>> models = TestUtils.getRandomMaps(whenModel.getNumOfMocks(), rainbowHeader.length);
+        List<Map<String, Object>> models = TestUtils.getRandomMaps(whenModel.getMockCount(), rainbowHeader.length);
         return new ThenModel(models);
     }
 

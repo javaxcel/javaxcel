@@ -53,7 +53,7 @@ class FinalFieldTest extends ModelReaderTester {
         RandomString randomString = new RandomString(TestUtils.getRandom());
         List<FinalFieldModel> mocks = new ArrayList<>();
 
-        for (int i = 0; i < givenModel.getNumOfMocks(); i++) {
+        for (int i = 0; i < givenModel.getMockCount(); i++) {
             int number = TestUtils.getRandom().nextInt();
             String text = randomString.nextString(8);
             mocks.add(new FinalFieldModel(number, text));

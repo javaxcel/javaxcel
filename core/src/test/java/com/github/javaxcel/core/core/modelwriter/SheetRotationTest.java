@@ -71,9 +71,9 @@ class SheetRotationTest extends ModelWriterTester {
 
         // To create multiple sheets, generates models as many
         // as the amount exceeds the maximum number of rows per sheet.
-        final int numOfMocks = (int) (ExcelUtils.getMaxRows(workbook) * 1.1);
+        final int mockCount = (int) (ExcelUtils.getMaxRows(workbook) * 1.1);
 
-        return new WhenModel(out, workbook, numOfMocks);
+        return new WhenModel(out, workbook, mockCount);
     }
 
     @Override

@@ -112,15 +112,15 @@ class KeyNamesTest extends MapWriterTester {
 
         // To create multiple sheets, generates models as many
         // as the amount exceeds the maximum number of rows per sheet.
-        int numOfMocks = (int) (ExcelUtils.getMaxRows(whenModel.getWorkbook()) * 1.1);
-        whenModel.setNumOfMocks(numOfMocks);
+        int mockCount = (int) (ExcelUtils.getMaxRows(whenModel.getWorkbook()) * 1.1);
+        whenModel.setMockCount(mockCount);
 
         return whenModel;
     }
 
     @Override
     protected ThenModel whenCreateModels(GivenModel givenModel, WhenModel whenModel) {
-        List<Map<String, Object>> models = TestUtils.getRandomMaps(whenModel.getNumOfMocks(), NUM_OF_COLUMNS);
+        List<Map<String, Object>> models = TestUtils.getRandomMaps(whenModel.getMockCount(), NUM_OF_COLUMNS);
         return new ThenModel(models);
     }
 

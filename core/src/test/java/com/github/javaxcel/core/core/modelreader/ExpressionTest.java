@@ -51,7 +51,7 @@ class ExpressionTest extends ModelReaderTester {
 
     @Override
     protected WhenModel givenCreateMocks(GivenModel givenModel) {
-        List<Human> mocks = Human.newRandomList(givenModel.getNumOfMocks());
+        List<Human> mocks = Human.newRandomList(givenModel.getMockCount());
         return new WhenModel(mocks);
     }
 
