@@ -1,5 +1,6 @@
 # Table of Contents
 
+- [v0.9.1](#v091): 2023-01-02
 - [v0.9.0](#v090): 2022-12-29
 - [v0.8.2](#v082): 2022-07-10
 - [v0.8.1](#v081): 2022-04-19
@@ -22,6 +23,19 @@
 - [v0.3.0](#v030): 2020-09-12
 - [v0.2.1](#v021): 2020-09-07
 - [v0.1.0](#v010): 2020-08-30
+
+# v0.9.1
+
+### Modification
+
+- ♻️ Replace: internal abstract method createBody(ExcelWriteContext) with `getColumnCount()`, `createCellValue(T, int)`
+- 🔨 Modify: type of `ExcelWriteContext.headerStyles` from `List<CellStyle>` to `CellStyle[]`
+- 🔨 Modify: type of `ExcelWriteContext.bodyStyles` from `List<CellStyle>` to `CellStyle[]`
+- 🔨 Modify: internal clean up on `ExcelWriter`
+
+### Troubleshooting
+
+- 🐞 Fix: wrong overwriting a cell style on `ModelWriter` due to ArrayIndexOutOfBoundsException
 
 # v0.9.0
 
