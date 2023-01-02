@@ -8,9 +8,9 @@
 
 <p align="center">
     <a href="https://search.maven.org/artifact/com.github.javaxcel/javaxcel-core">
-        <img alt="Maven Central" src="https://img.shields.io/maven-central/v/com.github.javaxcel/javaxcel-core?style=flat-square">
+        <img alt="Maven Central" src="https://img.shields.io/maven-central/v/com.github.javaxcel/javaxcel-core?style=flat">
     </a>
-    <img alt="jdk8" src="https://img.shields.io/badge/jdk-8-orange?style=flat-square">
+    <img alt="jdk8" src="https://img.shields.io/badge/jdk-8-orange?style=flat">
 </p>
 
 ## Table of Contents
