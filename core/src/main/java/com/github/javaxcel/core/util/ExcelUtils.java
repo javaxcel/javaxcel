@@ -23,6 +23,7 @@ import com.github.javaxcel.styler.config.Configurer;
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 import io.github.imsejin.common.assertion.Asserts;
 import io.github.imsejin.common.util.FilenameUtils;
+import io.github.imsejin.common.util.StreamUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -50,9 +51,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -98,7 +99,7 @@ public final class ExcelUtils {
         Workbook workbook;
         try {
             if (extension.equalsIgnoreCase(EXCEL_97_EXTENSION)) {
-                InputStream in = new FileInputStream(file);
+                InputStream in = Files.newInputStream(file.toPath());
                 workbook = new HSSFWorkbook(in);
             } else {
                 workbook = new XSSFWorkbook(file);
@@ -144,7 +145,8 @@ public final class ExcelUtils {
                 .thrownBy(UnsupportedWorkbookException::new)
                 .isNotInstanceOf(SXSSFSheet.class);
 
-        return Math.max(0, sheet.getPhysicalNumberOfRows());
+        int rowCount = (int) StreamUtils.toStream(sheet.iterator()).count();
+        return Math.max(0, rowCount);
     }
 
     /**
@@ -186,7 +188,8 @@ public final class ExcelUtils {
                 .thrownBy(UnsupportedWorkbookException::new)
                 .isNotInstanceOf(SXSSFSheet.class);
 
-        return Math.max(0, sheet.getPhysicalNumberOfRows() - 1);
+        int rowCount = (int) StreamUtils.toStream(sheet.iterator()).count();
+        return Math.max(0, rowCount - 1);
     }
 
     /**
