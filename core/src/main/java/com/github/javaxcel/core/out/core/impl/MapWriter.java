@@ -110,7 +110,9 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
 
     private void changeKeys(ExcelWriteContext<Map<String, Object>> context) {
         ExcelWriteStrategy strategy = context.getStrategyMap().get(KeyNames.class);
-        if (strategy == null) return;
+        if (strategy == null) {
+            return;
+        }
 
         Map<String, Object> keyMap = (Map<String, Object>) strategy.execute(context);
         Map<String, Integer> orders = (Map<String, Integer>) keyMap.get("orders");
@@ -124,7 +126,9 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
                         this.keys, orders.keySet())
                 .containsOnly(orders.keySet().toArray(new String[0]));
 
-        if (keyMap.containsKey("names")) this.headerNames = (List<String>) keyMap.get("names");
+        if (keyMap.containsKey("names")) {
+            this.headerNames = (List<String>) keyMap.get("names");
+        }
 
         // Rearranges the keys as you want: it changes order of columns.
         this.keys.sort(comparing(orders::get));
@@ -132,14 +136,18 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
 
     private void setDefaultValue(ExcelWriteContext<Map<String, Object>> context) {
         ExcelWriteStrategy strategy = context.getStrategyMap().get(DefaultValue.class);
-        if (strategy == null) return;
+        if (strategy == null) {
+            return;
+        }
 
         this.defaultValue = (String) strategy.execute(context);
     }
 
     private void setHeaderStyles(ExcelWriteContext<Map<String, Object>> context) {
         ExcelWriteStrategy strategy = context.getStrategyMap().get(HeaderStyles.class);
-        if (strategy == null) return;
+        if (strategy == null) {
+            return;
+        }
 
         List<ExcelStyleConfig> headerStyleConfigs = (List<ExcelStyleConfig>) strategy.execute(context);
 
@@ -156,7 +164,9 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
 
     private void setBodyStyles(ExcelWriteContext<Map<String, Object>> context) {
         ExcelWriteStrategy strategy = context.getStrategyMap().get(BodyStyles.class);
-        if (strategy == null) return;
+        if (strategy == null) {
+            return;
+        }
 
         List<ExcelStyleConfig> bodyStyleConfigs = (List<ExcelStyleConfig>) strategy.execute(context);
 
@@ -181,7 +191,9 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
             String ref = ExcelUtils.toRangeReference(sheet, 0, 0, this.keys.size() - 1, context.getChunk().size() - 1);
             sheet.setAutoFilter(CellRangeAddress.valueOf(ref));
 
-            if (frozenPane) sheet.createFreezePane(0, 1);
+            if (frozenPane) {
+                sheet.createFreezePane(0, 1);
+            }
         }
     }
 
