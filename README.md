@@ -17,10 +17,10 @@
         <img alt="Maven Central" src="https://img.shields.io/maven-central/v/com.github.javaxcel/javaxcel?logo=apachemaven&style=flat">
     </a>
     <br/>
-    <a href="https://sonarcloud.io/summary/new_code?id=javaxcel_javaxcel">
-        <img alt="Sonarcloud Security Rating" src="https://sonarcloud.io/api/project_badges/measure?project=javaxcel_javaxcel&metric=security_rating"/>
+    <a href="https://sonarcloud.io/summary/overall?id=javaxcel_javaxcel">
+        <img alt="Sonarcloud Quality Gate Status" src="https://sonarcloud.io/api/project_badges/measure?project=javaxcel_javaxcel&metric=alert_status"/>
     </a>
-    <a href="https://sonarcloud.io/summary/new_code?id=javaxcel_javaxcel">
+    <a href="https://sonarcloud.io/summary/overall?id=javaxcel_javaxcel">
         <img alt="Sonarcloud Maintainability Rating" src="https://sonarcloud.io/api/project_badges/measure?project=javaxcel_javaxcel&metric=sqale_rating"/>
     </a>
     <a href="https://www.codacy.com/gh/javaxcel/javaxcel/dashboard">
