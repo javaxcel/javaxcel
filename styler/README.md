@@ -8,7 +8,7 @@
 
 <p align="center">
     <a href="https://search.maven.org/artifact/com.github.javaxcel/javaxcel-styler">
-        <img alt="Maven Central" src="https://img.shields.io/maven-central/v/com.github.javaxcel/javaxcel-styler?style=flat">
+        <img alt="Maven Central" src="https://img.shields.io/maven-central/v/com.github.javaxcel/javaxcel-styler?logo=apachemaven&style=flat">
     </a>
     <img alt="jdk8" src="https://img.shields.io/badge/jdk-8-orange?style=flat">
 </p>
