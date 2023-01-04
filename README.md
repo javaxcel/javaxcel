@@ -8,13 +8,13 @@
 
 <p align="center">
     <a href="https://github.com/javaxcel/javaxcel/actions/workflows/maven-build.yml">
-        <img alt="GitHub Workflow Status (branch)" src="https://img.shields.io/github/actions/workflow/status/javaxcel/javaxcel/maven-build.yml?branch=release&style=flat">
+        <img alt="GitHub Workflow Status (branch)" src="https://img.shields.io/github/actions/workflow/status/javaxcel/javaxcel/maven-build.yml?branch=release&logo=github&style=flat">
     </a>
     <a href="https://codecov.io/gh/javaxcel/javaxcel">
-        <img alt="Codecov branch" src="https://img.shields.io/codecov/c/github/javaxcel/javaxcel/release?label=code%20coverage&style=flat&token=X7ZO535W9K"/>
+        <img alt="Codecov branch" src="https://img.shields.io/codecov/c/github/javaxcel/javaxcel/release?label=code%20coverage&logo=codecov&style=flat&token=X7ZO535W9K"/>
     </a>
     <a href="https://search.maven.org/artifact/com.github.javaxcel/javaxcel">
-        <img alt="Maven Central" src="https://img.shields.io/maven-central/v/com.github.javaxcel/javaxcel?style=flat">
+        <img alt="Maven Central" src="https://img.shields.io/maven-central/v/com.github.javaxcel/javaxcel?logo=apachemaven&style=flat">
     </a>
     <br/>
     <a href="https://sonarcloud.io/summary/new_code?id=javaxcel_javaxcel">
