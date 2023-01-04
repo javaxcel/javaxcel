@@ -18,23 +18,15 @@ package com.github.javaxcel.core.in.core.impl
 
 import com.github.javaxcel.core.Javaxcel
 import com.github.javaxcel.core.out.strategy.impl.HeaderNames
-import com.github.javaxcel.core.out.strategy.impl.SheetName
 import com.github.javaxcel.core.util.ExcelUtils
-import com.github.javaxcel.test.util.TestUtils
 import io.github.imsejin.common.tool.RandomString
-import io.github.imsejin.common.tool.Stopwatch
-import lombok.Cleanup
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
-import org.apache.poi.xssf.streaming.SXSSFWorkbook
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.TempDir
 
 import java.nio.file.Files
 import java.nio.file.Path
-import java.util.concurrent.TimeUnit
-
-import static java.util.stream.Collectors.toList
 
 @Subject(MapReader)
 class MapReaderSpec extends Specification {
@@ -44,80 +36,48 @@ class MapReaderSpec extends Specification {
 
     def "test"() {
         given:
-        def keys = ["A", "B", "C", "D", "E", "F"]
-        def workbook = new SXSSFWorkbook()
-        def mockCount = 1024
-        def maps = (0..<mockCount).collect { TestUtils.randomizeMap(keys) }
-        def filePath = path.resolve("maps-${System.currentTimeMillis()}.xlsx")
-        def out = Files.newOutputStream(filePath)
-
-        when:
-        Javaxcel.newInstance()
-                .writer(workbook)
-                .write(out, maps)
-
-        and:
-        workbook = ExcelUtils.getWorkbook(filePath.toFile())
-
-        then:
-        Files.exists(filePath)
-        ExcelUtils.getNumOfModels(workbook) == mockCount
-        workbook[0][0].collect { it.stringCellValue } == keys
-
-        cleanup:
-        out.close()
-    }
-
-    def "test1"() {
-        given:
-        def stopwatch = new Stopwatch(TimeUnit.SECONDS)
-        def file = new File(path.toFile(), "maps.xlsx")
         def keys = ["race", "name", "height", "weight", "eyesight", "favoriteFood"]
+        def filePath = path.resolve("maps-${System.currentTimeMillis()}.xlsx")
 
-        // Create excel file
-        stopwatch.start("create '%s' file", file.name)
-        @Cleanup def out = Files.newOutputStream(file.toPath())
-        @Cleanup def workbook = new HSSFWorkbook()
-        stopwatch.stop()
+        and: "Creates excel file"
+        def outStream = Files.newOutputStream(filePath)
+        def workbook = new HSSFWorkbook()
 
-        // Create mocks
+        and: "Creates mocks"
         def mockCount = ExcelUtils.getMaxRows(workbook) + 10_000
-        stopwatch.start("create %,d mocks", mockCount)
-        def maps = (0..mockCount).collect { getRandomMap keys }
-        stopwatch.stop()
+        List<Map<String, Object>> maps = (0..mockCount).collect { getRandomMap(keys) }
 
-        // Write excel file with mocks
-        stopwatch.start("write %,d maps", mockCount)
+        and: "Writes excel file with mocks"
         Javaxcel.newInstance().writer(workbook)
-                .options(new SheetName("Maps"), new HeaderNames(keys))
-                .write(out, maps)
-        stopwatch.stop()
+                .options(new HeaderNames(keys))
+                .write(outStream, maps)
 
-        when: "Read excel file"
-        stopwatch.start("read %,d maps", mockCount)
-        @Cleanup def newWorkbook = new HSSFWorkbook(Files.newInputStream(file.toPath()))
-        def actual = Javaxcel.newInstance().reader(newWorkbook).read()
-        stopwatch.stop()
-        println stopwatch.statistics
+        when: "Reads excel file"
+        def inputStream = Files.newInputStream(filePath)
+        def newWorkbook = new HSSFWorkbook(inputStream)
+        List<Map<String, String>> actual = Javaxcel.newInstance().reader(newWorkbook).read()
 
         then: "Number of mocks is equal to number of models loaded by ExcelReader"
         maps.size() == actual.size()
 
-        then: "Keys of all the mocks are equal to the given keys"
-        def actualKeys = actual.stream().flatMap({ it.keySet().stream() }).distinct().sorted().collect(toList())
-        actualKeys == keys.sort()
+        and: "Keys of all the mocks are equal to the given keys"
+        List<String> actualKeys = actual.collectMany { it.keySet() }.unique().sort(false)
+        actualKeys == keys.sort(false)
 
-        then: "Mocks is equal to the models loaded by ExcelReader"
+        and: "Mocks are equal to the models loaded by ExcelReader"
         maps == actual
+
+        cleanup:
+        outStream.close()
+        inputStream.close()
     }
 
-    private static Map<String, Object> getRandomMap(List<String> keys) {
-        def map = [:] as Map<String, Object>
-        def randomString = new RandomString()
+    // -------------------------------------------------------------------------------------------------
 
-        keys.each {
-            map.put(it, randomString.nextString(it.length()))
-        }
+    private static Map<String, Object> getRandomMap(List<String> keys) {
+        Map<String, Object> map = [:]
+        def randomString = new RandomString()
+        keys.each { map.put(it, randomString.nextString(it.length())) }
 
         map
     }
