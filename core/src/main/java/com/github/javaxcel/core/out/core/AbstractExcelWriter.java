@@ -200,6 +200,8 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
                 .describedAs("There are two or more rows as a header in the sheet; create only one row as the header")
                 .isEqualTo(0);
 
+        storeHeaderColumnWidth(sheet);
+
         for (int i = lastRowIndex; i < chunkSize; i++) {
             T model = chunk.get(i);
 
@@ -237,6 +239,22 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
                     cell.setCellStyle(bodyStyle);
                 }
             }
+        }
+    }
+
+    private void storeHeaderColumnWidth(Sheet sheet) {
+        if (ArrayUtils.isNullOrEmpty(this.columnWidths)) {
+            return;
+        }
+
+        Row row = sheet.getRow(0);
+
+        int columnIndex = 0;
+        for (Cell cell : row) {
+            String cellValue = cell.getStringCellValue();
+            storeColumnWidth(cellValue, columnIndex);
+
+            columnIndex++;
         }
     }
 
