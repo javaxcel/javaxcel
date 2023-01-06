@@ -37,7 +37,7 @@ class MapReaderSpec extends Specification {
     def "test"() {
         given:
         def keys = ["race", "name", "height", "weight", "eyesight", "favoriteFood"]
-        def filePath = path.resolve("maps-${System.currentTimeMillis()}.xlsx")
+        def filePath = path.resolve("maps-${System.currentTimeMillis()}.xls")
 
         and: "Creates excel file"
         def outStream = Files.newOutputStream(filePath)
