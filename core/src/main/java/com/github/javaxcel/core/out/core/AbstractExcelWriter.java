@@ -186,15 +186,21 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
      *
      * @param context context with current sheet and chunked models
      */
-    protected final void createBody(ExcelWriteContext<T> context) {
+    private void createBody(ExcelWriteContext<T> context) {
         Sheet sheet = context.getSheet();
-
         List<T> chunk = context.getChunk();
-        CellStyle[] bodyStyles = context.getBodyStyles();
         final int chunkSize = chunk.size();
         final int columnCount = getColumnCount();
 
-        for (int i = 0; i < chunkSize; i++) {
+        final int lastRowIndex = sheet.getLastRowNum();
+        Asserts.that(lastRowIndex)
+                .describedAs("There is no row as a header in the sheet; create a header at createHeader(ExcelWriteContext)")
+                .isNotNull()
+                .isZeroOrPositive()
+                .describedAs("There are two or more rows as a header in the sheet; create only one row as the header")
+                .isEqualTo(0);
+
+        for (int i = lastRowIndex; i < chunkSize; i++) {
             T model = chunk.get(i);
 
             // Skips the first row that is header.
@@ -211,6 +217,8 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
                 if (!StringUtils.isNullOrEmpty(cellValue)) {
                     cell.setCellValue(cellValue);
                 }
+
+                CellStyle[] bodyStyles = context.getBodyStyles();
 
                 if (ArrayUtils.isNullOrEmpty(bodyStyles)) {
                     continue;
