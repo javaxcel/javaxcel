@@ -38,6 +38,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.TestOnly;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -77,6 +79,13 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
     protected AbstractExcelWriter(Workbook workbook, Class<T> modelType) {
         Class<? extends ExcelWriter<T>> writerType = (Class<? extends ExcelWriter<T>>) getClass();
         this.context = new ExcelWriteContext<>(workbook, modelType, writerType);
+    }
+
+    @TestOnly
+    @VisibleForTesting
+    @SuppressWarnings("unused")
+    AbstractExcelWriter(ExcelWriteContext<T> context) {
+        this.context = context;
     }
 
     /**
