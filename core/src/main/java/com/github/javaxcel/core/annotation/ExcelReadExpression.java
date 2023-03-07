@@ -16,13 +16,13 @@
 
 package com.github.javaxcel.core.annotation;
 
-import com.github.javaxcel.core.converter.in.ExcelReadExpressionConverter;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import com.github.javaxcel.core.converter.in.ExcelReadExpressionConverter;
 
 /**
  * Expression for conversion of cell value to field value.

@@ -16,9 +16,9 @@
 
 package com.github.javaxcel.core.converter.handler.impl.net;
 
-import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
-
 import java.net.URI;
+
+import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 
 /**
  * Handler for type of {@link URI}

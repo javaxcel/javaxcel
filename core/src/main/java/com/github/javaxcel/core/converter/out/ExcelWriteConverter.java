@@ -16,13 +16,14 @@
 
 package com.github.javaxcel.core.converter.out;
 
+import java.lang.reflect.Field;
+
+import org.jetbrains.annotations.Nullable;
+
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelModel;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.strategy.impl.DefaultValue;
-import org.jetbrains.annotations.Nullable;
-
-import java.lang.reflect.Field;
 
 /**
  * Converter for writing Excel

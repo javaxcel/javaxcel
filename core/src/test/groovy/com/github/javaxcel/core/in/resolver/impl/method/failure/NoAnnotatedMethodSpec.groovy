@@ -16,12 +16,13 @@
 
 package com.github.javaxcel.core.in.resolver.impl.method.failure
 
-import com.github.javaxcel.core.exception.NoResolvableExcelModelCreatorException
-import com.github.javaxcel.core.in.resolver.impl.ExcelModelMethodResolver
 import spock.lang.Specification
 import spock.lang.Subject
 
 import java.nio.file.AccessMode
+
+import com.github.javaxcel.core.exception.NoResolvableExcelModelCreatorException
+import com.github.javaxcel.core.in.resolver.impl.ExcelModelMethodResolver
 
 @Subject(ExcelModelMethodResolver)
 class NoAnnotatedMethodSpec extends Specification {

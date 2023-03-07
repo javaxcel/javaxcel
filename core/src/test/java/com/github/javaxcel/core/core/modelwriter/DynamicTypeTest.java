@@ -16,29 +16,30 @@
 
 package com.github.javaxcel.core.core.modelwriter;
 
-import com.github.javaxcel.core.core.ModelWriterTester;
-import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
-import com.github.javaxcel.core.util.ExcelUtils;
-import io.github.imsejin.common.tool.Stopwatch;
-import lombok.Cleanup;
-import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.description.annotation.AnnotationDescription;
-import net.bytebuddy.description.modifier.Visibility;
-import net.bytebuddy.implementation.ToStringMethod;
+import java.io.File;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.UUID;
+
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.jeasy.random.annotation.Exclude;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.UUID;
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.description.annotation.AnnotationDescription;
+import net.bytebuddy.description.modifier.Visibility;
+import net.bytebuddy.implementation.ToStringMethod;
 
-import static com.github.javaxcel.core.TestUtils.assertEqualsHeaderSize;
-import static com.github.javaxcel.core.TestUtils.assertEqualsNumOfModels;
-import static com.github.javaxcel.core.TestUtils.assertNotEmptyFile;
+import io.github.imsejin.common.tool.Stopwatch;
+import lombok.Cleanup;
+
+import com.github.javaxcel.core.core.ModelWriterTester;
+import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
+import com.github.javaxcel.core.util.ExcelUtils;
+
+import static com.github.javaxcel.core.TestUtils.*;
 
 @StopwatchProvider
 class DynamicTypeTest extends ModelWriterTester {
@@ -62,7 +63,8 @@ class DynamicTypeTest extends ModelWriterTester {
 
         @Cleanup Workbook workbook = WorkbookFactory.create(file);
         assertEqualsNumOfModels(workbook, models, "The number of actually written rows is %,d", models.size());
-        assertEqualsHeaderSize(workbook, type, "Header size is equal to the number of targeted fields in '%s'", type.getSimpleName());
+        assertEqualsHeaderSize(workbook, type, "Header size is equal to the number of targeted fields in '%s'",
+                type.getSimpleName());
     }
 
     private Class<?> createDynamicType() {

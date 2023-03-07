@@ -16,13 +16,15 @@
 
 package com.github.javaxcel.core.out.strategy.impl;
 
+import org.apache.poi.ss.util.WorkbookUtil;
+
+import io.github.imsejin.common.assertion.Asserts;
+
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.core.impl.MapWriter;
 import com.github.javaxcel.core.out.core.impl.ModelWriter;
 import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
-import io.github.imsejin.common.assertion.Asserts;
-import org.apache.poi.ss.util.WorkbookUtil;
 
 /**
  * Strategy for sheet name
@@ -40,9 +42,11 @@ public class SheetName extends AbstractExcelWriteStrategy {
      */
     public SheetName(String value) {
         Asserts.that(value)
-                .describedAs("ExcelWriteStrategy.SheetName.value is not allowed to be null or blank, but it is: {0}", value)
+                .describedAs("ExcelWriteStrategy.SheetName.value is not allowed to be null or blank, but it is: {0}",
+                        value)
                 .isNotNull().hasText()
-                .describedAs("ExcelWriteStrategy.SheetName.value is not allowed to contain invalid character: {0}", value)
+                .describedAs("ExcelWriteStrategy.SheetName.value is not allowed to contain invalid character: {0}",
+                        value)
                 .is(it -> WorkbookUtil.createSafeSheetName(it).equals(it));
 
         this.value = value;

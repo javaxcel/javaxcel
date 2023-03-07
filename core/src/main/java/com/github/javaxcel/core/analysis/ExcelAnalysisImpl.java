@@ -1,11 +1,13 @@
 package com.github.javaxcel.core.analysis;
 
-import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
-import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
-import org.jetbrains.annotations.Nullable;
-
 import java.lang.reflect.Field;
 import java.util.Objects;
+
+import org.jetbrains.annotations.Nullable;
+
+import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
+
+import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
 
 /**
  * @since 0.9.0
@@ -62,7 +64,8 @@ public final class ExcelAnalysisImpl implements ExcelAnalysis {
     @Override
     @ExcludeFromGeneratedJacocoReport
     public String toString() {
-        return "ExcelAnalysisImpl(field=" + field + ", flags=" + flags + ", defaultMeta=" + defaultMeta + ", handler=" + handler + ')';
+        return "ExcelAnalysisImpl(field=" + field + ", flags=" + flags + ", defaultMeta=" + defaultMeta + ", handler="
+                + handler + ')';
     }
 
     // -------------------------------------------------------------------------------------------------

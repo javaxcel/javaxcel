@@ -16,11 +16,12 @@
 
 package com.github.javaxcel.core.in.strategy.impl;
 
+import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
+
 import com.github.javaxcel.core.in.context.ExcelReadContext;
 import com.github.javaxcel.core.in.core.ExcelReader;
 import com.github.javaxcel.core.in.core.impl.ModelReader;
 import com.github.javaxcel.core.in.strategy.AbstractExcelReadStrategy;
-import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
 /**
  * Strategy for setting value into property of model through setter
@@ -38,7 +39,8 @@ public class UseSetters extends AbstractExcelReadStrategy {
     @Override
     @ExcludeFromGeneratedJacocoReport
     public Object execute(ExcelReadContext<?> context) {
-        throw new UnsupportedOperationException("ExcelReadStrategy." + getClass().getSimpleName() + " is not supported");
+        throw new UnsupportedOperationException(
+                "ExcelReadStrategy." + getClass().getSimpleName() + " is not supported");
     }
 
 }

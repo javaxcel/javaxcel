@@ -16,17 +16,18 @@
 
 package com.github.javaxcel.core.in.strategy.impl;
 
-import com.github.javaxcel.core.in.context.ExcelReadContext;
-import com.github.javaxcel.core.in.core.ExcelReader;
-import com.github.javaxcel.core.in.core.impl.MapReader;
-import com.github.javaxcel.core.in.strategy.AbstractExcelReadStrategy;
-import io.github.imsejin.common.assertion.Asserts;
-import io.github.imsejin.common.util.StringUtils;
-
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import io.github.imsejin.common.assertion.Asserts;
+import io.github.imsejin.common.util.StringUtils;
+
+import com.github.javaxcel.core.in.context.ExcelReadContext;
+import com.github.javaxcel.core.in.core.ExcelReader;
+import com.github.javaxcel.core.in.core.impl.MapReader;
+import com.github.javaxcel.core.in.strategy.AbstractExcelReadStrategy;
 
 /**
  * Strategy for mapping header names with key names when reading
@@ -96,11 +97,14 @@ public class KeyNames extends AbstractExcelReadStrategy {
      */
     public KeyNames(List<String> newKeyNames) {
         Asserts.that(newKeyNames)
-                .describedAs("ExcelReadStrategy.KeyNames.headerNames is not allowed to be null or empty: {0}", newKeyNames)
+                .describedAs("ExcelReadStrategy.KeyNames.headerNames is not allowed to be null or empty: {0}",
+                        newKeyNames)
                 .isNotNull().isNotEmpty()
-                .describedAs("ExcelReadStrategy.KeyNames.headerNames cannot have null or blank element: {0}", newKeyNames)
+                .describedAs("ExcelReadStrategy.KeyNames.headerNames cannot have null or blank element: {0}",
+                        newKeyNames)
                 .noneMatch(StringUtils::isNullOrBlank)
-                .describedAs("ExcelReadStrategy.KeyNames.headerNames must be an implementation of java.util.List: {0}", newKeyNames)
+                .describedAs("ExcelReadStrategy.KeyNames.headerNames must be an implementation of java.util.List: {0}",
+                        newKeyNames)
                 .isInstanceOf(List.class)
                 .describedAs("ExcelReadStrategy.KeyNames.headerNames cannot have duplicated elements: {0}", newKeyNames)
                 .doesNotHaveDuplicates();

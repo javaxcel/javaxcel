@@ -16,6 +16,24 @@
 
 package com.github.javaxcel.core.core.modelwriter;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.poi.ss.usermodel.Workbook;
+import org.jeasy.random.annotation.Exclude;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import io.github.imsejin.common.tool.Stopwatch;
+import lombok.Cleanup;
+import lombok.ToString;
+
 import com.github.javaxcel.core.TestUtils;
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelModel;
@@ -24,25 +42,9 @@ import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.strategy.impl.DefaultValue;
 import com.github.javaxcel.core.util.ExcelUtils;
-import io.github.imsejin.common.tool.Stopwatch;
-import lombok.Cleanup;
-import lombok.ToString;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.jeasy.random.annotation.Exclude;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-
-import static com.github.javaxcel.core.TestUtils.assertNotEmptyFile;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.github.javaxcel.core.TestUtils.*;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @see DefaultValue
@@ -106,9 +108,13 @@ class DefaultValueTest extends ModelWriterTester {
     }
 
     private static String resolveDefaultValue(Class<?> type) {
-        if (type == WithModel.class) return MODEL_DEFAULT_VALUE;
-        else if (type == WithColumn.class || type == WithModelAndColumn.class) return COLUMN_DEFAULT_VALUE;
-        else return DIRECT_DEFAULT_VALUE;
+        if (type == WithModel.class) {
+            return MODEL_DEFAULT_VALUE;
+        } else if (type == WithColumn.class || type == WithModelAndColumn.class) {
+            return COLUMN_DEFAULT_VALUE;
+        } else {
+            return DIRECT_DEFAULT_VALUE;
+        }
     }
 
     // -------------------------------------------------------------------------------------------------

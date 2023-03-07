@@ -16,9 +16,9 @@
 
 package com.github.javaxcel.core.converter.handler.impl.util;
 
-import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
-
 import java.util.Locale;
+
+import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 
 /**
  * Handler for type of {@link Locale}
@@ -104,7 +104,8 @@ public class LocaleTypeHandler extends AbstractExcelTypeHandler<Locale> {
                 variant = segments[2];
 
                 // Uses the cached locale instance.
-                if (LanguageTag.isLanguage(language) && LanguageTag.isRegion(country) && LanguageTag.isVariant(variant)) {
+                if (LanguageTag.isLanguage(language) && LanguageTag.isRegion(country) && LanguageTag.isVariant(
+                        variant)) {
                     return new Locale.Builder().setLanguage(language).setRegion(country).setVariant(variant).build();
                 }
 
@@ -146,7 +147,9 @@ public class LocaleTypeHandler extends AbstractExcelTypeHandler<Locale> {
             // variant       = 5*8alphanum         ; registered variants
             //               / (DIGIT 3alphanum)
             int len = s.length();
-            if (len >= 5 && len <= 8) return LocaleUtils.isAlphaNumericString(s);
+            if (len >= 5 && len <= 8) {
+                return LocaleUtils.isAlphaNumericString(s);
+            }
             if (len == 4) {
                 return LocaleUtils.isNumeric(s.charAt(0))
                         && LocaleUtils.isAlphaNumeric(s.charAt(1))
@@ -177,7 +180,9 @@ public class LocaleTypeHandler extends AbstractExcelTypeHandler<Locale> {
         public static boolean isAlphaString(String s) {
             int len = s.length();
             for (int i = 0; i < len; i++) {
-                if (!isAlpha(s.charAt(i))) return false;
+                if (!isAlpha(s.charAt(i))) {
+                    return false;
+                }
             }
 
             return true;
@@ -190,7 +195,9 @@ public class LocaleTypeHandler extends AbstractExcelTypeHandler<Locale> {
         public static boolean isNumericString(String s) {
             int len = s.length();
             for (int i = 0; i < len; i++) {
-                if (!isNumeric(s.charAt(i))) return false;
+                if (!isNumeric(s.charAt(i))) {
+                    return false;
+                }
             }
 
             return true;
@@ -203,7 +210,9 @@ public class LocaleTypeHandler extends AbstractExcelTypeHandler<Locale> {
         public static boolean isAlphaNumericString(String s) {
             int len = s.length();
             for (int i = 0; i < len; i++) {
-                if (!isAlphaNumeric(s.charAt(i))) return false;
+                if (!isAlphaNumeric(s.charAt(i))) {
+                    return false;
+                }
             }
 
             return true;

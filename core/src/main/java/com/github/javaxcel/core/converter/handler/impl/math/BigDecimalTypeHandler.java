@@ -16,9 +16,9 @@
 
 package com.github.javaxcel.core.converter.handler.impl.math;
 
-import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
-
 import java.math.BigDecimal;
+
+import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 
 /**
  * Handler for type of {@link BigDecimal}

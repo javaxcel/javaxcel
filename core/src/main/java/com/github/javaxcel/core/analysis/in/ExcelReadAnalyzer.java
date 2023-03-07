@@ -16,6 +16,8 @@
 
 package com.github.javaxcel.core.analysis.in;
 
+import java.lang.reflect.Field;
+
 import com.github.javaxcel.core.analysis.AbstractExcelAnalyzer;
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta;
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta.Source;
@@ -27,8 +29,6 @@ import com.github.javaxcel.core.converter.in.ExcelReadExpressionConverter;
 import com.github.javaxcel.core.converter.in.ExcelReadHandlerConverter;
 import com.github.javaxcel.core.in.strategy.impl.UseSetters;
 import com.github.javaxcel.core.util.FieldUtils;
-
-import java.lang.reflect.Field;
 
 /**
  * Analyzer for reading Excel

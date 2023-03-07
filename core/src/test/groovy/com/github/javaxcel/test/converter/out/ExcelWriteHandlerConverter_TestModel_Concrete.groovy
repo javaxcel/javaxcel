@@ -16,8 +16,9 @@
 
 package com.github.javaxcel.test.converter.out
 
-import com.github.javaxcel.core.converter.out.ExcelWriteHandlerConverter
 import spock.lang.Subject
+
+import com.github.javaxcel.core.converter.out.ExcelWriteHandlerConverter
 
 @Subject(ExcelWriteHandlerConverter)
 class ExcelWriteHandlerConverter_TestModel_Concrete {

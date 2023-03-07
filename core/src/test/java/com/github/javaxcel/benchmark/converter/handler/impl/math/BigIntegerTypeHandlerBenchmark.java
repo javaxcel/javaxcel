@@ -16,7 +16,10 @@
 
 package com.github.javaxcel.benchmark.converter.handler.impl.math;
 
-import com.github.javaxcel.core.converter.handler.impl.math.BigIntegerTypeHandler;
+import java.math.BigInteger;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
 import org.junit.jupiter.api.Test;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -32,9 +35,7 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import java.math.BigInteger;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
+import com.github.javaxcel.core.converter.handler.impl.math.BigIntegerTypeHandler;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
@@ -50,17 +51,17 @@ public class BigIntegerTypeHandlerBenchmark {
         this.value = String.valueOf(random.nextLong());
     }
 
-//    @Setup(Level.Invocation)
-//    public void initialize_BigIntegerString() {
-//        long n1 = random.nextLong();
-//        long n2 = random.nextLong();
-//        if (n2 < 0) {
-//            String s2 = String.valueOf(n2).substring(1);
-//            this.value = n1 + s2;
-//        } else {
-//            this.value = String.valueOf(n1) + n2;
-//        }
-//    }
+    //    @Setup(Level.Invocation)
+    //    public void initialize_BigIntegerString() {
+    //        long n1 = random.nextLong();
+    //        long n2 = random.nextLong();
+    //        if (n2 < 0) {
+    //            String s2 = String.valueOf(n2).substring(1);
+    //            this.value = n1 + s2;
+    //        } else {
+    //            this.value = String.valueOf(n1) + n2;
+    //        }
+    //    }
 
     @Benchmark
     public void target_newBigInteger(Blackhole blackhole) {

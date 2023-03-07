@@ -16,10 +16,6 @@
 
 package com.github.javaxcel.core.util
 
-import io.github.imsejin.common.tool.RandomString
-import org.apache.poi.hssf.usermodel.HSSFWorkbook
-import org.apache.poi.ss.usermodel.Workbook
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.TempDir
@@ -27,8 +23,13 @@ import spock.lang.TempDir
 import java.nio.file.Files
 import java.nio.file.Path
 
-import static com.github.javaxcel.core.util.ExcelUtils.EXCEL_2007_EXTENSION
-import static com.github.javaxcel.core.util.ExcelUtils.EXCEL_97_EXTENSION
+import org.apache.poi.hssf.usermodel.HSSFWorkbook
+import org.apache.poi.ss.usermodel.Workbook
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+
+import io.github.imsejin.common.tool.RandomString
+
+import static com.github.javaxcel.core.util.ExcelUtils.*
 
 @Subject(ExcelUtils)
 class ExcelUtilsSpec extends Specification {

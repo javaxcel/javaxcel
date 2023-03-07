@@ -16,16 +16,16 @@
 
 package com.github.javaxcel.core.annotation;
 
-import com.github.javaxcel.core.out.strategy.impl.DefaultValue;
-import com.github.javaxcel.core.out.strategy.impl.EnumDropdown;
-import com.github.javaxcel.styler.ExcelStyleConfig;
-import com.github.javaxcel.styler.NoStyleConfig;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import com.github.javaxcel.core.out.strategy.impl.DefaultValue;
+import com.github.javaxcel.core.out.strategy.impl.EnumDropdown;
+import com.github.javaxcel.styler.ExcelStyleConfig;
+import com.github.javaxcel.styler.NoStyleConfig;
 
 /**
  * Excel column.

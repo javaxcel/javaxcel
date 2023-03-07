@@ -16,10 +16,10 @@
 
 package com.github.javaxcel.core.converter.handler.impl.nio.file;
 
-import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 
 /**
  * Handler for type of {@link Path}

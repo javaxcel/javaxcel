@@ -16,6 +16,35 @@
 
 package com.github.javaxcel.core.core.modelwriter;
 
+import java.io.File;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.stream.IntStream;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import io.github.imsejin.common.tool.Stopwatch;
+import lombok.Cleanup;
+import lombok.ToString;
+
 import com.github.javaxcel.core.TestUtils;
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelModel;
@@ -31,39 +60,11 @@ import com.github.javaxcel.core.util.FieldUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
 import com.github.javaxcel.styler.NoStyleConfig;
 import com.github.javaxcel.styler.config.Configurer;
-import io.github.imsejin.common.tool.Stopwatch;
-import lombok.Cleanup;
-import lombok.ToString;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.File;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-import java.util.stream.IntStream;
-
-import static com.github.javaxcel.core.TestUtils.assertNotEmptyFile;
-import static com.github.javaxcel.core.util.ExcelUtils.equalsCellStyleAndFont;
-import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static com.github.javaxcel.core.TestUtils.*;
+import static com.github.javaxcel.core.util.ExcelUtils.*;
+import static java.util.stream.Collectors.*;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @see HeaderStyles
@@ -311,7 +312,9 @@ class DecorationTest extends ModelWriterTester {
     }
 
     private static String getExtensionByType(Class<?> type) {
-        if (type == WithModel.class || type == WithColumn.class) return ExcelUtils.EXCEL_97_EXTENSION;
+        if (type == WithModel.class || type == WithColumn.class) {
+            return ExcelUtils.EXCEL_97_EXTENSION;
+        }
         return ExcelUtils.EXCEL_2007_EXTENSION;
     }
 

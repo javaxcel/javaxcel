@@ -1,15 +1,5 @@
 package com.github.javaxcel.core.model.toy;
 
-import com.github.javaxcel.core.TestUtils.ExcludeOnPercentage;
-import com.github.javaxcel.core.annotation.ExcelColumn;
-import com.github.javaxcel.core.annotation.ExcelDateTimeFormat;
-import com.github.javaxcel.core.annotation.ExcelModel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,6 +10,17 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoField;
 import java.util.Date;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+import com.github.javaxcel.core.TestUtils.ExcludeOnPercentage;
+import com.github.javaxcel.core.annotation.ExcelColumn;
+import com.github.javaxcel.core.annotation.ExcelDateTimeFormat;
+import com.github.javaxcel.core.annotation.ExcelModel;
 
 @Getter
 @Setter

@@ -16,25 +16,6 @@
 
 package com.github.javaxcel.core.in.core;
 
-import com.github.javaxcel.core.in.context.ExcelReadContext;
-import com.github.javaxcel.core.in.lifecycle.ExcelReadLifecycle;
-import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
-import com.github.javaxcel.core.in.strategy.impl.KeyNames;
-import com.github.javaxcel.core.in.strategy.impl.Limit;
-import com.github.javaxcel.core.util.ExcelUtils;
-import io.github.imsejin.common.assertion.Asserts;
-import io.github.imsejin.common.util.ArrayUtils;
-import io.github.imsejin.common.util.CollectionUtils;
-import io.github.imsejin.common.util.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CreationHelper;
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.jetbrains.annotations.Nullable;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +25,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import static java.util.stream.Collectors.toMap;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.jetbrains.annotations.Nullable;
+
+import io.github.imsejin.common.assertion.Asserts;
+import io.github.imsejin.common.util.ArrayUtils;
+import io.github.imsejin.common.util.CollectionUtils;
+import io.github.imsejin.common.util.StringUtils;
+
+import com.github.javaxcel.core.in.context.ExcelReadContext;
+import com.github.javaxcel.core.in.lifecycle.ExcelReadLifecycle;
+import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
+import com.github.javaxcel.core.in.strategy.impl.KeyNames;
+import com.github.javaxcel.core.in.strategy.impl.Limit;
+import com.github.javaxcel.core.util.ExcelUtils;
+
+import static java.util.stream.Collectors.*;
 
 /**
  * Abstract Excel reader
@@ -102,7 +104,9 @@ public abstract class AbstractExcelReader<T> implements ExcelReader<T>, ExcelRea
                 .isNotNull()
                 .describedAs("strategies cannot have null element: {0}", ArrayUtils.toString(strategies))
                 .doesNotContainNull();
-        if (strategies.length == 0) return this;
+        if (strategies.length == 0) {
+            return this;
+        }
 
         // Makes each strategy be unique; removes duplication.
         Map<Class<? extends ExcelReadStrategy>, ExcelReadStrategy> strategyMap = Arrays.stream(strategies)
@@ -167,7 +171,9 @@ public abstract class AbstractExcelReader<T> implements ExcelReader<T>, ExcelRea
 
     private void resolveLimit() {
         ExcelReadStrategy strategy = this.context.getStrategyMap().get(Limit.class);
-        if (strategy == null) return;
+        if (strategy == null) {
+            return;
+        }
 
         this.limit = (int) strategy.execute(this.context);
     }
@@ -175,7 +181,9 @@ public abstract class AbstractExcelReader<T> implements ExcelReader<T>, ExcelRea
     @SuppressWarnings("unchecked")
     private void resolveHeaderNames() {
         ExcelReadStrategy strategy = this.context.getStrategyMap().get(KeyNames.class);
-        if (strategy == null) return;
+        if (strategy == null) {
+            return;
+        }
 
         List<String> headerNames = (List<String>) strategy.execute(this.context);
         this.context.setHeaderNames(headerNames);
@@ -235,7 +243,9 @@ public abstract class AbstractExcelReader<T> implements ExcelReader<T>, ExcelRea
         int columnCount = row.getLastCellNum();
         for (int i = 0; i < columnCount; i++) {
             Cell cell = row.getCell(i);
-            if (cell == null) continue;
+            if (cell == null) {
+                continue;
+            }
 
             String cellValue;
             if (this.formulaEvaluator == null) {

@@ -16,10 +16,11 @@
 
 package com.github.javaxcel.styler.config;
 
-import com.github.javaxcel.styler.role.Alignments;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+
+import com.github.javaxcel.styler.role.Alignments;
 
 public final class AlignmentConfigurer {
 

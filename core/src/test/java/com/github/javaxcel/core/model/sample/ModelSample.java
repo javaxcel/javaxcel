@@ -1,12 +1,13 @@
 package com.github.javaxcel.core.model.sample;
 
-import com.github.javaxcel.core.annotation.ExcelColumn;
-import com.github.javaxcel.core.annotation.ExcelModel;
+import java.math.BigInteger;
+import java.util.Set;
+
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.math.BigInteger;
-import java.util.Set;
+import com.github.javaxcel.core.annotation.ExcelColumn;
+import com.github.javaxcel.core.annotation.ExcelModel;
 
 @ToString
 @EqualsAndHashCode

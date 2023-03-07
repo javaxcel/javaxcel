@@ -16,14 +16,14 @@
 
 package com.github.javaxcel.styler.config;
 
-import io.github.imsejin.common.assertion.Asserts;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 
-import static com.github.javaxcel.styler.role.Backgrounds.setPattern;
-import static com.github.javaxcel.styler.role.Backgrounds.setColor;
+import io.github.imsejin.common.assertion.Asserts;
+
+import static com.github.javaxcel.styler.role.Backgrounds.*;
 
 public class Configurer {
 

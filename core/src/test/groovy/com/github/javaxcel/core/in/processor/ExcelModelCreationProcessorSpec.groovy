@@ -16,6 +16,13 @@
 
 package com.github.javaxcel.core.in.processor
 
+import groovy.transform.EqualsAndHashCode
+
+import spock.lang.Specification
+import spock.lang.Subject
+
+import java.util.concurrent.TimeUnit
+
 import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer
 import com.github.javaxcel.core.annotation.ExcelModelCreator
 import com.github.javaxcel.core.annotation.ExcelModelCreator.FieldName
@@ -23,11 +30,6 @@ import com.github.javaxcel.core.converter.handler.registry.impl.DefaultExcelType
 import com.github.javaxcel.core.in.resolver.AbstractExcelModelExecutableResolver
 import com.github.javaxcel.core.in.strategy.impl.UseSetters
 import com.github.javaxcel.core.util.FieldUtils
-import groovy.transform.EqualsAndHashCode
-import spock.lang.Specification
-import spock.lang.Subject
-
-import java.util.concurrent.TimeUnit
 
 @Subject(ExcelModelCreationProcessor)
 class ExcelModelCreationProcessorSpec extends Specification {

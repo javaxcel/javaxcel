@@ -16,10 +16,11 @@
 
 package com.github.javaxcel.styler.config;
 
-import com.github.javaxcel.styler.role.Fonts;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
+
+import com.github.javaxcel.styler.role.Fonts;
 
 public final class FontConfigurer {
 

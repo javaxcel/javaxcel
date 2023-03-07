@@ -16,10 +16,12 @@
 
 package com.github.javaxcel.styler
 
-import com.github.javaxcel.styler.config.Configurer
+import spock.lang.Specification
+
 import org.apache.poi.ss.usermodel.CellStyle
 import org.apache.poi.ss.usermodel.Font
-import spock.lang.Specification
+
+import com.github.javaxcel.styler.config.Configurer
 
 class NoStyleConfigSpec extends Specification {
 

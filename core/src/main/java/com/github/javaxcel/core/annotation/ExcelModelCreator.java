@@ -16,14 +16,14 @@
 
 package com.github.javaxcel.core.annotation;
 
-import com.github.javaxcel.core.in.processor.ExcelModelCreationProcessor;
-import com.github.javaxcel.core.in.resolver.AbstractExcelModelExecutableResolver;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Executable;
+
+import com.github.javaxcel.core.in.processor.ExcelModelCreationProcessor;
+import com.github.javaxcel.core.in.resolver.AbstractExcelModelExecutableResolver;
 
 /**
  * Indicates that a constructor or method is used to instantiate their declaring class.

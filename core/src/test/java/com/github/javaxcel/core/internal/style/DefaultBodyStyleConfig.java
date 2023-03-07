@@ -1,9 +1,10 @@
 package com.github.javaxcel.core.internal.style;
 
-import com.github.javaxcel.styler.ExcelStyleConfig;
-import com.github.javaxcel.styler.config.Configurer;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
+
+import com.github.javaxcel.styler.ExcelStyleConfig;
+import com.github.javaxcel.styler.config.Configurer;
 
 public class DefaultBodyStyleConfig implements ExcelStyleConfig {
 

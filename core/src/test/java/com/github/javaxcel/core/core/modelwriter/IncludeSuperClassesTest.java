@@ -16,20 +16,6 @@
 
 package com.github.javaxcel.core.core.modelwriter;
 
-import com.github.javaxcel.core.TestUtils;
-import com.github.javaxcel.core.annotation.ExcelModel;
-import com.github.javaxcel.core.core.ModelWriterTester;
-import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
-import com.github.javaxcel.core.util.FieldUtils;
-import io.github.imsejin.common.tool.Stopwatch;
-import lombok.AllArgsConstructor;
-import lombok.Cleanup;
-import lombok.ToString;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -39,8 +25,24 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.javaxcel.core.TestUtils.assertNotEmptyFile;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import io.github.imsejin.common.tool.Stopwatch;
+import lombok.AllArgsConstructor;
+import lombok.Cleanup;
+import lombok.ToString;
+
+import com.github.javaxcel.core.TestUtils;
+import com.github.javaxcel.core.annotation.ExcelModel;
+import com.github.javaxcel.core.core.ModelWriterTester;
+import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
+import com.github.javaxcel.core.util.FieldUtils;
+
+import static com.github.javaxcel.core.TestUtils.*;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Static field "$jacocoData" will be inserted into the class
@@ -100,14 +102,14 @@ class IncludeSuperClassesTest extends ModelWriterTester {
     @ToString(callSuper = true)
     @ExcelModel(includeSuper = true)
     private static class EducationToy extends Toy {
-        private int[] targetAges;
-        private String goals;
-        private LocalDate date;
-        private LocalTime time;
-        private LocalDateTime dateTime;
+        private final int[] targetAges;
+        private final String goals;
+        private final LocalDate date;
+        private final LocalTime time;
+        private final LocalDateTime dateTime;
 
         EducationToy(String name, ToyType toyType, Double weight,
-                     int[] targetAges, String goals, LocalDate date, LocalTime time, LocalDateTime dateTime) {
+                int[] targetAges, String goals, LocalDate date, LocalTime time, LocalDateTime dateTime) {
             super(name, toyType, weight);
             this.targetAges = targetAges;
             this.goals = goals;

@@ -16,12 +16,13 @@
 
 package com.github.javaxcel.core.in.resolver.impl.method.failure
 
+import spock.lang.Specification
+import spock.lang.Subject
+
 import com.github.javaxcel.core.annotation.ExcelModelCreator
 import com.github.javaxcel.core.annotation.ExcelModelCreator.FieldName
 import com.github.javaxcel.core.exception.InvalidExcelModelCreatorException
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelMethodResolver
-import spock.lang.Specification
-import spock.lang.Subject
 
 @Subject(ExcelModelMethodResolver)
 class DuplicatedFieldNameSpec extends Specification {

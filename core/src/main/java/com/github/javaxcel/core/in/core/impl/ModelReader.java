@@ -16,6 +16,19 @@
 
 package com.github.javaxcel.core.in.core.impl;
 
+import java.lang.reflect.Executable;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.poi.ss.usermodel.Workbook;
+
+import io.github.imsejin.common.assertion.Asserts;
+
 import com.github.javaxcel.core.analysis.ExcelAnalysis;
 import com.github.javaxcel.core.analysis.ExcelAnalyzer;
 import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer;
@@ -30,19 +43,8 @@ import com.github.javaxcel.core.in.resolver.AbstractExcelModelExecutableResolver
 import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 import com.github.javaxcel.core.in.strategy.impl.Parallel;
 import com.github.javaxcel.core.util.FieldUtils;
-import io.github.imsejin.common.assertion.Asserts;
-import org.apache.poi.ss.usermodel.Workbook;
 
-import java.lang.reflect.Executable;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 /**
  * Excel reader for model
@@ -76,7 +78,8 @@ public class ModelReader<T> extends AbstractExcelReader<T> {
         // Finds the targeted fields.
         List<Field> fields = FieldUtils.getTargetedFields(modelType);
         Asserts.that(fields)
-                .describedAs("ModelReader.fields cannot find the targeted fields in the class: {0}", modelType.getName())
+                .describedAs("ModelReader.fields cannot find the targeted fields in the class: {0}",
+                        modelType.getName())
                 .thrownBy(desc -> new NoTargetedFieldException(modelType, desc))
                 .isNotEmpty()
                 .describedAs("ModelReader.fields cannot have null element: {0}", fields)

@@ -16,8 +16,6 @@
 
 package com.github.javaxcel.core.annotation;
 
-import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -35,6 +33,8 @@ import java.time.Year;
 import java.time.YearMonth;
 import java.time.ZonedDateTime;
 import java.util.Date;
+
+import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
 
 /**
  * Indicates the formatting pattern that applies to field value, when writing and reading.

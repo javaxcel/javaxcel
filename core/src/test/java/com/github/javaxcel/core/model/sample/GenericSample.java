@@ -1,10 +1,10 @@
 package com.github.javaxcel.core.model.sample;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 import java.math.BigDecimal;
 import java.util.Deque;
+
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @ToString
 @EqualsAndHashCode

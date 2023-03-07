@@ -16,14 +16,6 @@
 
 package com.github.javaxcel.core.util;
 
-import com.github.javaxcel.core.annotation.ExcelColumn;
-import com.github.javaxcel.core.annotation.ExcelIgnore;
-import com.github.javaxcel.core.annotation.ExcelModel;
-import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
-import io.github.imsejin.common.util.ReflectionUtils;
-import io.github.imsejin.common.util.StringUtils;
-import org.jetbrains.annotations.Nullable;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -35,7 +27,17 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toList;
+import org.jetbrains.annotations.Nullable;
+
+import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
+import io.github.imsejin.common.util.ReflectionUtils;
+import io.github.imsejin.common.util.StringUtils;
+
+import com.github.javaxcel.core.annotation.ExcelColumn;
+import com.github.javaxcel.core.annotation.ExcelIgnore;
+import com.github.javaxcel.core.annotation.ExcelModel;
+
+import static java.util.stream.Collectors.*;
 
 /**
  * Utilities for reflection on {@link Field}.
@@ -157,7 +159,9 @@ public final class FieldUtils {
      * @return {@link ExcelColumn#name()} or {@link Field#getName()}
      */
     public static String toHeaderName(Field field, boolean ignoreAnnotation) {
-        if (ignoreAnnotation) return field.getName();
+        if (ignoreAnnotation) {
+            return field.getName();
+        }
 
         ExcelColumn annotation = field.getAnnotation(ExcelColumn.class);
         return annotation == null || StringUtils.isNullOrBlank(annotation.name())

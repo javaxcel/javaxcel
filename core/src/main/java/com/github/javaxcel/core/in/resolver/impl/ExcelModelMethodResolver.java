@@ -16,17 +16,17 @@
 
 package com.github.javaxcel.core.in.resolver.impl;
 
-import com.github.javaxcel.core.annotation.ExcelModelCreator;
-import com.github.javaxcel.core.exception.AmbiguousExcelModelCreatorException;
-import com.github.javaxcel.core.exception.InvalidExcelModelCreatorException;
-import com.github.javaxcel.core.exception.NoResolvableExcelModelCreatorException;
-import com.github.javaxcel.core.in.resolver.AbstractExcelModelExecutableResolver;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import com.github.javaxcel.core.annotation.ExcelModelCreator;
+import com.github.javaxcel.core.exception.AmbiguousExcelModelCreatorException;
+import com.github.javaxcel.core.exception.InvalidExcelModelCreatorException;
+import com.github.javaxcel.core.exception.NoResolvableExcelModelCreatorException;
+import com.github.javaxcel.core.in.resolver.AbstractExcelModelExecutableResolver;
 
 /**
  * Resolver for method as model creator
@@ -72,8 +72,9 @@ public class ExcelModelMethodResolver<T> extends AbstractExcelModelExecutableRes
 
             // Is return type of candidate assignable to model type?
             if (!super.modelType.isAssignableFrom(candidate.getReturnType())) {
-                throw new InvalidExcelModelCreatorException("@ExcelModelCreator is not allowed to be annotated on method " +
-                        "whose return type is assignable to model type[%s]; Remove the annotation from the method[%s]",
+                throw new InvalidExcelModelCreatorException(
+                        "@ExcelModelCreator is not allowed to be annotated on method " +
+                                "whose return type is assignable to model type[%s]; Remove the annotation from the method[%s]",
                         super.modelType, candidate);
             }
 

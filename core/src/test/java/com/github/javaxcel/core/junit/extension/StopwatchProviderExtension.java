@@ -16,14 +16,16 @@
 
 package com.github.javaxcel.core.junit.extension;
 
-import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
-import io.github.imsejin.common.tool.Stopwatch;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
+
+import io.github.imsejin.common.tool.Stopwatch;
+
+import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
 
 /**
  * @see StopwatchProvider
@@ -37,19 +39,25 @@ public class StopwatchProviderExtension implements BeforeTestExecutionCallback, 
     public void beforeTestExecution(ExtensionContext extensionContext) throws Exception {
         extensionContext.getTestClass().ifPresent(clazz -> {
             StopwatchProvider annotation = clazz.getAnnotation(StopwatchProvider.class);
-            if (annotation != null) this.stopwatch.setTimeUnit(annotation.value());
+            if (annotation != null) {
+                this.stopwatch.setTimeUnit(annotation.value());
+            }
         });
 
         // Time unit on method takes precedence over on class.
         extensionContext.getTestMethod().ifPresent(method -> {
             StopwatchProvider annotation = method.getAnnotation(StopwatchProvider.class);
-            if (annotation != null) this.stopwatch.setTimeUnit(annotation.value());
+            if (annotation != null) {
+                this.stopwatch.setTimeUnit(annotation.value());
+            }
         });
     }
 
     @Override
     public void afterTestExecution(ExtensionContext extensionContext) throws Exception {
-        if (this.stopwatch.isRunning()) this.stopwatch.stop();
+        if (this.stopwatch.isRunning()) {
+            this.stopwatch.stop();
+        }
         System.out.println(this.stopwatch.getStatistics());
 
         /*
@@ -58,7 +66,9 @@ public class StopwatchProviderExtension implements BeforeTestExecutionCallback, 
         an instance of this extension is reused.
         It seems that the test cases are in a group.
         */
-        if (!this.stopwatch.hasNeverBeenStopped()) this.stopwatch.clear();
+        if (!this.stopwatch.hasNeverBeenStopped()) {
+            this.stopwatch.clear();
+        }
     }
 
     @Override

@@ -16,16 +16,17 @@
 
 package com.github.javaxcel.core.out.strategy.impl;
 
+import java.util.Collections;
+import java.util.List;
+
+import io.github.imsejin.common.assertion.Asserts;
+
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.core.impl.MapWriter;
 import com.github.javaxcel.core.out.core.impl.ModelWriter;
 import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
 import com.github.javaxcel.styler.ExcelStyleConfig;
-import io.github.imsejin.common.assertion.Asserts;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Strategy for style of body when writing
@@ -38,11 +39,14 @@ public class BodyStyles extends AbstractExcelWriteStrategy {
 
     public BodyStyles(List<ExcelStyleConfig> styleConfigs) {
         Asserts.that(styleConfigs)
-                .describedAs("ExcelWriteStrategy.BodyStyle.styleConfigs is not allowed to be null or empty: {0}", styleConfigs)
+                .describedAs("ExcelWriteStrategy.BodyStyle.styleConfigs is not allowed to be null or empty: {0}",
+                        styleConfigs)
                 .isNotNull().isNotEmpty()
                 .describedAs("ExcelWriteStrategy.BodyStyle.styleConfigs cannot have null element: {0}", styleConfigs)
                 .doesNotContainNull()
-                .describedAs("ExcelWriteStrategy.BodyStyle.styleConfigs must be an implementation of java.util.List: {0}", styleConfigs)
+                .describedAs(
+                        "ExcelWriteStrategy.BodyStyle.styleConfigs must be an implementation of java.util.List: {0}",
+                        styleConfigs)
                 .isInstanceOf(List.class);
 
         this.styleConfigs = Collections.unmodifiableList(styleConfigs);

@@ -16,17 +16,6 @@
 
 package com.github.javaxcel.core.internal;
 
-import com.github.javaxcel.core.model.product.Product;
-import com.github.javaxcel.core.model.toy.EducationToy;
-import io.github.imsejin.common.util.StringUtils;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.expression.Expression;
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.ParserContext;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.expression.spel.support.StandardEvaluationContext;
-
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,7 +26,20 @@ import java.util.StringJoiner;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.ParserContext;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
+
+import io.github.imsejin.common.util.StringUtils;
+
+import com.github.javaxcel.core.model.product.Product;
+import com.github.javaxcel.core.model.toy.EducationToy;
+
+import static org.assertj.core.api.Assertions.*;
 
 class SpELTest {
 
@@ -160,7 +162,7 @@ class SpELTest {
     void parseVariable() {
         // given
         EducationToy toy = new EducationToy();
-        toy.setTargetAges(new int[][]{{2, 3, 4, 5, 6}});
+        toy.setTargetAges(new int[][] {{2, 3, 4, 5, 6}});
         String fieldName = "targetAges";
         String exp = String.format("T(java.util.Arrays).stream(#%s[0])" +
                 ".boxed()" +
@@ -206,7 +208,7 @@ class SpELTest {
     void parseVariableWithMethod() throws NoSuchMethodException {
         // given
         EducationToy toy = new EducationToy();
-        toy.setTargetAges(new int[][]{{2, 3, 4, 5, 6}});
+        toy.setTargetAges(new int[][] {{2, 3, 4, 5, 6}});
         String fieldName = "targetAges";
         String converterName = "convert";
         String exp = "#" + converterName + "(T(java.util.Arrays).stream(#" + fieldName + "[0]))";

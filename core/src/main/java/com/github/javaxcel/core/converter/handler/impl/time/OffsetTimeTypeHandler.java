@@ -16,11 +16,11 @@
 
 package com.github.javaxcel.core.converter.handler.impl.time;
 
-import com.github.javaxcel.core.converter.handler.impl.time.temporal.AbstractTemporalAccessorTypeHandler;
-
 import java.time.OffsetTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalQuery;
+
+import com.github.javaxcel.core.converter.handler.impl.time.temporal.AbstractTemporalAccessorTypeHandler;
 
 /**
  * Handler for type of {@link OffsetTime}

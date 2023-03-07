@@ -16,18 +16,17 @@
 
 package com.github.javaxcel.core.converter.in.support
 
-import com.github.javaxcel.core.converter.in.support.FieldTypeResolver.TypeResolution
-import com.github.javaxcel.test.converter.in.support.FieldTypeResolver_TestModel_1
-import com.github.javaxcel.test.converter.in.support.FieldTypeResolver_TestModel_2
 import spock.lang.Specification
 import spock.lang.Subject
 
 import java.lang.reflect.Field
 import java.lang.reflect.Type
 
-import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.ARRAY
-import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.CONCRETE
-import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.ITERABLE
+import com.github.javaxcel.core.converter.in.support.FieldTypeResolver.TypeResolution
+import com.github.javaxcel.test.converter.in.support.FieldTypeResolver_TestModel_1
+import com.github.javaxcel.test.converter.in.support.FieldTypeResolver_TestModel_2
+
+import static com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind.*
 
 @Subject(FieldTypeResolver)
 class FieldTypeResolverSpec extends Specification {

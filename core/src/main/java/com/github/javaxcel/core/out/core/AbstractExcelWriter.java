@@ -16,6 +16,30 @@
 
 package com.github.javaxcel.core.out.core;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.TestOnly;
+import org.jetbrains.annotations.VisibleForTesting;
+
+import io.github.imsejin.common.assertion.Asserts;
+import io.github.imsejin.common.util.ArrayUtils;
+import io.github.imsejin.common.util.CollectionUtils;
+import io.github.imsejin.common.util.NumberUtils;
+import io.github.imsejin.common.util.StringUtils;
+
 import com.github.javaxcel.core.exception.WritingExcelException;
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.lifecycle.ExcelWriteLifecycle;
@@ -27,30 +51,8 @@ import com.github.javaxcel.core.out.strategy.impl.SheetName;
 import com.github.javaxcel.core.util.ExcelUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
 import com.github.javaxcel.styler.NoStyleConfig;
-import io.github.imsejin.common.assertion.Asserts;
-import io.github.imsejin.common.util.ArrayUtils;
-import io.github.imsejin.common.util.CollectionUtils;
-import io.github.imsejin.common.util.NumberUtils;
-import io.github.imsejin.common.util.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.TestOnly;
-import org.jetbrains.annotations.VisibleForTesting;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-
-import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.*;
 
 /**
  * Abstract Excel writer
@@ -203,7 +205,8 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
 
         final int lastRowIndex = sheet.getLastRowNum();
         Asserts.that(lastRowIndex)
-                .describedAs("There is no row as a header in the sheet; create a header at createHeader(ExcelWriteContext)")
+                .describedAs(
+                        "There is no row as a header in the sheet; create a header at createHeader(ExcelWriteContext)")
                 .isNotNull()
                 .isZeroOrPositive()
                 .describedAs("There are two or more rows as a header in the sheet; create only one row as the header")

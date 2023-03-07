@@ -16,17 +16,11 @@
 
 package com.github.javaxcel.test.converter.handler.impl
 
-import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler
-
 import java.util.concurrent.TimeUnit
 
-import static java.util.concurrent.TimeUnit.DAYS
-import static java.util.concurrent.TimeUnit.HOURS
-import static java.util.concurrent.TimeUnit.MICROSECONDS
-import static java.util.concurrent.TimeUnit.MILLISECONDS
-import static java.util.concurrent.TimeUnit.MINUTES
-import static java.util.concurrent.TimeUnit.NANOSECONDS
-import static java.util.concurrent.TimeUnit.SECONDS;
+import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler
+
+import static java.util.concurrent.TimeUnit.*
 
 class TimeUnitTypeHandler extends AbstractExcelTypeHandler<TimeUnit> {
 

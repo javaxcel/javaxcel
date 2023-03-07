@@ -16,10 +16,10 @@
 
 package com.github.javaxcel.core.converter.handler.impl.net;
 
-import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
-
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 
 /**
  * Handler for type of {@link URL}

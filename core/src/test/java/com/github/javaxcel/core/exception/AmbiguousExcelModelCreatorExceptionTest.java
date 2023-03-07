@@ -19,7 +19,7 @@ package com.github.javaxcel.core.exception;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 class AmbiguousExcelModelCreatorExceptionTest {
 
@@ -46,7 +46,8 @@ class AmbiguousExcelModelCreatorExceptionTest {
         Throwable cause = new RuntimeException("Failed to find the targeted constructor");
 
         // when
-        AmbiguousExcelModelCreatorException exception = new AmbiguousExcelModelCreatorException(cause, message, Object.class);
+        AmbiguousExcelModelCreatorException exception = new AmbiguousExcelModelCreatorException(cause, message,
+                Object.class);
 
         // then
         assertThat(exception)

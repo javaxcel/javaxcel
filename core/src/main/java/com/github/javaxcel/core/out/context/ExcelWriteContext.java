@@ -16,19 +16,21 @@
 
 package com.github.javaxcel.core.out.context;
 
-import com.github.javaxcel.core.annotation.ExcelColumn;
-import com.github.javaxcel.core.annotation.ExcelModel;
-import com.github.javaxcel.core.out.core.ExcelWriter;
-import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
-import io.github.imsejin.common.assertion.Asserts;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import io.github.imsejin.common.assertion.Asserts;
+
+import com.github.javaxcel.core.annotation.ExcelColumn;
+import com.github.javaxcel.core.annotation.ExcelModel;
+import com.github.javaxcel.core.out.core.ExcelWriter;
+import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 
 /**
  * Context that has objects used on writing Excel file
@@ -76,7 +78,9 @@ public class ExcelWriteContext<T> {
         Asserts.that(writerType)
                 .describedAs("ExcelWriteContext.writerType is not allowed to be null")
                 .isNotNull()
-                .describedAs("ExcelWriteContext.writerType is type of implementation of ExcelWriter, but it isn't : '{0}'", writerType.getName())
+                .describedAs(
+                        "ExcelWriteContext.writerType is type of implementation of ExcelWriter, but it isn't : '{0}'",
+                        writerType.getName())
                 .is(ExcelWriter.class::isAssignableFrom);
 
         this.workbook = workbook;

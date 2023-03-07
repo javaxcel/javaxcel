@@ -16,9 +16,9 @@
 
 package com.github.javaxcel.core.converter.handler.impl.io;
 
-import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
-
 import java.io.File;
+
+import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 
 /**
  * Handler for type of {@link File}

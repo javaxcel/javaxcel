@@ -16,9 +16,8 @@
 
 package com.github.javaxcel.styler.role
 
-import com.github.javaxcel.styler.role.Fonts.Offset
-import com.github.javaxcel.styler.role.Fonts.Underline
-import io.github.imsejin.common.tool.RandomString
+import spock.lang.Specification
+
 import org.apache.poi.hssf.record.ExtendedFormatRecord
 import org.apache.poi.hssf.record.FontRecord
 import org.apache.poi.hssf.usermodel.HSSFCellStyle
@@ -30,10 +29,13 @@ import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.xssf.model.StylesTable
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
 import org.apache.poi.xssf.usermodel.XSSFFont
-import spock.lang.Specification
 
-import static org.apache.poi.ss.SpreadsheetVersion.EXCEL2007
-import static org.apache.poi.ss.SpreadsheetVersion.EXCEL97
+import io.github.imsejin.common.tool.RandomString
+
+import com.github.javaxcel.styler.role.Fonts.Offset
+import com.github.javaxcel.styler.role.Fonts.Underline
+
+import static org.apache.poi.ss.SpreadsheetVersion.*
 
 class FontsSpec extends Specification {
 

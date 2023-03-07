@@ -16,9 +16,9 @@
 
 package com.github.javaxcel.core.in.core;
 
-import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
-
 import java.util.List;
+
+import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 
 /**
  * Excel reader
