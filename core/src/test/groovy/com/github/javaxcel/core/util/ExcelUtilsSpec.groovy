@@ -22,6 +22,7 @@ import spock.lang.TempDir
 
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Workbook
@@ -49,7 +50,7 @@ class ExcelUtilsSpec extends Specification {
 
         when: "Writes Excel 97 file"
         def workbookPath = createWorkbookPath(new HSSFWorkbook())
-        def workbook = ExcelUtils.getWorkbook(workbookPath.toFile())
+        def workbook = getWorkbook(workbookPath.toFile())
 
         then:
         workbook != null
@@ -57,7 +58,7 @@ class ExcelUtilsSpec extends Specification {
 
         when: "Writes Excel 2007 file"
         workbookPath = createWorkbookPath(new XSSFWorkbook())
-        workbook = ExcelUtils.getWorkbook(workbookPath.toFile())
+        workbook = getWorkbook(workbookPath.toFile())
 
         then:
         workbook != null
@@ -66,11 +67,23 @@ class ExcelUtilsSpec extends Specification {
         when: "Writes empty file"
         workbookPath = tempPath.resolve("${new RandomString().nextString(8)}.xlsx")
         Files.createFile(workbookPath)
-        ExcelUtils.getWorkbook(workbookPath.toFile())
+        getWorkbook(workbookPath.toFile())
 
         then:
         def e = thrown(IllegalArgumentException)
         e.message == "The supplied file was empty (zero bytes long)"
+    }
+
+    def "Gets the number of rows on all sheets by path"() {
+        given:
+        def url = Thread.currentThread().contextClassLoader.getResource("spreadsheets/products.xlsx")
+        def path = Paths.get(url.toURI())
+
+        when:
+        def rowCount = getNumOfRows(path)
+
+        then:
+        rowCount == 122880
     }
 
 }

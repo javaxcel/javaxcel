@@ -16,15 +16,19 @@
 
 package com.github.javaxcel.core.util;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
@@ -56,6 +60,9 @@ import org.jetbrains.annotations.Nullable;
 
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 import io.github.imsejin.common.assertion.Asserts;
+import io.github.imsejin.common.io.Resource;
+import io.github.imsejin.common.io.finder.ResourceFinder;
+import io.github.imsejin.common.io.finder.ZipResourceFinder;
 import io.github.imsejin.common.util.FilenameUtils;
 import io.github.imsejin.common.util.StreamUtils;
 
@@ -170,6 +177,40 @@ public final class ExcelUtils {
         long numOfRows = 0;
         for (Sheet sheet : getSheets(workbook)) {
             numOfRows += getNumOfRows(sheet);
+        }
+
+        return numOfRows;
+    }
+
+    /**
+     * Returns the number of rows in all sheets.
+     *
+     * @param filePath path of Excel file
+     * @return the number of rows
+     * @since 0.10.0
+     */
+    public static long getNumOfRows(Path filePath) {
+        Pattern sheetXmlPattern = Pattern.compile("^(.+/)*sheet[0-9]+\\.xml$");
+        ResourceFinder resourceFinder = new ZipResourceFinder(false,
+                it -> sheetXmlPattern.matcher(it.getName()).matches());
+        List<Resource> resources = resourceFinder.getResources(filePath);
+
+        long numOfRows = 0;
+        Pattern rowTagPattern = Pattern.compile("<row r=\"[0-9]+\"");
+
+        for (Resource resource : resources) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    Matcher matcher = rowTagPattern.matcher(line);
+                    while (matcher.find()) {
+                        numOfRows++;
+                    }
+                }
+
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
         }
 
         return numOfRows;
