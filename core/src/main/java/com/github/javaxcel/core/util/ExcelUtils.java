@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -127,15 +128,14 @@ public final class ExcelUtils {
      * @return all sheets
      */
     public static List<Sheet> getSheets(Workbook workbook) {
-        int numberOfSheets = workbook.getNumberOfSheets();
+        List<Sheet> sheets = new ArrayList<>();
 
-        List<Sheet> sheets = new ArrayList<>(numberOfSheets);
-        for (int i = 0; i < numberOfSheets; i++) {
-            if (workbook.isSheetHidden(i)) {
+        for (Sheet sheet : workbook) {
+            int sheetIndex = workbook.getSheetIndex(sheet);
+            if (workbook.isSheetHidden(sheetIndex)) {
                 continue;
             }
 
-            Sheet sheet = workbook.getSheetAt(i);
             sheets.add(sheet);
         }
 
@@ -199,7 +199,8 @@ public final class ExcelUtils {
         Pattern rowTagPattern = Pattern.compile("<row r=\"[0-9]+\"");
 
         for (Resource resource : resources) {
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     Matcher matcher = rowTagPattern.matcher(line);

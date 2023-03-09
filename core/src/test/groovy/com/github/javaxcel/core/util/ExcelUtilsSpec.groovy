@@ -38,7 +38,7 @@ class ExcelUtilsSpec extends Specification {
     @TempDir
     private Path tempPath
 
-    def "Gets instance of workbook"() {
+    def "Gets an instance of workbook"() {
         given:
         def createWorkbookPath = { Workbook workbook ->
             def extension = workbook instanceof HSSFWorkbook ? EXCEL_97_EXTENSION : EXCEL_2007_EXTENSION
@@ -72,6 +72,39 @@ class ExcelUtilsSpec extends Specification {
         then:
         def e = thrown(IllegalArgumentException)
         e.message == "The supplied file was empty (zero bytes long)"
+    }
+
+    def "Gets the number of rows on sheet by sheet"() {
+        given:
+        def url = Thread.currentThread().contextClassLoader.getResource("spreadsheets/products.xlsx")
+        def file = Paths.get(url.toURI()).toFile()
+        def workbook = getWorkbook(file)
+        def sheets = getSheets(workbook)
+
+        when:
+        def rowCounts = sheets.collect { getNumOfRows(it) }
+
+        then:
+        rowCounts == [32768, 65536, 16384, 8192]
+
+        cleanup:
+        workbook.close()
+    }
+
+    def "Gets the number of rows on all sheets by workbook"() {
+        given:
+        def url = Thread.currentThread().contextClassLoader.getResource("spreadsheets/products.xlsx")
+        def file = Paths.get(url.toURI()).toFile()
+        def workbook = getWorkbook(file)
+
+        when:
+        def rowCount = getNumOfRows(workbook)
+
+        then:
+        rowCount == 122880
+
+        cleanup:
+        workbook.close()
     }
 
     def "Gets the number of rows on all sheets by path"() {
