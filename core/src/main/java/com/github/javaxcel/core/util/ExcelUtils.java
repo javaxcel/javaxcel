@@ -190,7 +190,7 @@ public final class ExcelUtils {
      * @since 0.10.0
      */
     public static long getNumOfRows(Path filePath) {
-        Pattern sheetXmlPattern = Pattern.compile("^(.+/)*sheet[0-9]+\\.xml$");
+        Pattern sheetXmlPattern = Pattern.compile("^xl/worksheets/sheet[0-9]+\\.xml$");
         ResourceFinder resourceFinder = new ZipResourceFinder(false,
                 it -> sheetXmlPattern.matcher(it.getName()).matches());
         List<Resource> resources = resourceFinder.getResources(filePath);
