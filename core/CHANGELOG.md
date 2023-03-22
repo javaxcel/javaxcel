@@ -27,9 +27,27 @@
 
 # v0.9.2
 
+### Modification
+
+- ⚡️ Improve: performance of reading rows in `ExcelUtils`
+- 🔧 Add: intellij formatter
+
 ### Troubleshooting
 
-- 🐞 Fix: manual calculation of column width
+- 🐞 Fix: manual calculation of column width for option `AutoResizedColumns`
+
+### Dependencies
+
+- ⬆️ Upgrade: intransitive dependency `spring-expression` from `5.3.24` to `5.3.25`
+- ⬆️ Upgrade: intransitive dependency `annotations` from `23.1.0` to `24.0.1`
+- ⬆️ Upgrade: test dependency `junit5` from `5.9.1` to `5.9.2`
+- ⬆️ Upgrade: test dependency `assertj-core` from `3.23.1` to `3.24.2`
+- ⬆️ Upgrade: test dependency `byte-buddy` from `1.12.20` to `1.14.2`
+- ⬆️ Upgrade: test dependency `lombok` from `1.18.24` to `1.18.26`
+- ⬆️ Upgrade: build dependency `maven` from `3.6.3` to `3.9.1`
+- ⬆️ Upgrade: build dependency `maven-wrapper` from `3.1.1` to `3.2.0`
+- ⬆️ Upgrade: build dependency `maven-compiler-plugin` from `3.10.1` to `3.11.0`
+- ⬆️ Upgrade: build dependency `maven-javadoc-plugin` from `3.4.1` to `3.5.0`
 
 # v0.9.1
 
