@@ -22,7 +22,7 @@ import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.core.impl.MapWriter;
 import com.github.javaxcel.core.out.core.impl.ModelWriter;
-import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
+import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 
 /**
  * Strategy for style of resizing width of columns when writing
@@ -31,7 +31,7 @@ import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
  *
  * @since 0.8.0
  */
-public class AutoResizedColumns extends AbstractExcelWriteStrategy {
+public class AutoResizedColumns implements ExcelWriteStrategy {
 
     private final boolean manual;
 

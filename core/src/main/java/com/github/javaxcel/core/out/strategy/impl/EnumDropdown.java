@@ -21,14 +21,14 @@ import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.core.impl.ModelWriter;
-import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
+import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 
 /**
  * Strategy for dropdown on cell value as constant of enum when writing
  *
  * @since 0.8.0
  */
-public class EnumDropdown extends AbstractExcelWriteStrategy {
+public class EnumDropdown implements ExcelWriteStrategy {
 
     @Override
     public boolean isSupported(ExcelWriteContext<?> context) {

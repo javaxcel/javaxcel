@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.function.Function;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -52,6 +53,7 @@ import com.github.javaxcel.core.util.ExcelUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
 import com.github.javaxcel.styler.NoStyleConfig;
 
+import static java.util.Comparator.*;
 import static java.util.stream.Collectors.*;
 
 /**
@@ -106,9 +108,12 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
         }
 
         // Makes each strategy be unique; removes duplication.
+        // Equality of ExcelWriteStrategy is determined by its class name, not implementing of equals and hashCode.
         Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> strategyMap = Arrays.stream(strategies)
-                .distinct().filter(it -> it.isSupported(this.context))
-                .collect(toMap(ExcelWriteStrategy::getClass, Function.identity()));
+                .filter(it -> it.isSupported(this.context))
+                .collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparing(it -> it.getClass().getName()))),
+                        set -> set.stream().collect(toMap(ExcelWriteStrategy::getClass, Function.identity()))));
+
         this.context.setStrategyMap(Collections.unmodifiableMap(strategyMap));
 
         return this;
@@ -212,8 +217,6 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
                 .describedAs("There are two or more rows as a header in the sheet; create only one row as the header")
                 .isEqualTo(0);
 
-        storeHeaderColumnWidth(sheet);
-
         for (int i = lastRowIndex; i < chunkSize; i++) {
             T model = chunk.get(i);
 
@@ -261,16 +264,13 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
 
         Row row = sheet.getRow(0);
 
-        int columnIndex = 0;
         for (Cell cell : row) {
             String cellValue = cell.getStringCellValue();
-            storeColumnWidth(cellValue, columnIndex);
-
-            columnIndex++;
+            storeColumnWidth(cellValue, cell.getColumnIndex());
         }
     }
 
-    private void storeColumnWidth(String cellValue, int columnIndex) {
+    private void storeColumnWidth(@Nullable String cellValue, int columnIndex) {
         if (ArrayUtils.isNullOrEmpty(this.columnWidths)) {
             return;
         }
@@ -288,6 +288,8 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
             ExcelUtils.autoResizeColumns(this.context.getSheet(), getColumnCount());
             return;
         }
+
+        // storeHeaderColumnWidth(sheet);
 
         // 1.14388 is a max character width of the "Serif" font and 256 font units.
         for (int i = 0; i < this.columnWidths.length; i++) {

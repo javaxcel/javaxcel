@@ -24,14 +24,14 @@ import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.core.impl.MapWriter;
 import com.github.javaxcel.core.out.core.impl.ModelWriter;
-import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
+import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 
 /**
  * Strategy for sheet name
  *
  * @since 0.8.0
  */
-public class SheetName extends AbstractExcelWriteStrategy {
+public class SheetName implements ExcelWriteStrategy {
 
     private final String value;
 
