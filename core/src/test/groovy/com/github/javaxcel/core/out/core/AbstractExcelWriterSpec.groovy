@@ -34,8 +34,8 @@ class AbstractExcelWriterSpec extends Specification {
 
     def "Sets no option"() {
         given:
-        def context = new ExcelWriteContext<>(Mock(Workbook), Object, ModelWriter)
-        def writer = Spy(AbstractExcelWriter, constructorArgs: [context]) as AbstractExcelWriter
+        def context = createContext()
+        def writer = createWriter(context)
 
         when:
         writer.options()
@@ -46,8 +46,8 @@ class AbstractExcelWriterSpec extends Specification {
 
     def "Sets options"() {
         given:
-        def context = new ExcelWriteContext<>(Mock(Workbook), Object, ModelWriter)
-        def writer = Spy(AbstractExcelWriter, constructorArgs: [context]) as AbstractExcelWriter
+        def context = createContext()
+        def writer = createWriter(context)
 
         when:
         writer.options(new UseGetters(), new HiddenExtraColumns(), new HiddenExtraRows())
@@ -58,8 +58,8 @@ class AbstractExcelWriterSpec extends Specification {
 
     def "Sets one of duplicated options"() {
         given:
-        def context = new ExcelWriteContext<>(Mock(Workbook), Object, ModelWriter)
-        def writer = Spy(AbstractExcelWriter, constructorArgs: [context]) as AbstractExcelWriter
+        def context = createContext()
+        def writer = createWriter(context)
 
         when:
         writer.options(new EnumDropdown(), new Filter(false), new EnumDropdown(), new Filter(true))
@@ -70,8 +70,8 @@ class AbstractExcelWriterSpec extends Specification {
 
     def "Discards previous options"() {
         given:
-        def context = new ExcelWriteContext<>(Mock(Workbook), Object, ModelWriter)
-        def writer = Spy(AbstractExcelWriter, constructorArgs: [context]) as AbstractExcelWriter
+        def context = createContext()
+        def writer = createWriter(context)
 
         when:
         writer.options(new EnumDropdown(), new Filter(false), new UseGetters(), new Filter(true))
@@ -84,6 +84,16 @@ class AbstractExcelWriterSpec extends Specification {
 
         then:
         context.strategyMap.size() == 1
+    }
+
+    // -------------------------------------------------------------------------------------------------
+
+    private ExcelWriteContext createContext(Class modelType = Object, Class<? extends ExcelWriter> writerType = ModelWriter) {
+        new ExcelWriteContext<>(Mock(Workbook), modelType, writerType)
+    }
+
+    private AbstractExcelWriter createWriter(ExcelWriteContext context) {
+        Spy(AbstractExcelWriter, constructorArgs: [context]) as AbstractExcelWriter
     }
 
 }

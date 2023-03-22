@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 Javaxcel
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.github.javaxcel.core.in.core
 
 import spock.lang.Specification
@@ -16,8 +32,8 @@ class AbstractExcelReaderSpec extends Specification {
 
     def "Sets no option"() {
         given:
-        def context = new ExcelReadContext<>(Mock(Workbook), Object, ModelReader)
-        def reader = Spy(AbstractExcelReader, constructorArgs: [context]) as AbstractExcelReader
+        def context = createContext()
+        def reader = createReader(context)
 
         when:
         reader.options()
@@ -28,8 +44,8 @@ class AbstractExcelReaderSpec extends Specification {
 
     def "Sets options"() {
         given:
-        def context = new ExcelReadContext<>(Mock(Workbook), Object, ModelReader)
-        def reader = Spy(AbstractExcelReader, constructorArgs: [context]) as AbstractExcelReader
+        def context = createContext()
+        def reader = createReader(context)
 
         when:
         reader.options(new Limit(10), new Parallel(), new UseSetters())
@@ -40,8 +56,8 @@ class AbstractExcelReaderSpec extends Specification {
 
     def "Sets one of duplicated options"() {
         given:
-        def context = new ExcelReadContext<>(Mock(Workbook), Object, ModelReader)
-        def reader = Spy(AbstractExcelReader, constructorArgs: [context]) as AbstractExcelReader
+        def context = createContext()
+        def reader = createReader(context)
 
         when:
         reader.options(new Parallel(), new Limit(5), new Parallel(), new Limit(10))
@@ -52,8 +68,8 @@ class AbstractExcelReaderSpec extends Specification {
 
     def "Discards previous options"() {
         given:
-        def context = new ExcelReadContext<>(Mock(Workbook), Object, ModelReader)
-        def reader = Spy(AbstractExcelReader, constructorArgs: [context]) as AbstractExcelReader
+        def context = createContext()
+        def reader = createReader(context)
 
         when:
         reader.options(new Parallel(), new Limit(5), new UseSetters(), new Limit(10))
@@ -66,6 +82,16 @@ class AbstractExcelReaderSpec extends Specification {
 
         then:
         context.strategyMap.size() == 1
+    }
+
+    // -------------------------------------------------------------------------------------------------
+
+    private ExcelReadContext createContext(Class modelType = Object, Class<? extends ExcelReader> readerType = ModelReader) {
+        new ExcelReadContext<>(Mock(Workbook), modelType, readerType)
+    }
+
+    private AbstractExcelReader createReader(ExcelReadContext context) {
+        Spy(AbstractExcelReader, constructorArgs: [context]) as AbstractExcelReader
     }
 
 }
