@@ -16,11 +16,12 @@
 
 package com.github.javaxcel.core.in.resolver.impl.constructor.success
 
-import com.github.javaxcel.core.in.resolver.impl.ExcelModelConstructorResolver
 import spock.lang.Specification
 import spock.lang.Subject
 
 import java.lang.reflect.Constructor
+
+import com.github.javaxcel.core.in.resolver.impl.ExcelModelConstructorResolver
 
 @Subject(ExcelModelConstructorResolver)
 class DifferentParamOrderFromFieldSpec extends Specification {

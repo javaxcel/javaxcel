@@ -16,11 +16,12 @@
 
 package com.github.javaxcel.test.converter.in
 
-import com.github.javaxcel.core.converter.in.ExcelReadHandlerConverter
 import spock.lang.Subject
 
 import java.nio.file.AccessMode
 import java.util.concurrent.TimeUnit
+
+import com.github.javaxcel.core.converter.in.ExcelReadHandlerConverter
 
 @Subject(ExcelReadHandlerConverter)
 @SuppressWarnings("unused")

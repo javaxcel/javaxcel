@@ -16,6 +16,22 @@
 
 package com.github.javaxcel.core.core.modelwriter;
 
+import java.io.File;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import io.github.imsejin.common.tool.Stopwatch;
+import lombok.Cleanup;
+import lombok.ToString;
+
 import com.github.javaxcel.core.TestUtils;
 import com.github.javaxcel.core.annotation.ExcelModel;
 import com.github.javaxcel.core.core.ModelWriterTester;
@@ -27,23 +43,9 @@ import com.github.javaxcel.core.out.strategy.impl.HiddenExtraColumns;
 import com.github.javaxcel.core.out.strategy.impl.HiddenExtraRows;
 import com.github.javaxcel.core.out.strategy.impl.SheetName;
 import com.github.javaxcel.core.util.ExcelUtils;
-import io.github.imsejin.common.tool.Stopwatch;
-import lombok.Cleanup;
-import lombok.ToString;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
-import java.io.File;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static com.github.javaxcel.core.TestUtils.assertNotEmptyFile;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.github.javaxcel.core.TestUtils.*;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @see AutoResizedColumns
@@ -73,7 +75,8 @@ class SheetManipulationTest extends ModelWriterTester {
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected void whenWriteWorkbook(GivenModel givenModel, WhenModel whenModel, ThenModel thenModel) {
         TestUtils.JAVAXCEL.writer(whenModel.getWorkbook(), givenModel.getType())
-                .options(new SheetName("Rainbow"), new AutoResizedColumns(false), new HiddenExtraRows(), new HiddenExtraColumns())
+                .options(new SheetName("Rainbow"), new AutoResizedColumns(false), new HiddenExtraRows(),
+                        new HiddenExtraColumns())
                 .write(whenModel.getOutputStream(), (List) thenModel.getModels());
     }
 

@@ -16,11 +16,12 @@
 
 package com.github.javaxcel.core.out.strategy.impl;
 
+import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
+
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.core.impl.ModelWriter;
 import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
-import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
 /**
  * Strategy for getting value from property of model through getter
@@ -38,7 +39,8 @@ public class UseGetters extends AbstractExcelWriteStrategy {
     @Override
     @ExcludeFromGeneratedJacocoReport
     public Object execute(ExcelWriteContext<?> context) {
-        throw new UnsupportedOperationException("ExcelWriteStrategy." + getClass().getSimpleName() + " is not supported");
+        throw new UnsupportedOperationException(
+                "ExcelWriteStrategy." + getClass().getSimpleName() + " is not supported");
     }
 
 }

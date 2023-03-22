@@ -16,12 +16,14 @@
 
 package com.github.javaxcel.core.out.strategy.impl
 
+import spock.lang.Specification
+import spock.lang.Subject
+
+import org.apache.poi.ss.usermodel.Workbook
+
 import com.github.javaxcel.core.out.context.ExcelWriteContext
 import com.github.javaxcel.core.out.core.impl.MapWriter
 import com.github.javaxcel.core.out.core.impl.ModelWriter
-import org.apache.poi.ss.usermodel.Workbook
-import spock.lang.Specification
-import spock.lang.Subject
 
 @Subject(HeaderNames)
 @SuppressWarnings("GroovyResultOfObjectAllocationIgnored")

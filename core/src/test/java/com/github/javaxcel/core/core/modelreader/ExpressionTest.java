@@ -16,22 +16,24 @@
 
 package com.github.javaxcel.core.core.modelreader;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.UUID;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import io.github.imsejin.common.tool.Stopwatch;
+
 import com.github.javaxcel.core.annotation.ExcelModel;
 import com.github.javaxcel.core.annotation.ExcelReadExpression;
 import com.github.javaxcel.core.core.ModelReaderTester;
 import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
 import com.github.javaxcel.core.model.creature.Human;
 import com.github.javaxcel.core.util.ExcelUtils;
-import io.github.imsejin.common.tool.Stopwatch;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @see ExcelModel#includeSuper()
@@ -71,7 +73,8 @@ class ExpressionTest extends ModelReaderTester {
                 .containsExactlyElementsOf(mocks);
         assertThat(mocks)
                 .filteredOn(mock -> mock.getPlaceOfBirth() == null)
-                .hasSizeLessThanOrEqualTo((int) toys.stream().filter(toy -> toy.getPlaceOfBirth().equals(defaultPlaceOfBirth)).count());
+                .hasSizeLessThanOrEqualTo(
+                        (int) toys.stream().filter(toy -> toy.getPlaceOfBirth().equals(defaultPlaceOfBirth)).count());
     }
 
 }

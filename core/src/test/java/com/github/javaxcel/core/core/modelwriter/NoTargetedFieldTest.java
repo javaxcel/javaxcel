@@ -16,22 +16,24 @@
 
 package com.github.javaxcel.core.core.modelwriter;
 
-import com.github.javaxcel.core.TestUtils;
-import com.github.javaxcel.core.annotation.ExcelIgnore;
-import com.github.javaxcel.core.annotation.ExcelModel;
-import com.github.javaxcel.core.exception.NoTargetedFieldException;
-import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
-import com.github.javaxcel.core.out.core.impl.ModelWriter;
-import io.github.imsejin.common.tool.Stopwatch;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.concurrent.TimeUnit;
+import io.github.imsejin.common.tool.Stopwatch;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import com.github.javaxcel.core.TestUtils;
+import com.github.javaxcel.core.annotation.ExcelIgnore;
+import com.github.javaxcel.core.annotation.ExcelModel;
+import com.github.javaxcel.core.exception.NoTargetedFieldException;
+import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
+import com.github.javaxcel.core.out.core.impl.ModelWriter;
+
+import static org.assertj.core.api.Assertions.*;
 
 @StopwatchProvider(TimeUnit.MILLISECONDS)
 class NoTargetedFieldTest {

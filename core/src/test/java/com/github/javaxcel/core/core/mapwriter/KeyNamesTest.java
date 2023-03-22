@@ -16,23 +16,6 @@
 
 package com.github.javaxcel.core.core.mapwriter;
 
-import com.github.javaxcel.core.TestUtils;
-import com.github.javaxcel.core.core.MapWriterTester;
-import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
-import com.github.javaxcel.core.out.core.ExcelWriter;
-import com.github.javaxcel.core.out.strategy.impl.KeyNames;
-import com.github.javaxcel.core.util.ExcelUtils;
-import io.github.imsejin.common.tool.Stopwatch;
-import io.github.imsejin.common.util.StreamUtils;
-import lombok.Cleanup;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -43,11 +26,28 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
-import static com.github.javaxcel.core.TestUtils.MAP_KEY_PREFIX;
-import static com.github.javaxcel.core.TestUtils.assertNotEmptyFile;
-import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+
+import io.github.imsejin.common.tool.Stopwatch;
+import io.github.imsejin.common.util.StreamUtils;
+import lombok.Cleanup;
+
+import com.github.javaxcel.core.TestUtils;
+import com.github.javaxcel.core.core.MapWriterTester;
+import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
+import com.github.javaxcel.core.out.core.ExcelWriter;
+import com.github.javaxcel.core.out.strategy.impl.KeyNames;
+import com.github.javaxcel.core.util.ExcelUtils;
+
+import static com.github.javaxcel.core.TestUtils.*;
+import static java.util.stream.Collectors.*;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @see KeyNames
@@ -92,7 +92,8 @@ class KeyNamesTest extends MapWriterTester {
 
         stopwatch.start("convert header names with unmatched list");
         assertThatThrownBy(() -> TestUtils.JAVAXCEL.writer(new XSSFWorkbook())
-                .options(new KeyNames(Arrays.asList("column_1", "column_2", "column_3"), Arrays.asList("column_1", "column_2"))))
+                .options(new KeyNames(Arrays.asList("column_1", "column_2", "column_3"),
+                        Arrays.asList("column_1", "column_2"))))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessageStartingWith("newKeyNames.size is not equal to keyOrders.size");
     }
@@ -155,7 +156,7 @@ class KeyNamesTest extends MapWriterTester {
                 .collect(toList()))
                 .as("#2 All header names at each sheet must be sorted")
                 .containsExactlyElementsOf(Collections.nCopies(workbook.getNumberOfSheets(),
-                        testCase == TestCase.JUST_ORDERED ? orderedKeys : headerNames)
+                                testCase == TestCase.JUST_ORDERED ? orderedKeys : headerNames)
                         .stream().flatMap(List::stream).collect(toList()));
     }
 

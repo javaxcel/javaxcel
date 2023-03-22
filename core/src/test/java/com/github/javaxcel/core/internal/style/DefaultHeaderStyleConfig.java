@@ -1,12 +1,13 @@
 package com.github.javaxcel.core.internal.style;
 
-import com.github.javaxcel.styler.ExcelStyleConfig;
-import com.github.javaxcel.styler.config.Configurer;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+
+import com.github.javaxcel.styler.ExcelStyleConfig;
+import com.github.javaxcel.styler.config.Configurer;
 
 public class DefaultHeaderStyleConfig implements ExcelStyleConfig {
 
@@ -76,7 +77,7 @@ public class DefaultHeaderStyleConfig implements ExcelStyleConfig {
                 .and()
                 .font().name("Arial").size(12).bold().color(IndexedColors.WHITE);
 
-        return new ExcelStyleConfig[]{r, a, i, n, b, o, w};
+        return new ExcelStyleConfig[] {r, a, i, n, b, o, w};
     }
 
 }

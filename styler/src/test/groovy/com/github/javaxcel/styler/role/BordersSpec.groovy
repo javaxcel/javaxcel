@@ -16,6 +16,8 @@
 
 package com.github.javaxcel.styler.role
 
+import spock.lang.Specification
+
 import org.apache.poi.hssf.record.ExtendedFormatRecord
 import org.apache.poi.hssf.usermodel.HSSFCellStyle
 import org.apache.poi.ss.SpreadsheetVersion
@@ -24,10 +26,8 @@ import org.apache.poi.ss.usermodel.CellStyle
 import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.xssf.model.StylesTable
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
-import spock.lang.Specification
 
-import static org.apache.poi.ss.SpreadsheetVersion.EXCEL2007
-import static org.apache.poi.ss.SpreadsheetVersion.EXCEL97
+import static org.apache.poi.ss.SpreadsheetVersion.*
 
 @SuppressWarnings("GroovyAssignabilityCheck")
 class BordersSpec extends Specification {

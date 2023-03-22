@@ -16,18 +16,20 @@
 
 package com.github.javaxcel.core.in.context;
 
-import com.github.javaxcel.core.in.core.ExcelReader;
-import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
-import io.github.imsejin.common.assertion.Asserts;
-import io.github.imsejin.common.util.StringUtils;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import io.github.imsejin.common.assertion.Asserts;
+import io.github.imsejin.common.util.StringUtils;
+
+import com.github.javaxcel.core.in.core.ExcelReader;
+import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 
 /**
  * Context that has objects used on reading Excel file
@@ -76,7 +78,9 @@ public class ExcelReadContext<T> {
         Asserts.that(readerType)
                 .describedAs("ExcelReadContext.readerType is not allowed to be null")
                 .isNotNull()
-                .describedAs("ExcelReadContext.readerType is type of implementation of ExcelReader, but it isn't : '{0}'", readerType.getName())
+                .describedAs(
+                        "ExcelReadContext.readerType is type of implementation of ExcelReader, but it isn't : '{0}'",
+                        readerType.getName())
                 .is(ExcelReader.class::isAssignableFrom);
 
         this.workbook = workbook;

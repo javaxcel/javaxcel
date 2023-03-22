@@ -16,6 +16,21 @@
 
 package com.github.javaxcel.core.out.core.impl;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.jetbrains.annotations.Nullable;
+
+import io.github.imsejin.common.assertion.Asserts;
+import io.github.imsejin.common.util.ArrayUtils;
+import io.github.imsejin.common.util.StringUtils;
+
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.core.AbstractExcelWriter;
 import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
@@ -26,22 +41,9 @@ import com.github.javaxcel.core.out.strategy.impl.HeaderStyles;
 import com.github.javaxcel.core.out.strategy.impl.KeyNames;
 import com.github.javaxcel.core.util.ExcelUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
-import io.github.imsejin.common.assertion.Asserts;
-import io.github.imsejin.common.util.ArrayUtils;
-import io.github.imsejin.common.util.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.Map;
-
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
+import static java.util.Comparator.*;
+import static java.util.stream.Collectors.*;
 
 /**
  * Excel writer for {@link Map}
@@ -110,21 +112,27 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
 
     private void changeKeys(ExcelWriteContext<Map<String, Object>> context) {
         ExcelWriteStrategy strategy = context.getStrategyMap().get(KeyNames.class);
-        if (strategy == null) return;
+        if (strategy == null) {
+            return;
+        }
 
         Map<String, Object> keyMap = (Map<String, Object>) strategy.execute(context);
         Map<String, Integer> orders = (Map<String, Integer>) keyMap.get("orders");
 
         // Validates the number of ordered keys and their each element.
         Asserts.that(this.keys)
-                .describedAs("MapWriter.keys is not equal to keyMap.orders.size (keys.size: {0}, keyMap.orders.size: {1})",
+                .describedAs(
+                        "MapWriter.keys is not equal to keyMap.orders.size (keys.size: {0}, keyMap.orders.size: {1})",
                         this.keys.size(), orders.size())
                 .hasSize(orders.size())
-                .describedAs("MapWriter.keys is at variance with keyMap.orders.keySet (keys: {0}, keyMap.orders.keySet: {1})",
+                .describedAs(
+                        "MapWriter.keys is at variance with keyMap.orders.keySet (keys: {0}, keyMap.orders.keySet: {1})",
                         this.keys, orders.keySet())
                 .containsOnly(orders.keySet().toArray(new String[0]));
 
-        if (keyMap.containsKey("names")) this.headerNames = (List<String>) keyMap.get("names");
+        if (keyMap.containsKey("names")) {
+            this.headerNames = (List<String>) keyMap.get("names");
+        }
 
         // Rearranges the keys as you want: it changes order of columns.
         this.keys.sort(comparing(orders::get));
@@ -132,20 +140,25 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
 
     private void setDefaultValue(ExcelWriteContext<Map<String, Object>> context) {
         ExcelWriteStrategy strategy = context.getStrategyMap().get(DefaultValue.class);
-        if (strategy == null) return;
+        if (strategy == null) {
+            return;
+        }
 
         this.defaultValue = (String) strategy.execute(context);
     }
 
     private void setHeaderStyles(ExcelWriteContext<Map<String, Object>> context) {
         ExcelWriteStrategy strategy = context.getStrategyMap().get(HeaderStyles.class);
-        if (strategy == null) return;
+        if (strategy == null) {
+            return;
+        }
 
         List<ExcelStyleConfig> headerStyleConfigs = (List<ExcelStyleConfig>) strategy.execute(context);
 
         // Validates header styles.
         Asserts.that(headerStyleConfigs)
-                .describedAs("headerStyles.size must be 1 or equal to keys.size (headerStyles.size: {0}, keys.size: {1})",
+                .describedAs(
+                        "headerStyles.size must be 1 or equal to keys.size (headerStyles.size: {0}, keys.size: {1})",
                         headerStyleConfigs.size(), this.keys.size())
                 .is(them -> them.size() == 1 || them.size() == this.keys.size());
 
@@ -156,7 +169,9 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
 
     private void setBodyStyles(ExcelWriteContext<Map<String, Object>> context) {
         ExcelWriteStrategy strategy = context.getStrategyMap().get(BodyStyles.class);
-        if (strategy == null) return;
+        if (strategy == null) {
+            return;
+        }
 
         List<ExcelStyleConfig> bodyStyleConfigs = (List<ExcelStyleConfig>) strategy.execute(context);
 
@@ -181,7 +196,9 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
             String ref = ExcelUtils.toRangeReference(sheet, 0, 0, this.keys.size() - 1, context.getChunk().size() - 1);
             sheet.setAutoFilter(CellRangeAddress.valueOf(ref));
 
-            if (frozenPane) sheet.createFreezePane(0, 1);
+            if (frozenPane) {
+                sheet.createFreezePane(0, 1);
+            }
         }
     }
 

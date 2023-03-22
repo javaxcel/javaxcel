@@ -16,32 +16,56 @@
 
 package com.github.javaxcel.test.converter.out
 
-import com.github.javaxcel.core.converter.out.ExcelWriteHandlerConverter
+import spock.lang.Subject
+
 import io.github.imsejin.common.assertion.Asserts
 import io.github.imsejin.common.util.ArrayUtils
-import spock.lang.Subject
+
+import com.github.javaxcel.core.converter.out.ExcelWriteHandlerConverter
 
 @Subject(ExcelWriteHandlerConverter)
 class ExcelWriteHandlerConverter_TestModel_Array2D {
 
     ExcelWriteHandlerConverter_TestModel_Array2D(Object array) {
-        if (array == null) return
+        if (array == null) {
+            return
+        }
         Asserts.that(array.class).isArray()
 
         def componentType = ArrayUtils.resolveActualComponentType(array.class)
         Asserts.that(componentType)
                 .isNotNull().isNot(Class::isArray)
 
-        if (componentType == boolean) this.booleans = array as boolean[][]
-        if (componentType == byte) this.bytes = array as byte[][]
-        if (componentType == short) this.shorts = array as short[][]
-        if (componentType == char) this.chars = array as char[][]
-        if (componentType == int) this.ints = array as int[][]
-        if (componentType == long) this.longs = array as long[][]
-        if (componentType == float) this.floats = array as float[][]
-        if (componentType == double) this.doubles = array as double[][]
-        if (componentType == Object) this.objects = array as Object[][]
-        if (componentType == Locale) this.locales = array as Locale[][]
+        if (componentType == boolean) {
+            this.booleans = array as boolean[][]
+        }
+        if (componentType == byte) {
+            this.bytes = array as byte[][]
+        }
+        if (componentType == short) {
+            this.shorts = array as short[][]
+        }
+        if (componentType == char) {
+            this.chars = array as char[][]
+        }
+        if (componentType == int) {
+            this.ints = array as int[][]
+        }
+        if (componentType == long) {
+            this.longs = array as long[][]
+        }
+        if (componentType == float) {
+            this.floats = array as float[][]
+        }
+        if (componentType == double) {
+            this.doubles = array as double[][]
+        }
+        if (componentType == Object) {
+            this.objects = array as Object[][]
+        }
+        if (componentType == Locale) {
+            this.locales = array as Locale[][]
+        }
     }
 
     boolean[][] booleans

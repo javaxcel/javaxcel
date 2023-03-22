@@ -16,10 +16,10 @@
 
 package com.github.javaxcel.core.out.core;
 
-import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
-
 import java.io.OutputStream;
 import java.util.List;
+
+import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 
 /**
  * Excel writer

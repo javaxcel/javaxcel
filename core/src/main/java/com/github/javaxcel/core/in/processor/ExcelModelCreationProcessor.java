@@ -16,18 +16,6 @@
 
 package com.github.javaxcel.core.in.processor;
 
-import com.github.javaxcel.core.analysis.ExcelAnalysis;
-import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer;
-import com.github.javaxcel.core.annotation.ExcelModelCreator;
-import com.github.javaxcel.core.converter.in.ExcelReadConverter;
-import com.github.javaxcel.core.exception.NoTargetedFieldException;
-import com.github.javaxcel.core.in.resolver.ExcelModelExecutableParameterNameResolver;
-import com.github.javaxcel.core.in.resolver.ExcelModelExecutableParameterNameResolver.ResolvedParameter;
-import com.github.javaxcel.core.util.FieldUtils;
-import io.github.imsejin.common.assertion.Asserts;
-import io.github.imsejin.common.util.CollectionUtils;
-import io.github.imsejin.common.util.ReflectionUtils;
-
 import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -37,7 +25,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.stream.Collectors.toList;
+import io.github.imsejin.common.assertion.Asserts;
+import io.github.imsejin.common.util.CollectionUtils;
+import io.github.imsejin.common.util.ReflectionUtils;
+
+import com.github.javaxcel.core.analysis.ExcelAnalysis;
+import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer;
+import com.github.javaxcel.core.annotation.ExcelModelCreator;
+import com.github.javaxcel.core.converter.in.ExcelReadConverter;
+import com.github.javaxcel.core.exception.NoTargetedFieldException;
+import com.github.javaxcel.core.in.resolver.ExcelModelExecutableParameterNameResolver;
+import com.github.javaxcel.core.in.resolver.ExcelModelExecutableParameterNameResolver.ResolvedParameter;
+import com.github.javaxcel.core.util.FieldUtils;
+
+import static java.util.stream.Collectors.*;
 
 /**
  * Processor for creation of Excel model
@@ -104,12 +105,15 @@ public class ExcelModelCreationProcessor<T> {
                 .describedAs("ExcelModelCreationProcessor.modelType is not allowed to be null")
                 .isNotNull();
         Asserts.that(fields)
-                .describedAs("ExcelModelCreationProcessor.fields cannot find the targeted fields in the class: {0}", modelType.getName())
+                .describedAs("ExcelModelCreationProcessor.fields cannot find the targeted fields in the class: {0}",
+                        modelType.getName())
                 .thrownBy(desc -> new NoTargetedFieldException(modelType, desc))
                 .isNotEmpty()
                 .describedAs("ExcelModelCreationProcessor.fields cannot have null element: {0}", fields)
                 .doesNotContainNull()
-                .describedAs("ExcelModelCreationProcessor.fields are declared on model class, but it doesn't: (modelType: {0}, fields: {1})", modelType.getName(), fields)
+                .describedAs(
+                        "ExcelModelCreationProcessor.fields are declared on model class, but it doesn't: (modelType: {0}, fields: {1})",
+                        modelType.getName(), fields)
                 .allMatch(field -> field.getDeclaringClass().isAssignableFrom(modelType));
 
         this.fields = fields;

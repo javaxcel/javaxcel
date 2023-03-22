@@ -16,9 +16,9 @@
 
 package com.github.javaxcel.core.converter.handler.registry;
 
-import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
-
 import java.util.Set;
+
+import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
 
 /**
  * Registry of type handlers

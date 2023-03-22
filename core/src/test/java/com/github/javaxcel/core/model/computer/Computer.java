@@ -1,17 +1,18 @@
 package com.github.javaxcel.core.model.computer;
 
+import java.math.BigInteger;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import com.github.javaxcel.core.TestUtils.ExcludeOnPercentage;
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelModel;
 import com.github.javaxcel.core.annotation.ExcelModelCreator;
 import com.github.javaxcel.core.internal.style.DefaultBodyStyleConfig;
 import com.github.javaxcel.core.internal.style.DefaultHeaderStyleConfig;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import java.math.BigInteger;
 
 @Getter
 @Setter

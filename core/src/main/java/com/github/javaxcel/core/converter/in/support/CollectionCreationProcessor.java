@@ -16,8 +16,6 @@
 
 package com.github.javaxcel.core.converter.in.support;
 
-import io.github.imsejin.common.assertion.Asserts;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +36,8 @@ import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.function.Function;
+
+import io.github.imsejin.common.assertion.Asserts;
 
 /**
  * Processor for creation of collection
@@ -97,7 +97,8 @@ public class CollectionCreationProcessor {
 
         Function<Integer, Collection<?>> creator = CREATION_MAP.get(iterableType);
         if (creator == null) {
-            throw new UnsupportedOperationException("CollectionCreationProcessor cannot support a type: " + iterableType);
+            throw new UnsupportedOperationException(
+                    "CollectionCreationProcessor cannot support a type: " + iterableType);
         }
 
         return creator.apply(capacity);

@@ -20,14 +20,7 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 
-import static com.github.javaxcel.styler.role.Borders.setBottomColor;
-import static com.github.javaxcel.styler.role.Borders.setBottomStyle;
-import static com.github.javaxcel.styler.role.Borders.setLeftColor;
-import static com.github.javaxcel.styler.role.Borders.setLeftStyle;
-import static com.github.javaxcel.styler.role.Borders.setRightColor;
-import static com.github.javaxcel.styler.role.Borders.setRightStyle;
-import static com.github.javaxcel.styler.role.Borders.setTopColor;
-import static com.github.javaxcel.styler.role.Borders.setTopStyle;
+import static com.github.javaxcel.styler.role.Borders.*;
 
 public final class BorderConfigurer {
 

@@ -16,19 +16,17 @@
 
 package com.github.javaxcel.core.core.modelwriter;
 
-import com.github.javaxcel.core.TestUtils;
-import com.github.javaxcel.core.annotation.ExcelColumn;
-import com.github.javaxcel.core.core.ModelWriterTester;
-import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
-import com.github.javaxcel.core.out.core.ExcelWriter;
-import com.github.javaxcel.core.out.core.impl.ModelWriter;
-import com.github.javaxcel.core.out.strategy.impl.HeaderNames;
-import com.github.javaxcel.core.util.ExcelUtils;
-import com.github.javaxcel.core.util.FieldUtils;
-import io.github.imsejin.common.tool.Stopwatch;
-import io.github.imsejin.common.util.StreamUtils;
-import lombok.Cleanup;
-import lombok.ToString;
+import java.io.File;
+import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.math.BigInteger;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -41,21 +39,24 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.File;
-import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.math.BigInteger;
-import java.nio.file.Path;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+import io.github.imsejin.common.tool.Stopwatch;
+import io.github.imsejin.common.util.StreamUtils;
+import lombok.Cleanup;
+import lombok.ToString;
 
-import static com.github.javaxcel.core.TestUtils.assertNotEmptyFile;
-import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import com.github.javaxcel.core.TestUtils;
+import com.github.javaxcel.core.annotation.ExcelColumn;
+import com.github.javaxcel.core.core.ModelWriterTester;
+import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
+import com.github.javaxcel.core.out.core.ExcelWriter;
+import com.github.javaxcel.core.out.core.impl.ModelWriter;
+import com.github.javaxcel.core.out.strategy.impl.HeaderNames;
+import com.github.javaxcel.core.util.ExcelUtils;
+import com.github.javaxcel.core.util.FieldUtils;
+
+import static com.github.javaxcel.core.TestUtils.*;
+import static java.util.stream.Collectors.*;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @see HeaderNames
@@ -136,8 +137,11 @@ class HeaderNamesTest extends ModelWriterTester {
     }
 
     private static Function<String, String> getFunctionByType(Class<?> type) {
-        if (type == UpperSnakeCaseComputer.class) return HeaderNamesTest::camelToUpperSnake;
-        else return HeaderNamesTest::camelToKebab;
+        if (type == UpperSnakeCaseComputer.class) {
+            return HeaderNamesTest::camelToUpperSnake;
+        } else {
+            return HeaderNamesTest::camelToKebab;
+        }
     }
 
     private static Stream<Arguments> invalidHeaderNames() {

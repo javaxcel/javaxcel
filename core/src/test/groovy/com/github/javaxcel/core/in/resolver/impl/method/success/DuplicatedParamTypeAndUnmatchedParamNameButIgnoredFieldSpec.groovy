@@ -16,15 +16,16 @@
 
 package com.github.javaxcel.core.in.resolver.impl.method.success
 
+import spock.lang.Specification
+import spock.lang.Subject
+
+import java.lang.reflect.Method
+
 import com.github.javaxcel.core.annotation.ExcelColumn
 import com.github.javaxcel.core.annotation.ExcelIgnore
 import com.github.javaxcel.core.annotation.ExcelModel
 import com.github.javaxcel.core.annotation.ExcelModelCreator
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelMethodResolver
-import spock.lang.Specification
-import spock.lang.Subject
-
-import java.lang.reflect.Method
 
 @Subject(ExcelModelMethodResolver)
 class DuplicatedParamTypeAndUnmatchedParamNameButIgnoredFieldSpec extends Specification {

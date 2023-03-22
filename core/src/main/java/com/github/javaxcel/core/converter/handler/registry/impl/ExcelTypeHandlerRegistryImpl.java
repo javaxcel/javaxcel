@@ -16,14 +16,16 @@
 
 package com.github.javaxcel.core.converter.handler.registry.impl;
 
-import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
-import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
-import io.github.imsejin.common.assertion.Asserts;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import org.jetbrains.annotations.Nullable;
+
+import io.github.imsejin.common.assertion.Asserts;
+
+import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
+import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
 
 /**
  * Simple implementation of handler registry.
@@ -59,12 +61,18 @@ public class ExcelTypeHandlerRegistryImpl implements ExcelTypeHandlerRegistry {
     @Override
     public <T> boolean add(Class<T> type, ExcelTypeHandler<T> handler) {
         Asserts.that(type)
-                .describedAs("ExcelTypeHandlerRegistry doesn't allow the addition of null as a type. (type: '{0}', handler: '{1}')", type, handler)
+                .describedAs(
+                        "ExcelTypeHandlerRegistry doesn't allow the addition of null as a type. (type: '{0}', handler: '{1}')",
+                        type, handler)
                 .isNotNull();
         Asserts.that(handler)
-                .describedAs("ExcelTypeHandlerRegistry doesn't allow the addition of null as a handler. (type: '{0}', handler: '{1}')", type, handler)
+                .describedAs(
+                        "ExcelTypeHandlerRegistry doesn't allow the addition of null as a handler. (type: '{0}', handler: '{1}')",
+                        type, handler)
                 .isNotNull()
-                .describedAs("ExcelTypeHandlerRegistry doesn't allow the addition of handler with unmatched type as a pair. (type: '{0}', handler: '{1}')", type, handler)
+                .describedAs(
+                        "ExcelTypeHandlerRegistry doesn't allow the addition of handler with unmatched type as a pair. (type: '{0}', handler: '{1}')",
+                        type, handler)
                 .thrownBy(IllegalStateException::new)
                 .is(it -> it.getType() == type);
 

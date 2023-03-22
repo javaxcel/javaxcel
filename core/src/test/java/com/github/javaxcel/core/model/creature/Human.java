@@ -1,5 +1,22 @@
 package com.github.javaxcel.core.model.creature;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
+import io.github.imsejin.common.tool.RandomString;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import com.github.javaxcel.core.TestUtils;
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelDateTimeFormat;
@@ -9,22 +26,6 @@ import com.github.javaxcel.core.annotation.ExcelReadExpression;
 import com.github.javaxcel.core.annotation.ExcelWriteExpression;
 import com.github.javaxcel.core.internal.style.DefaultBodyStyleConfig;
 import com.github.javaxcel.core.internal.style.DefaultHeaderStyleConfig;
-import io.github.imsejin.common.tool.RandomString;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -90,8 +91,8 @@ public class Human extends Creature {
 
     @Builder
     private Human(Kingdom kingdom, Sex sex, int lifespan, String name, LocalDate birthday, LocalTime birthTime,
-                  UUID placeOfBirth, BigDecimal restSecondsOfLife, BigInteger numOfCells, float height, float weight,
-                  int[] agesFromBirthToPuberty, int[] agesFromTwilightToDeath, boolean disabled) {
+            UUID placeOfBirth, BigDecimal restSecondsOfLife, BigInteger numOfCells, float height, float weight,
+            int[] agesFromBirthToPuberty, int[] agesFromTwilightToDeath, boolean disabled) {
         super(kingdom, sex, lifespan);
         this.name = name;
         this.birthday = birthday;
@@ -126,7 +127,9 @@ public class Human extends Creature {
             sb.append(random.nextInt(Integer.MAX_VALUE));
             BigInteger numOfCells = new BigInteger(sb.toString());
 
-            BigDecimal restSecondsOfLife = BigDecimal.valueOf(Integer.MAX_VALUE).add(BigDecimal.valueOf(random.nextInt())).add(BigDecimal.valueOf(random.nextDouble()));
+            BigDecimal restSecondsOfLife = BigDecimal.valueOf(Integer.MAX_VALUE)
+                    .add(BigDecimal.valueOf(random.nextInt()))
+                    .add(BigDecimal.valueOf(random.nextDouble()));
             int[] agesFromBirthToPuberty = random.nextDouble() >= 0.2
                     ? random.ints(10, 0, 18).toArray()
                     : random.ints(5, 0, 12).toArray();

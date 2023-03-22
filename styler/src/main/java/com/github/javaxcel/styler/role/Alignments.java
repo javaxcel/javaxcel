@@ -16,10 +16,11 @@
 
 package com.github.javaxcel.styler.role;
 
-import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+
+import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
 public final class Alignments {
 

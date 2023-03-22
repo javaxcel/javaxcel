@@ -16,9 +16,9 @@
 
 package com.github.javaxcel.core.converter.handler.impl.util;
 
-import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
-
 import java.util.UUID;
+
+import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
 
 /**
  * Handler for type of {@link UUID}

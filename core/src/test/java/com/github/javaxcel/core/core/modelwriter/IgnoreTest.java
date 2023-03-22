@@ -16,6 +16,20 @@
 
 package com.github.javaxcel.core.core.modelwriter;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.util.List;
+
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import io.github.imsejin.common.tool.Stopwatch;
+import lombok.Cleanup;
+
 import com.github.javaxcel.core.TestUtils;
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelIgnore;
@@ -24,22 +38,8 @@ import com.github.javaxcel.core.core.ModelWriterTester;
 import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
 import com.github.javaxcel.core.out.strategy.impl.AutoResizedColumns;
 import com.github.javaxcel.core.util.ExcelUtils;
-import io.github.imsejin.common.tool.Stopwatch;
-import lombok.Cleanup;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.util.List;
-
-import static com.github.javaxcel.core.TestUtils.assertEqualsHeaderSize;
-import static com.github.javaxcel.core.TestUtils.assertEqualsNumOfModels;
-import static com.github.javaxcel.core.TestUtils.assertNotEmptyFile;
+import static com.github.javaxcel.core.TestUtils.*;
 
 /**
  * @see ExcelIgnore
@@ -85,7 +85,8 @@ class IgnoreTest extends ModelWriterTester {
 
         @Cleanup Workbook workbook = WorkbookFactory.create(file);
         assertEqualsNumOfModels(workbook, models, "#2 The number of actually written rows is %,d", models.size());
-        assertEqualsHeaderSize(workbook, type, "#3 Header size is equal to the number of targeted fields in '%s'", type.getSimpleName());
+        assertEqualsHeaderSize(workbook, type, "#3 Header size is equal to the number of targeted fields in '%s'",
+                type.getSimpleName());
     }
 
     // -------------------------------------------------------------------------------------------------

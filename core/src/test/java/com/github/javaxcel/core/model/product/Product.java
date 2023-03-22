@@ -1,19 +1,21 @@
 package com.github.javaxcel.core.model.product;
 
-import com.github.javaxcel.core.annotation.ExcelColumn;
-import com.github.javaxcel.core.annotation.ExcelDateTimeFormat;
-import com.github.javaxcel.core.annotation.ExcelIgnore;
-import com.github.javaxcel.core.annotation.ExcelModelCreator;
+import java.time.LocalDate;
+import java.util.UUID;
+
+import org.jeasy.random.annotation.Exclude;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.jeasy.random.annotation.Exclude;
 
-import java.time.LocalDate;
-import java.util.UUID;
+import com.github.javaxcel.core.annotation.ExcelColumn;
+import com.github.javaxcel.core.annotation.ExcelDateTimeFormat;
+import com.github.javaxcel.core.annotation.ExcelIgnore;
+import com.github.javaxcel.core.annotation.ExcelModelCreator;
 
 @Getter
 @Setter

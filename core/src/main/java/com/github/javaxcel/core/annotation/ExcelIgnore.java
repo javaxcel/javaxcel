@@ -16,15 +16,14 @@
 
 package com.github.javaxcel.core.annotation;
 
-import com.github.javaxcel.core.in.core.ExcelReader;
-import com.github.javaxcel.core.out.core.ExcelWriter;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.github.javaxcel.core.in.core.ExcelReader;
+import com.github.javaxcel.core.out.core.ExcelWriter;
 
 /**
  * Indicates that a field will be excluded from targeted fields.

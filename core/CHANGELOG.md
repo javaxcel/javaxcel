@@ -1,5 +1,7 @@
 # Table of Contents
 
+- [v0.9.2](#v092):
+- [v0.9.1](#v091): 2023-01-02
 - [v0.9.0](#v090): 2022-12-29
 - [v0.8.2](#v082): 2022-07-10
 - [v0.8.1](#v081): 2022-04-19
@@ -22,6 +24,43 @@
 - [v0.3.0](#v030): 2020-09-12
 - [v0.2.1](#v021): 2020-09-07
 - [v0.1.0](#v010): 2020-08-30
+
+# v0.9.2
+
+### Modification
+
+- ⚡️ Improve: performance of reading rows in `ExcelUtils`
+- 🔧 Add: intellij formatter
+
+### Troubleshooting
+
+- 🐞 Fix: manual calculation of column width for option `AutoResizedColumns`
+
+### Dependencies
+
+- ⬆️ Upgrade: intransitive dependency `spring-expression` from `5.3.24` to `5.3.25`
+- ⬆️ Upgrade: intransitive dependency `annotations` from `23.1.0` to `24.0.1`
+- ⬆️ Upgrade: test dependency `junit5` from `5.9.1` to `5.9.2`
+- ⬆️ Upgrade: test dependency `assertj-core` from `3.23.1` to `3.24.2`
+- ⬆️ Upgrade: test dependency `byte-buddy` from `1.12.20` to `1.14.2`
+- ⬆️ Upgrade: test dependency `lombok` from `1.18.24` to `1.18.26`
+- ⬆️ Upgrade: build dependency `maven` from `3.6.3` to `3.9.1`
+- ⬆️ Upgrade: build dependency `maven-wrapper` from `3.1.1` to `3.2.0`
+- ⬆️ Upgrade: build dependency `maven-compiler-plugin` from `3.10.1` to `3.11.0`
+- ⬆️ Upgrade: build dependency `maven-javadoc-plugin` from `3.4.1` to `3.5.0`
+
+# v0.9.1
+
+### Modification
+
+- ♻️ Replace: internal abstract method createBody(ExcelWriteContext) with `getColumnCount()`, `createCellValue(T, int)`
+- 🔨 Modify: type of `ExcelWriteContext.headerStyles` from `List<CellStyle>` to `CellStyle[]`
+- 🔨 Modify: type of `ExcelWriteContext.bodyStyles` from `List<CellStyle>` to `CellStyle[]`
+- 🔨 Modify: internal clean up on `ExcelWriter`
+
+### Troubleshooting
+
+- 🐞 Fix: wrong overwriting a cell style on `ModelWriter` due to ArrayIndexOutOfBoundsException
 
 # v0.9.0
 

@@ -1,12 +1,13 @@
 package com.github.javaxcel.core.model.toy;
 
-import com.github.javaxcel.core.TestUtils.ExcludeOnPercentage;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import com.github.javaxcel.core.TestUtils.ExcludeOnPercentage;
 
 @Getter
 @Setter

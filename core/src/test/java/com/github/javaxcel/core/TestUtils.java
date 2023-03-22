@@ -16,16 +16,6 @@
 
 package com.github.javaxcel.core;
 
-import com.github.javaxcel.core.annotation.ExcelIgnore;
-import com.github.javaxcel.core.util.ExcelUtils;
-import com.github.javaxcel.core.util.FieldUtils;
-import io.github.imsejin.common.assertion.Asserts;
-import io.github.imsejin.common.tool.TypeClassifier;
-import io.github.imsejin.common.util.MathUtils;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.jeasy.random.EasyRandom;
-import org.jeasy.random.EasyRandomParameters;
-
 import java.io.File;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -45,10 +35,22 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.jeasy.random.EasyRandom;
+import org.jeasy.random.EasyRandomParameters;
+
+import io.github.imsejin.common.assertion.Asserts;
+import io.github.imsejin.common.tool.TypeClassifier;
+import io.github.imsejin.common.util.MathUtils;
+
+import com.github.javaxcel.core.annotation.ExcelIgnore;
+import com.github.javaxcel.core.util.ExcelUtils;
+import com.github.javaxcel.core.util.FieldUtils;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
+import static java.util.stream.Collectors.*;
+import static org.assertj.core.api.Assertions.*;
 
 public class TestUtils {
 
@@ -59,9 +61,9 @@ public class TestUtils {
     private static final EasyRandom generator;
 
     private static final Class<?>[] classes = Stream.of(
-            TypeClassifier.Types.NUMBER.getClasses(),
-            TypeClassifier.Types.DATETIME.getClasses(),
-            Arrays.asList(char.class, boolean.class, Character.class, Boolean.class, String.class))
+                    TypeClassifier.Types.NUMBER.getClasses(),
+                    TypeClassifier.Types.DATETIME.getClasses(),
+                    Arrays.asList(char.class, boolean.class, Character.class, Boolean.class, String.class))
             .flatMap(Collection::stream).toArray(Class[]::new);
 
     static {
@@ -87,16 +89,24 @@ public class TestUtils {
     }
 
     public static <T> List<T> getMocks(Class<T> type, int size) {
-        if (size < 0) throw new IllegalArgumentException("Size cannot be negative");
-        if (size == 0) return Collections.emptyList();
+        if (size < 0) {
+            throw new IllegalArgumentException("Size cannot be negative");
+        }
+        if (size == 0) {
+            return Collections.emptyList();
+        }
 
         return IntStream.range(0, size).parallel()
                 .mapToObj(i -> randomize(type)).collect(toList());
     }
 
     public static Map<String, Object> randomMap(int numOfEntries) {
-        if (numOfEntries < 0) throw new IllegalArgumentException("Number of entries cannot be negative");
-        if (numOfEntries == 0) return Collections.emptyMap();
+        if (numOfEntries < 0) {
+            throw new IllegalArgumentException("Number of entries cannot be negative");
+        }
+        if (numOfEntries == 0) {
+            return Collections.emptyMap();
+        }
 
         Map<String, Object> map = new HashMap<>();
 
@@ -117,8 +127,12 @@ public class TestUtils {
     }
 
     public static List<Map<String, Object>> getRandomMaps(int size, int numOfEntries) {
-        if (size < 0) throw new IllegalArgumentException("Size cannot be negative");
-        if (numOfEntries < 0) throw new IllegalArgumentException("Number of entries cannot be negative");
+        if (size < 0) {
+            throw new IllegalArgumentException("Size cannot be negative");
+        }
+        if (numOfEntries < 0) {
+            throw new IllegalArgumentException("Number of entries cannot be negative");
+        }
 
         return IntStream.range(0, size).parallel()
                 .mapToObj(i -> randomMap(numOfEntries)).collect(toList());
@@ -139,11 +153,15 @@ public class TestUtils {
         @Override
         public boolean test(Field field) {
             // Excludes.
-            if (field.isAnnotationPresent(ExcelIgnore.class)) return true;
+            if (field.isAnnotationPresent(ExcelIgnore.class)) {
+                return true;
+            }
 
             // Includes.
             ExcludeOnPercentage annotation = field.getAnnotation(ExcludeOnPercentage.class);
-            if (annotation == null) return false;
+            if (annotation == null) {
+                return false;
+            }
 
             // Excludes it depending on percentage.
             double percentage = annotation.value();

@@ -16,12 +16,13 @@
 
 package com.github.javaxcel.core.analysis;
 
+import java.lang.reflect.Field;
+
+import org.jetbrains.annotations.Nullable;
+
 import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer;
 import com.github.javaxcel.core.analysis.out.ExcelWriteAnalyzer;
 import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
-import org.jetbrains.annotations.Nullable;
-
-import java.lang.reflect.Field;
 
 /**
  * Result of the field from analyzer

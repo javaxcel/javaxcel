@@ -16,13 +16,13 @@
 
 package com.github.javaxcel.core.annotation;
 
-import com.github.javaxcel.core.converter.out.ExcelWriteExpressionConverter;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import com.github.javaxcel.core.converter.out.ExcelWriteExpressionConverter;
 
 /**
  * Expression for conversion of field value to cell value.

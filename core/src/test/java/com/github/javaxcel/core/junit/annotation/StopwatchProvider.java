@@ -16,16 +16,16 @@
 
 package com.github.javaxcel.core.junit.annotation;
 
-import com.github.javaxcel.core.junit.extension.StopwatchProviderExtension;
-import org.junit.jupiter.api.extension.ExtendWith;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.concurrent.TimeUnit;
 
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import com.github.javaxcel.core.junit.extension.StopwatchProviderExtension;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
 
 /**
  * @see io.github.imsejin.common.tool.Stopwatch

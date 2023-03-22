@@ -16,8 +16,12 @@ public abstract class AbstractExcelReadStrategy implements ExcelReadStrategy {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof AbstractExcelReadStrategy)) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof AbstractExcelReadStrategy)) {
+            return false;
+        }
 
         AbstractExcelReadStrategy that = (AbstractExcelReadStrategy) obj;
         return Objects.equals(this.getClass(), that.getClass());

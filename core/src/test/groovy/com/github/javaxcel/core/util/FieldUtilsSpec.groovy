@@ -16,9 +16,6 @@
 
 package com.github.javaxcel.core.util
 
-import com.github.javaxcel.core.annotation.ExcelColumn
-import com.github.javaxcel.core.annotation.ExcelModel
-import io.github.imsejin.common.util.ReflectionUtils
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -27,7 +24,12 @@ import java.security.cert.CRLReason
 import java.util.concurrent.TimeUnit
 import java.util.function.Function
 
-import static java.util.stream.Collectors.toMap
+import io.github.imsejin.common.util.ReflectionUtils
+
+import com.github.javaxcel.core.annotation.ExcelColumn
+import com.github.javaxcel.core.annotation.ExcelModel
+
+import static java.util.stream.Collectors.*
 
 @Subject(FieldUtils)
 class FieldUtilsSpec extends Specification {

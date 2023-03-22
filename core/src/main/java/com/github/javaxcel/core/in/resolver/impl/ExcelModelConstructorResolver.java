@@ -16,10 +16,6 @@
 
 package com.github.javaxcel.core.in.resolver.impl;
 
-import com.github.javaxcel.core.annotation.ExcelModelCreator;
-import com.github.javaxcel.core.exception.AmbiguousExcelModelCreatorException;
-import com.github.javaxcel.core.in.resolver.AbstractExcelModelExecutableResolver;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Modifier;
@@ -28,7 +24,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static java.util.Comparator.comparing;
+import com.github.javaxcel.core.annotation.ExcelModelCreator;
+import com.github.javaxcel.core.exception.AmbiguousExcelModelCreatorException;
+import com.github.javaxcel.core.in.resolver.AbstractExcelModelExecutableResolver;
+
+import static java.util.Comparator.*;
 
 /**
  * Resolver for constructor as model creator
@@ -91,9 +91,15 @@ public class ExcelModelConstructorResolver<T> extends AbstractExcelModelExecutab
 
     public static class ModifierComparator implements Comparator<Integer> {
         private static int convert(Integer modifier) {
-            if (Modifier.isPublic(modifier)) return 0;
-            if (Modifier.isProtected(modifier)) return 1;
-            if (Modifier.isPrivate(modifier)) return 3;
+            if (Modifier.isPublic(modifier)) {
+                return 0;
+            }
+            if (Modifier.isProtected(modifier)) {
+                return 1;
+            }
+            if (Modifier.isPrivate(modifier)) {
+                return 3;
+            }
             return 2; // package-private
         }
 

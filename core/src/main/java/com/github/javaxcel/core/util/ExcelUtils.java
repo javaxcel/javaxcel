@@ -16,13 +16,18 @@
 
 package com.github.javaxcel.core.util;
 
-import com.github.javaxcel.core.exception.UnsupportedWorkbookException;
-import com.github.javaxcel.styler.ExcelStyleConfig;
-import com.github.javaxcel.styler.NoStyleConfig;
-import com.github.javaxcel.styler.config.Configurer;
-import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
-import io.github.imsejin.common.assertion.Asserts;
-import io.github.imsejin.common.util.FilenameUtils;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.regex.Pattern;
+import java.util.stream.IntStream;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -49,17 +54,15 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.regex.Pattern;
-import java.util.stream.IntStream;
+import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
+import io.github.imsejin.common.assertion.Asserts;
+import io.github.imsejin.common.util.FilenameUtils;
+import io.github.imsejin.common.util.StreamUtils;
+
+import com.github.javaxcel.core.exception.UnsupportedWorkbookException;
+import com.github.javaxcel.styler.ExcelStyleConfig;
+import com.github.javaxcel.styler.NoStyleConfig;
+import com.github.javaxcel.styler.config.Configurer;
 
 /**
  * Utilities for spreadsheet Excel with Apache POI.
@@ -98,7 +101,7 @@ public final class ExcelUtils {
         Workbook workbook;
         try {
             if (extension.equalsIgnoreCase(EXCEL_97_EXTENSION)) {
-                InputStream in = new FileInputStream(file);
+                InputStream in = Files.newInputStream(file.toPath());
                 workbook = new HSSFWorkbook(in);
             } else {
                 workbook = new XSSFWorkbook(file);
@@ -121,7 +124,9 @@ public final class ExcelUtils {
 
         List<Sheet> sheets = new ArrayList<>(numberOfSheets);
         for (int i = 0; i < numberOfSheets; i++) {
-            if (workbook.isSheetHidden(i)) continue;
+            if (workbook.isSheetHidden(i)) {
+                continue;
+            }
 
             Sheet sheet = workbook.getSheetAt(i);
             sheets.add(sheet);
@@ -144,7 +149,8 @@ public final class ExcelUtils {
                 .thrownBy(UnsupportedWorkbookException::new)
                 .isNotInstanceOf(SXSSFSheet.class);
 
-        return Math.max(0, sheet.getPhysicalNumberOfRows());
+        int rowCount = (int) StreamUtils.toStream(sheet.iterator()).count();
+        return Math.max(0, rowCount);
     }
 
     /**
@@ -186,7 +192,8 @@ public final class ExcelUtils {
                 .thrownBy(UnsupportedWorkbookException::new)
                 .isNotInstanceOf(SXSSFSheet.class);
 
-        return Math.max(0, sheet.getPhysicalNumberOfRows() - 1);
+        int rowCount = (int) StreamUtils.toStream(sheet.iterator()).count();
+        return Math.max(0, rowCount - 1);
     }
 
     /**
@@ -374,7 +381,9 @@ public final class ExcelUtils {
 
         for (int i = numOfRows; i < maxRows; i++) {
             Row row = sheet.getRow(i);
-            if (row == null) row = sheet.createRow(i);
+            if (row == null) {
+                row = sheet.createRow(i);
+            }
 
             row.setZeroHeight(true);
         }
@@ -515,7 +524,8 @@ public final class ExcelUtils {
         if (startAlphabet.compareTo(endAlphabet) > 0 || startRownum > endRownum) {
             String startCellAddress = startCell.getAddress().formatAsString();
             String endCellAddress = endCell.getAddress().formatAsString();
-            throw new IllegalArgumentException("endCell precedes startCell: " + endCellAddress + " > " + startCellAddress);
+            throw new IllegalArgumentException(
+                    "endCell precedes startCell: " + endCellAddress + " > " + startCellAddress);
         }
 
         return sheet.getSheetName() + "!$" + startAlphabet + '$' + startRownum + ":$" + endAlphabet + '$' + endRownum;
@@ -540,7 +550,8 @@ public final class ExcelUtils {
      * @return reference for cell range address
      * @throws IllegalArgumentException if end cell's column/row index precedes start cell's
      */
-    public static String toRangeReference(Sheet sheet, int startColumnIndex, int startRowIndex, int endColumnIndex, int endRowIndex) {
+    public static String toRangeReference(Sheet sheet, int startColumnIndex, int startRowIndex, int endColumnIndex,
+            int endRowIndex) {
         String startAlphabet = CellReference.convertNumToColString(startColumnIndex);
         String endAlphabet = CellReference.convertNumToColString(endColumnIndex);
 
@@ -550,7 +561,8 @@ public final class ExcelUtils {
         if (startColumnIndex > endColumnIndex || startRowIndex > endRowIndex) {
             String startCellAddress = startAlphabet + startRownum;
             String endCellAddress = endAlphabet + endRownum;
-            throw new IllegalArgumentException("Invalid column/row index for cell range reference: " + endCellAddress + " > " + startCellAddress);
+            throw new IllegalArgumentException(
+                    "Invalid column/row index for cell range reference: " + endCellAddress + " > " + startCellAddress);
         }
 
         return sheet.getSheetName() + "!$" + startAlphabet + '$' + startRownum + ":$" + endAlphabet + '$' + endRownum;
@@ -577,7 +589,8 @@ public final class ExcelUtils {
     public static String toColumnRangeReference(Sheet sheet, int columnIndex) {
         int maxColumnIndex = getMaxColumns(sheet) - 1;
         if (columnIndex > maxColumnIndex) {
-            throw new IllegalArgumentException("Column index exceeds max column index: " + columnIndex + " > " + maxColumnIndex);
+            throw new IllegalArgumentException(
+                    "Column index exceeds max column index: " + columnIndex + " > " + maxColumnIndex);
         }
 
         int maxRowIndex = getMaxRows(sheet) - 1;
@@ -680,7 +693,7 @@ public final class ExcelUtils {
      * @return whether one cell style/font is equal to the other
      */
     public static boolean equalsCellStyleAndFont(Workbook workbook, CellStyle style,
-                                                 Workbook otherWorkbook, CellStyle otherStyle) {
+            Workbook otherWorkbook, CellStyle otherStyle) {
         Font font = getFontFromCellStyle(workbook, style);
         Font otherFont = getFontFromCellStyle(otherWorkbook, otherStyle);
         return equalsCellStyle(style, otherStyle) && equalsFont(font, otherFont);
@@ -694,8 +707,12 @@ public final class ExcelUtils {
      * @return whether one cell style is equal to the other
      */
     public static boolean equalsCellStyle(CellStyle style, CellStyle other) {
-        if (style == null || other == null) return false;
-        if (style == other) return true;
+        if (style == null || other == null) {
+            return false;
+        }
+        if (style == other) {
+            return true;
+        }
 
         boolean alignment = style.getAlignment() == other.getAlignment();
         boolean background = style.getFillForegroundColor() == other.getFillForegroundColor();
@@ -724,8 +741,12 @@ public final class ExcelUtils {
      * @return whether one font is equal to the other
      */
     public static boolean equalsFont(Font font, Font other) {
-        if (font == null || other == null) return false;
-        if (font == other) return true;
+        if (font == null || other == null) {
+            return false;
+        }
+        if (font == other) {
+            return true;
+        }
 
         boolean name = Objects.equals(font.getFontName(), other.getFontName());
         boolean size = font.getFontHeightInPoints() == other.getFontHeightInPoints();

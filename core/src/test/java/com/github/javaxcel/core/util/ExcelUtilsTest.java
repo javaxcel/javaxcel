@@ -1,11 +1,11 @@
 package com.github.javaxcel.core.util;
 
-import com.github.javaxcel.core.exception.AmbiguousExcelModelCreatorException;
-import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
-import com.github.javaxcel.core.model.product.Product;
-import io.github.imsejin.common.tool.Stopwatch;
-import lombok.Cleanup;
-import lombok.SneakyThrows;
+import java.io.File;
+import java.io.FileInputStream;
+import java.lang.reflect.Constructor;
+import java.util.Arrays;
+import java.util.Comparator;
+
 import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -20,13 +20,15 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.lang.reflect.Constructor;
-import java.util.Arrays;
-import java.util.Comparator;
+import io.github.imsejin.common.tool.Stopwatch;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.github.javaxcel.core.exception.AmbiguousExcelModelCreatorException;
+import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
+import com.github.javaxcel.core.model.product.Product;
+
+import static org.assertj.core.api.Assertions.*;
 
 class ExcelUtilsTest {
 
@@ -49,7 +51,9 @@ class ExcelUtilsTest {
         Constructor<?> constructor = Arrays.stream(declaredConstructors)
                 .min(Comparator.comparingInt(Constructor::getParameterCount))
                 .orElseThrow(() -> new AmbiguousExcelModelCreatorException("Failed to find the targeted constructor"));
-        if (!constructor.isAccessible()) constructor.setAccessible(true);
+        if (!constructor.isAccessible()) {
+            constructor.setAccessible(true);
+        }
         stopwatch.stop();
 
         assertThat(constructor.newInstance())
@@ -75,7 +79,7 @@ class ExcelUtilsTest {
         // `HSSFColorPredefined.WHITE`의 RGB를 사용자지정 RGB로 대체한다.
         palette.setColorAtIndex(HSSFColor.HSSFColorPredefined.WHITE.getIndex(),
                 (byte) 192, (byte) 168, (byte) 7);
-//        palette.addColor((byte) 192, (byte) 168, (byte) 7); // RuntimeException: Could not find free color index
+        //        palette.addColor((byte) 192, (byte) 168, (byte) 7); // RuntimeException: Could not find free color index
 
         // 해당 RGB를 갖는 `HSSFColorPredefined`를 찾는다.
         HSSFColor hssfColor = palette.findColor((byte) 192, (byte) 168, (byte) 7);

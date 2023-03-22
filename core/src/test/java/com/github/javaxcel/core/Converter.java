@@ -9,7 +9,9 @@ public final class Converter {
     }
 
     public static String capitalize(String str, String delimiter) {
-        if (str == null) return null;
+        if (str == null) {
+            return null;
+        }
 
         StringBuilder sb = new StringBuilder();
         for (StringTokenizer tokenizer = new StringTokenizer(str, delimiter); tokenizer.hasMoreTokens(); ) {

@@ -16,6 +16,15 @@
 
 package com.github.javaxcel.core.converter.out
 
+import spock.lang.Specification
+import spock.lang.Subject
+
+import java.lang.reflect.Field
+import java.nio.file.AccessMode
+import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.LinkedBlockingDeque
+import java.util.concurrent.TimeUnit
+
 import com.github.javaxcel.core.analysis.ExcelAnalysis
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta.Source
 import com.github.javaxcel.core.analysis.ExcelAnalysisImpl
@@ -38,14 +47,6 @@ import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestMod
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_ModelDefaultValue
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_RawIterable
 import com.github.javaxcel.test.converter.out.ExcelWriteHandlerConverter_TestModel_VariantIterable
-import spock.lang.Specification
-import spock.lang.Subject
-
-import java.lang.reflect.Field
-import java.nio.file.AccessMode
-import java.util.concurrent.ArrayBlockingQueue
-import java.util.concurrent.LinkedBlockingDeque
-import java.util.concurrent.TimeUnit
 
 @Subject(ExcelWriteHandlerConverter)
 class ExcelWriteHandlerConverterSpec extends Specification {
@@ -67,32 +68,32 @@ class ExcelWriteHandlerConverterSpec extends Specification {
         actual == expected
 
         where:
-        fieldName  | value                || expected
-        "_boolean" | true                 || "true"
-        "_byte"    | 127                  || "127"
-        "_short"   | -32768               || "-32768"
-        "_char"    | ' '                  || " "
-        "_char"    | 'a'                  || "a"
-        "_int"     | -12                  || "-12"
-        "_long"    | 9720                 || "9720"
-        "_float"   | -1.14157F            || "-1.14157"
-        "_double"  | 3.141592D            || "3.141592"
-        "object"   | null                 || null
+        fieldName  | value                             || expected
+        "_boolean" | true                              || "true"
+        "_byte"    | 127                               || "127"
+        "_short"   | -32768                            || "-32768"
+        "_char"    | ' '                               || " "
+        "_char"    | 'a'                               || "a"
+        "_int"     | -12                               || "-12"
+        "_long"    | 9720                              || "9720"
+        "_float"   | -1.14157F                         || "-1.14157"
+        "_double"  | 3.141592D                         || "3.141592"
+        "object"   | null                              || null
         "object"   | new Object() {
             String toString() { "" }
-        }                                 || null
+        }                                              || null
         "object"   | new Object() {
             String toString() { "java.lang.Object@x" }
-        }                                 || "java.lang.Object@x"
-        "object"   | new StringBuilder()  || null
-        "object"   | new StringBuffer("") || null
-        "string"   | null                 || null
-        "string"   | ""                   || null
-        "string"   | "null"               || "null"
-        "string"   | "alpha"              || "alpha"
-        "locale"   | null                 || null
-        "locale"   | Locale.ROOT          || null
-        "locale"   | Locale.US            || "en_US"
+        }                                              || "java.lang.Object@x"
+        "object"   | new StringBuilder()               || null
+        "object"   | new StringBuffer("")              || null
+        "string"   | null                              || null
+        "string"   | ""                                || null
+        "string"   | "null"                            || "null"
+        "string"   | "alpha"                           || "alpha"
+        "locale"   | null                              || null
+        "locale"   | Locale.ROOT                       || null
+        "locale"   | Locale.US                         || "en_US"
     }
 
     def "Converts 1D array"() {

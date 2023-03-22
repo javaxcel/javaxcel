@@ -21,7 +21,6 @@ import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.core.impl.MapWriter;
 import com.github.javaxcel.core.out.core.impl.ModelWriter;
 import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
-import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
 /**
  * Strategy for style of resizing width of columns when writing
@@ -51,7 +50,6 @@ public class AutoResizedColumns extends AbstractExcelWriteStrategy {
     }
 
     @Override
-    @ExcludeFromGeneratedJacocoReport
     public Object execute(ExcelWriteContext<?> context) {
         return this.manual;
     }

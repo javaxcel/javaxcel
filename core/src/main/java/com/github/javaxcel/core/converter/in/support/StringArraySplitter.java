@@ -16,11 +16,11 @@
 
 package com.github.javaxcel.core.converter.in.support;
 
-import io.github.imsejin.common.assertion.Asserts;
-import io.github.imsejin.common.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import io.github.imsejin.common.assertion.Asserts;
+import io.github.imsejin.common.util.StringUtils;
 
 /**
  * Splitter of string which is array-like
@@ -181,7 +181,9 @@ public class StringArraySplitter {
             }
         }
 
-        if (!isEmpty) length++;
+        if (!isEmpty) {
+            length++;
+        }
 
         return length;
     }

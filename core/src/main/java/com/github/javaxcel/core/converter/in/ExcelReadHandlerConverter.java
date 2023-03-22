@@ -16,6 +16,21 @@
 
 package com.github.javaxcel.core.converter.in;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.jetbrains.annotations.Nullable;
+
+import io.github.imsejin.common.assertion.Asserts;
+import io.github.imsejin.common.util.ArrayUtils;
+import io.github.imsejin.common.util.ClassUtils;
+import io.github.imsejin.common.util.StringUtils;
+
 import com.github.javaxcel.core.analysis.ExcelAnalysis;
 import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer;
 import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
@@ -25,19 +40,6 @@ import com.github.javaxcel.core.converter.in.support.FieldTypeResolver;
 import com.github.javaxcel.core.converter.in.support.FieldTypeResolver.Kind;
 import com.github.javaxcel.core.converter.in.support.FieldTypeResolver.TypeResolution;
 import com.github.javaxcel.core.converter.in.support.StringArraySplitter;
-import io.github.imsejin.common.assertion.Asserts;
-import io.github.imsejin.common.util.ArrayUtils;
-import io.github.imsejin.common.util.ClassUtils;
-import io.github.imsejin.common.util.StringUtils;
-import org.jetbrains.annotations.Nullable;
-
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Converter for reading Excel with type handler
@@ -124,7 +126,8 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
                         .isInstanceOf(Class.class)
                         .isSameAs(field.getType())
                         // Checks if component type of an array is Iterable like Iterable[].
-                        .isNot(it -> Iterable.class.isAssignableFrom(ArrayUtils.resolveActualComponentType((Class<?>) it)));
+                        .isNot(it -> Iterable.class.isAssignableFrom(
+                                ArrayUtils.resolveActualComponentType((Class<?>) it)));
 
                 Class<?> concreteType = FieldTypeResolver.resolveConcreteType(type);
 

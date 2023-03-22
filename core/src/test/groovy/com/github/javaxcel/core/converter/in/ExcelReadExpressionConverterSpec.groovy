@@ -16,13 +16,6 @@
 
 package com.github.javaxcel.core.converter.in
 
-import com.github.javaxcel.core.analysis.ExcelAnalysis
-import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta.Source
-import com.github.javaxcel.core.analysis.ExcelAnalysisImpl
-import com.github.javaxcel.core.analysis.ExcelAnalysisImpl.DefaultMetaImpl
-import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer
-import com.github.javaxcel.core.annotation.ExcelColumn
-import com.github.javaxcel.core.annotation.ExcelReadExpression
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -30,6 +23,14 @@ import java.lang.reflect.Field
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.concurrent.TimeUnit
+
+import com.github.javaxcel.core.analysis.ExcelAnalysis
+import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta.Source
+import com.github.javaxcel.core.analysis.ExcelAnalysisImpl
+import com.github.javaxcel.core.analysis.ExcelAnalysisImpl.DefaultMetaImpl
+import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer
+import com.github.javaxcel.core.annotation.ExcelColumn
+import com.github.javaxcel.core.annotation.ExcelReadExpression
 
 @Subject(ExcelReadExpressionConverter)
 class ExcelReadExpressionConverterSpec extends Specification {

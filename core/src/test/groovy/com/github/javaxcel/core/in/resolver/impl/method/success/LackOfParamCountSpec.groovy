@@ -16,14 +16,15 @@
 
 package com.github.javaxcel.core.in.resolver.impl.method.success
 
-import com.github.javaxcel.core.annotation.ExcelModelCreator
-import com.github.javaxcel.core.in.resolver.impl.ExcelModelMethodResolver
 import spock.lang.Specification
 import spock.lang.Subject
 
 import java.lang.reflect.Method
 import java.nio.file.Path
 import java.nio.file.Paths
+
+import com.github.javaxcel.core.annotation.ExcelModelCreator
+import com.github.javaxcel.core.in.resolver.impl.ExcelModelMethodResolver
 
 @Subject(ExcelModelMethodResolver)
 class LackOfParamCountSpec extends Specification {

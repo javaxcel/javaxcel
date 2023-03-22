@@ -16,6 +16,30 @@
 
 package com.github.javaxcel.core.out.core;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.TestOnly;
+import org.jetbrains.annotations.VisibleForTesting;
+
+import io.github.imsejin.common.assertion.Asserts;
+import io.github.imsejin.common.util.ArrayUtils;
+import io.github.imsejin.common.util.CollectionUtils;
+import io.github.imsejin.common.util.NumberUtils;
+import io.github.imsejin.common.util.StringUtils;
+
 import com.github.javaxcel.core.exception.WritingExcelException;
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.lifecycle.ExcelWriteLifecycle;
@@ -27,28 +51,8 @@ import com.github.javaxcel.core.out.strategy.impl.SheetName;
 import com.github.javaxcel.core.util.ExcelUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
 import com.github.javaxcel.styler.NoStyleConfig;
-import io.github.imsejin.common.assertion.Asserts;
-import io.github.imsejin.common.util.ArrayUtils;
-import io.github.imsejin.common.util.CollectionUtils;
-import io.github.imsejin.common.util.NumberUtils;
-import io.github.imsejin.common.util.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-
-import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.*;
 
 /**
  * Abstract Excel writer
@@ -77,6 +81,13 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
     protected AbstractExcelWriter(Workbook workbook, Class<T> modelType) {
         Class<? extends ExcelWriter<T>> writerType = (Class<? extends ExcelWriter<T>>) getClass();
         this.context = new ExcelWriteContext<>(workbook, modelType, writerType);
+    }
+
+    @TestOnly
+    @VisibleForTesting
+    @SuppressWarnings("unused")
+    AbstractExcelWriter(ExcelWriteContext<T> context) {
+        this.context = context;
     }
 
     /**
@@ -186,15 +197,22 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
      *
      * @param context context with current sheet and chunked models
      */
-    protected final void createBody(ExcelWriteContext<T> context) {
+    private void createBody(ExcelWriteContext<T> context) {
         Sheet sheet = context.getSheet();
-
         List<T> chunk = context.getChunk();
-        CellStyle[] bodyStyles = context.getBodyStyles();
         final int chunkSize = chunk.size();
         final int columnCount = getColumnCount();
 
-        for (int i = 0; i < chunkSize; i++) {
+        final int lastRowIndex = sheet.getLastRowNum();
+        Asserts.that(lastRowIndex)
+                .describedAs(
+                        "There is no row as a header in the sheet; create a header at createHeader(ExcelWriteContext)")
+                .isNotNull()
+                .isZeroOrPositive()
+                .describedAs("There are two or more rows as a header in the sheet; create only one row as the header")
+                .isEqualTo(0);
+
+        for (int i = lastRowIndex; i < chunkSize; i++) {
             T model = chunk.get(i);
 
             // Skips the first row that is header.
@@ -204,13 +222,15 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
                 Cell cell = row.createCell(j);
                 String cellValue = createCellValue(model, j);
 
-                // Stores the max width of each cell.
-                storeColumnWidth(cellValue, j);
-
                 // Doesn't write even empty string.
                 if (!StringUtils.isNullOrEmpty(cellValue)) {
                     cell.setCellValue(cellValue);
+
+                    // Stores the max width of each cell.
+                    storeColumnWidth(cellValue, j);
                 }
+
+                CellStyle[] bodyStyles = context.getBodyStyles();
 
                 if (ArrayUtils.isNullOrEmpty(bodyStyles)) {
                     continue;
@@ -246,15 +266,24 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
             return;
         }
 
+        Sheet sheet = this.context.getSheet();
+
         if (ArrayUtils.isNullOrEmpty(this.columnWidths)) {
-            ExcelUtils.autoResizeColumns(this.context.getSheet(), getColumnCount());
+            ExcelUtils.autoResizeColumns(sheet, getColumnCount());
             return;
+        }
+
+        // Stores column width on header.
+        Row row = sheet.getRow(0);
+        for (Cell cell : row) {
+            String cellValue = cell.getStringCellValue();
+            storeColumnWidth(cellValue, cell.getColumnIndex());
         }
 
         // 1.14388 is a max character width of the "Serif" font and 256 font units.
         for (int i = 0; i < this.columnWidths.length; i++) {
             int width = ((int) (this.columnWidths[i] * 1.14388F)) * 256;
-            this.context.getSheet().setColumnWidth(i, width);
+            sheet.setColumnWidth(i, width);
         }
     }
 
