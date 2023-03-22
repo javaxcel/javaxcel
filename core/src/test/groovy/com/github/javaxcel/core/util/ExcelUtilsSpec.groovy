@@ -22,6 +22,7 @@ import spock.lang.TempDir
 
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Workbook
@@ -37,7 +38,7 @@ class ExcelUtilsSpec extends Specification {
     @TempDir
     private Path tempPath
 
-    def "Gets instance of workbook"() {
+    def "Gets an instance of workbook"() {
         given:
         def createWorkbookPath = { Workbook workbook ->
             def extension = workbook instanceof HSSFWorkbook ? EXCEL_97_EXTENSION : EXCEL_2007_EXTENSION
@@ -49,7 +50,7 @@ class ExcelUtilsSpec extends Specification {
 
         when: "Writes Excel 97 file"
         def workbookPath = createWorkbookPath(new HSSFWorkbook())
-        def workbook = ExcelUtils.getWorkbook(workbookPath.toFile())
+        def workbook = getWorkbook(workbookPath.toFile())
 
         then:
         workbook != null
@@ -57,7 +58,7 @@ class ExcelUtilsSpec extends Specification {
 
         when: "Writes Excel 2007 file"
         workbookPath = createWorkbookPath(new XSSFWorkbook())
-        workbook = ExcelUtils.getWorkbook(workbookPath.toFile())
+        workbook = getWorkbook(workbookPath.toFile())
 
         then:
         workbook != null
@@ -66,11 +67,56 @@ class ExcelUtilsSpec extends Specification {
         when: "Writes empty file"
         workbookPath = tempPath.resolve("${new RandomString().nextString(8)}.xlsx")
         Files.createFile(workbookPath)
-        ExcelUtils.getWorkbook(workbookPath.toFile())
+        getWorkbook(workbookPath.toFile())
 
         then:
         def e = thrown(IllegalArgumentException)
         e.message == "The supplied file was empty (zero bytes long)"
+    }
+
+    def "Gets the number of rows on sheet by sheet"() {
+        given:
+        def url = Thread.currentThread().contextClassLoader.getResource("spreadsheets/products.xlsx")
+        def file = Paths.get(url.toURI()).toFile()
+        def workbook = getWorkbook(file)
+        def sheets = getSheets(workbook)
+
+        when:
+        def rowCounts = sheets.collect { getNumOfRows(it) }
+
+        then:
+        rowCounts == [32768, 65536, 16384, 8192]
+
+        cleanup:
+        workbook.close()
+    }
+
+    def "Gets the number of rows on all sheets by workbook"() {
+        given:
+        def url = Thread.currentThread().contextClassLoader.getResource("spreadsheets/products.xlsx")
+        def file = Paths.get(url.toURI()).toFile()
+        def workbook = getWorkbook(file)
+
+        when:
+        def rowCount = getNumOfRows(workbook)
+
+        then:
+        rowCount == 122880
+
+        cleanup:
+        workbook.close()
+    }
+
+    def "Gets the number of rows on all sheets by path"() {
+        given:
+        def url = Thread.currentThread().contextClassLoader.getResource("spreadsheets/products.xlsx")
+        def path = Paths.get(url.toURI())
+
+        when:
+        def rowCount = getNumOfRows(path)
+
+        then:
+        rowCount == 122880
     }
 
 }

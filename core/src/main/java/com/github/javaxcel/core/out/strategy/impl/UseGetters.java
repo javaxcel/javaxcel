@@ -21,14 +21,14 @@ import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.core.impl.ModelWriter;
-import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
+import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 
 /**
  * Strategy for getting value from property of model through getter
  *
  * @since 0.9.0
  */
-public class UseGetters extends AbstractExcelWriteStrategy {
+public class UseGetters implements ExcelWriteStrategy {
 
     @Override
     public boolean isSupported(ExcelWriteContext<?> context) {

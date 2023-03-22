@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.function.Function;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -52,6 +53,7 @@ import com.github.javaxcel.core.util.ExcelUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
 import com.github.javaxcel.styler.NoStyleConfig;
 
+import static java.util.Comparator.*;
 import static java.util.stream.Collectors.*;
 
 /**
@@ -106,9 +108,12 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
         }
 
         // Makes each strategy be unique; removes duplication.
+        // Equality of ExcelWriteStrategy is determined by its class name, not implementing of equals and hashCode.
         Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> strategyMap = Arrays.stream(strategies)
-                .distinct().filter(it -> it.isSupported(this.context))
-                .collect(toMap(ExcelWriteStrategy::getClass, Function.identity()));
+                .filter(it -> it.isSupported(this.context))
+                .collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparing(it -> it.getClass().getName()))),
+                        set -> set.stream().collect(toMap(ExcelWriteStrategy::getClass, Function.identity()))));
+
         this.context.setStrategyMap(Collections.unmodifiableMap(strategyMap));
 
         return this;

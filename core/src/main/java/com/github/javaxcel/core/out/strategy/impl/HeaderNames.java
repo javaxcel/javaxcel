@@ -25,14 +25,14 @@ import io.github.imsejin.common.util.StringUtils;
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.core.impl.ModelWriter;
-import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
+import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 
 /**
  * Strategy for header names when writing
  *
  * @since 0.8.0
  */
-public class HeaderNames extends AbstractExcelWriteStrategy {
+public class HeaderNames implements ExcelWriteStrategy {
 
     private final List<String> values;
 

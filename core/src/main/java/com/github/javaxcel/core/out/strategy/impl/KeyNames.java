@@ -28,14 +28,14 @@ import io.github.imsejin.common.util.StringUtils;
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.core.impl.MapWriter;
-import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
+import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 
 /**
  * Strategy for mapping key names with header names when writing
  *
  * @since 0.8.0
  */
-public class KeyNames extends AbstractExcelWriteStrategy {
+public class KeyNames implements ExcelWriteStrategy {
 
     private final Map<String, Object> keyMap;
 

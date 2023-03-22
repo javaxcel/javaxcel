@@ -23,6 +23,8 @@ import org.apache.poi.ss.usermodel.Workbook
 
 import com.github.javaxcel.core.out.context.ExcelWriteContext
 import com.github.javaxcel.core.out.core.impl.ModelWriter
+import com.github.javaxcel.core.out.strategy.impl.EnumDropdown
+import com.github.javaxcel.core.out.strategy.impl.Filter
 import com.github.javaxcel.core.out.strategy.impl.HiddenExtraColumns
 import com.github.javaxcel.core.out.strategy.impl.HiddenExtraRows
 import com.github.javaxcel.core.out.strategy.impl.UseGetters
@@ -32,8 +34,8 @@ class AbstractExcelWriterSpec extends Specification {
 
     def "Sets no option"() {
         given:
-        def context = new ExcelWriteContext<>(Mock(Workbook), Object, ModelWriter)
-        def writer = Spy(AbstractExcelWriter, constructorArgs: [context]) as AbstractExcelWriter
+        def context = createContext()
+        def writer = createWriter(context)
 
         when:
         writer.options()
@@ -44,14 +46,54 @@ class AbstractExcelWriterSpec extends Specification {
 
     def "Sets options"() {
         given:
-        def context = new ExcelWriteContext<>(Mock(Workbook), Object, ModelWriter)
-        def writer = Spy(AbstractExcelWriter, constructorArgs: [context]) as AbstractExcelWriter
+        def context = createContext()
+        def writer = createWriter(context)
 
         when:
         writer.options(new UseGetters(), new HiddenExtraColumns(), new HiddenExtraRows())
 
         then:
         context.strategyMap.size() == 3
+    }
+
+    def "Sets one of duplicated options"() {
+        given:
+        def context = createContext()
+        def writer = createWriter(context)
+
+        when:
+        writer.options(new EnumDropdown(), new Filter(false), new EnumDropdown(), new Filter(true))
+
+        then:
+        context.strategyMap.size() == 2
+    }
+
+    def "Discards previous options"() {
+        given:
+        def context = createContext()
+        def writer = createWriter(context)
+
+        when:
+        writer.options(new EnumDropdown(), new Filter(false), new UseGetters(), new Filter(true))
+
+        then:
+        context.strategyMap.size() == 3
+
+        when:
+        writer.options(new HiddenExtraRows())
+
+        then:
+        context.strategyMap.size() == 1
+    }
+
+    // -------------------------------------------------------------------------------------------------
+
+    private ExcelWriteContext createContext(Class modelType = Object, Class<? extends ExcelWriter> writerType = ModelWriter) {
+        new ExcelWriteContext<>(Mock(Workbook), modelType, writerType)
+    }
+
+    private AbstractExcelWriter createWriter(ExcelWriteContext context) {
+        Spy(AbstractExcelWriter, constructorArgs: [context]) as AbstractExcelWriter
     }
 
 }

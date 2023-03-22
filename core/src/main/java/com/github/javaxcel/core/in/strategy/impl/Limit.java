@@ -22,14 +22,14 @@ import com.github.javaxcel.core.in.context.ExcelReadContext;
 import com.github.javaxcel.core.in.core.ExcelReader;
 import com.github.javaxcel.core.in.core.impl.MapReader;
 import com.github.javaxcel.core.in.core.impl.ModelReader;
-import com.github.javaxcel.core.in.strategy.AbstractExcelReadStrategy;
+import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 
 /**
  * Strategy for limitation of the number of models when reading
  *
  * @since 0.8.0
  */
-public class Limit extends AbstractExcelReadStrategy {
+public class Limit implements ExcelReadStrategy {
 
     private final int value;
 

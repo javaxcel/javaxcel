@@ -1,5 +1,6 @@
 # Table of Contents
 
+- [v0.10.0](#v0100):
 - [v0.9.2](#v092): 2023-03-22
 - [v0.9.1](#v091): 2023-01-02
 - [v0.9.0](#v090): 2022-12-29
@@ -24,6 +25,12 @@
 - [v0.3.0](#v030): 2020-09-12
 - [v0.2.1](#v021): 2020-09-07
 - [v0.1.0](#v010): 2020-08-30
+
+# v0.10.0
+
+### Modification
+
+- 🔥 Remove: abstract strategy classes `AbstractExcelWriteStrategy`, `AbstractExcelReadStrategy`
 
 # v0.9.2
 

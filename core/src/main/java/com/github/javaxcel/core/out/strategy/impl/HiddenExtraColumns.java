@@ -22,14 +22,14 @@ import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.core.impl.MapWriter;
 import com.github.javaxcel.core.out.core.impl.ModelWriter;
-import com.github.javaxcel.core.out.strategy.AbstractExcelWriteStrategy;
+import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 
 /**
  * Strategy for style of hidden extra columns when writing
  *
  * @since 0.8.0
  */
-public class HiddenExtraColumns extends AbstractExcelWriteStrategy {
+public class HiddenExtraColumns implements ExcelWriteStrategy {
 
     public boolean isSupported(ExcelWriteContext<?> context) {
         Class<? extends ExcelWriter<?>> writerType = context.getWriterType();
