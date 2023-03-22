@@ -27,14 +27,14 @@ import io.github.imsejin.common.util.StringUtils;
 import com.github.javaxcel.core.in.context.ExcelReadContext;
 import com.github.javaxcel.core.in.core.ExcelReader;
 import com.github.javaxcel.core.in.core.impl.MapReader;
-import com.github.javaxcel.core.in.strategy.AbstractExcelReadStrategy;
+import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 
 /**
  * Strategy for mapping header names with key names when reading
  *
  * @since 0.8.0
  */
-public class KeyNames extends AbstractExcelReadStrategy {
+public class KeyNames implements ExcelReadStrategy {
 
     private final List<String> headerNames;
 

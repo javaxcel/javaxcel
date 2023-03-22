@@ -21,14 +21,14 @@ import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 import com.github.javaxcel.core.in.context.ExcelReadContext;
 import com.github.javaxcel.core.in.core.ExcelReader;
 import com.github.javaxcel.core.in.core.impl.ModelReader;
-import com.github.javaxcel.core.in.strategy.AbstractExcelReadStrategy;
+import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 
 /**
  * Strategy for setting value into property of model through setter
  *
  * @since 0.9.0
  */
-public class UseSetters extends AbstractExcelReadStrategy {
+public class UseSetters implements ExcelReadStrategy {
 
     @Override
     public boolean isSupported(ExcelReadContext<?> context) {

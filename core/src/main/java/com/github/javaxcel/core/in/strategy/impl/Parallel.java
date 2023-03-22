@@ -21,7 +21,7 @@ import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 import com.github.javaxcel.core.in.context.ExcelReadContext;
 import com.github.javaxcel.core.in.core.ExcelReader;
 import com.github.javaxcel.core.in.core.impl.ModelReader;
-import com.github.javaxcel.core.in.strategy.AbstractExcelReadStrategy;
+import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 
 /**
  * Strategy for parallel reading
@@ -47,7 +47,7 @@ import com.github.javaxcel.core.in.strategy.AbstractExcelReadStrategy;
  *
  * @since 0.8.0
  */
-public class Parallel extends AbstractExcelReadStrategy {
+public class Parallel implements ExcelReadStrategy {
 
     @Override
     public boolean isSupported(ExcelReadContext<?> context) {

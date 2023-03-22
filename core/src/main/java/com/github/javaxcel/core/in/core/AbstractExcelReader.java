@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.function.Function;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -33,6 +34,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.TestOnly;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import io.github.imsejin.common.assertion.Asserts;
 import io.github.imsejin.common.util.ArrayUtils;
@@ -46,6 +49,7 @@ import com.github.javaxcel.core.in.strategy.impl.KeyNames;
 import com.github.javaxcel.core.in.strategy.impl.Limit;
 import com.github.javaxcel.core.util.ExcelUtils;
 
+import static java.util.Comparator.*;
 import static java.util.stream.Collectors.*;
 
 /**
@@ -85,6 +89,14 @@ public abstract class AbstractExcelReader<T> implements ExcelReader<T>, ExcelRea
         this.formulaEvaluator = resolveFormulaEvaluator(workbook);
     }
 
+    @TestOnly
+    @VisibleForTesting
+    @SuppressWarnings("unused")
+    AbstractExcelReader(ExcelReadContext<T> context) {
+        this.context = context;
+        this.formulaEvaluator = resolveFormulaEvaluator(context.getWorkbook());
+    }
+
     @Nullable
     private static FormulaEvaluator resolveFormulaEvaluator(Workbook workbook) {
         try {
@@ -104,14 +116,18 @@ public abstract class AbstractExcelReader<T> implements ExcelReader<T>, ExcelRea
                 .isNotNull()
                 .describedAs("strategies cannot have null element: {0}", ArrayUtils.toString(strategies))
                 .doesNotContainNull();
+
         if (strategies.length == 0) {
             return this;
         }
 
         // Makes each strategy be unique; removes duplication.
+        // Equality of ExcelReadStrategy is determined by its class name, not implementing of equals and hashCode.
         Map<Class<? extends ExcelReadStrategy>, ExcelReadStrategy> strategyMap = Arrays.stream(strategies)
-                .distinct().filter(it -> it.isSupported(this.context))
-                .collect(toMap(ExcelReadStrategy::getClass, Function.identity()));
+                .filter(it -> it.isSupported(this.context))
+                .collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparing(it -> it.getClass().getName()))),
+                        set -> set.stream().collect(toMap(ExcelReadStrategy::getClass, Function.identity()))));
+
         this.context.setStrategyMap(Collections.unmodifiableMap(strategyMap));
 
         return this;
