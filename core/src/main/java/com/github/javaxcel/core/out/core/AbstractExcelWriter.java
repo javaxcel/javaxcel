@@ -212,8 +212,6 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
                 .describedAs("There are two or more rows as a header in the sheet; create only one row as the header")
                 .isEqualTo(0);
 
-        storeHeaderColumnWidth(sheet);
-
         for (int i = lastRowIndex; i < chunkSize; i++) {
             T model = chunk.get(i);
 
@@ -224,12 +222,12 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
                 Cell cell = row.createCell(j);
                 String cellValue = createCellValue(model, j);
 
-                // Stores the max width of each cell.
-                storeColumnWidth(cellValue, j);
-
                 // Doesn't write even empty string.
                 if (!StringUtils.isNullOrEmpty(cellValue)) {
                     cell.setCellValue(cellValue);
+
+                    // Stores the max width of each cell.
+                    storeColumnWidth(cellValue, j);
                 }
 
                 CellStyle[] bodyStyles = context.getBodyStyles();
@@ -254,22 +252,6 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
         }
     }
 
-    private void storeHeaderColumnWidth(Sheet sheet) {
-        if (ArrayUtils.isNullOrEmpty(this.columnWidths)) {
-            return;
-        }
-
-        Row row = sheet.getRow(0);
-
-        int columnIndex = 0;
-        for (Cell cell : row) {
-            String cellValue = cell.getStringCellValue();
-            storeColumnWidth(cellValue, columnIndex);
-
-            columnIndex++;
-        }
-    }
-
     private void storeColumnWidth(String cellValue, int columnIndex) {
         if (ArrayUtils.isNullOrEmpty(this.columnWidths)) {
             return;
@@ -284,15 +266,24 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
             return;
         }
 
+        Sheet sheet = this.context.getSheet();
+
         if (ArrayUtils.isNullOrEmpty(this.columnWidths)) {
-            ExcelUtils.autoResizeColumns(this.context.getSheet(), getColumnCount());
+            ExcelUtils.autoResizeColumns(sheet, getColumnCount());
             return;
+        }
+
+        // Stores column width on header.
+        Row row = sheet.getRow(0);
+        for (Cell cell : row) {
+            String cellValue = cell.getStringCellValue();
+            storeColumnWidth(cellValue, cell.getColumnIndex());
         }
 
         // 1.14388 is a max character width of the "Serif" font and 256 font units.
         for (int i = 0; i < this.columnWidths.length; i++) {
             int width = ((int) (this.columnWidths[i] * 1.14388F)) * 256;
-            this.context.getSheet().setColumnWidth(i, width);
+            sheet.setColumnWidth(i, width);
         }
     }
 

@@ -16,8 +16,6 @@
 
 package com.github.javaxcel.core.out.strategy.impl;
 
-import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
-
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.core.impl.MapWriter;
@@ -52,7 +50,6 @@ public class AutoResizedColumns extends AbstractExcelWriteStrategy {
     }
 
     @Override
-    @ExcludeFromGeneratedJacocoReport
     public Object execute(ExcelWriteContext<?> context) {
         return this.manual;
     }
