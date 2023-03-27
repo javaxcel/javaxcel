@@ -32,6 +32,10 @@
 
 - 🔥 Remove: abstract strategy classes `AbstractExcelWriteStrategy`, `AbstractExcelReadStrategy`
 
+### Dependencies
+
+- ⬆️ Upgrade: intransitive dependency `spring-expression` from `5.3.25` to `5.3.26`
+
 # v0.9.2
 
 ### Modification
