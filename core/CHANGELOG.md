@@ -31,6 +31,11 @@
 ### Modification
 
 - 🔥 Remove: abstract strategy classes `AbstractExcelWriteStrategy`, `AbstractExcelReadStrategy`
+- 🚚 Move: methods `resolveFirst(Class, Object[])`, `resolveLast(Class, Object[])` in `FieldUtils` to `ObjectUtils`
+
+### New features
+
+- ✨ Add: utility `ObjectUtils`
 
 ### Dependencies
 
