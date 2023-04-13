@@ -31,6 +31,7 @@ import com.github.javaxcel.core.converter.out.ExcelWriteHandlerConverter;
 import com.github.javaxcel.core.out.strategy.impl.DefaultValue;
 import com.github.javaxcel.core.out.strategy.impl.UseGetters;
 import com.github.javaxcel.core.util.FieldUtils;
+import com.github.javaxcel.core.util.ObjectUtils;
 
 /**
  * Analyzer for writing Excel
@@ -70,7 +71,7 @@ public class ExcelWriteAnalyzer extends AbstractExcelAnalyzer {
 
     @Override
     protected DefaultMeta analyzeDefaultMeta(Field field, Object[] arguments) {
-        DefaultValue strategy = FieldUtils.resolveFirst(DefaultValue.class, arguments);
+        DefaultValue strategy = ObjectUtils.resolveFirst(DefaultValue.class, arguments);
 
         // Decides the proper default value for the field value.
         if (strategy != null) {
@@ -98,7 +99,7 @@ public class ExcelWriteAnalyzer extends AbstractExcelAnalyzer {
 
     @Override
     protected int analyzeFlags(Field field, Object[] arguments) {
-        UseGetters ug = FieldUtils.resolveFirst(UseGetters.class, arguments);
+        UseGetters ug = ObjectUtils.resolveFirst(UseGetters.class, arguments);
 
         int flags = 0x00;
         flags |= field.isAnnotationPresent(ExcelWriteExpression.class) ? EXPRESSION : HANDLER;

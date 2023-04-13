@@ -25,7 +25,7 @@ import io.github.imsejin.common.util.StringUtils;
 
 import com.github.javaxcel.core.annotation.ExcelDateTimeFormat;
 import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
-import com.github.javaxcel.core.util.FieldUtils;
+import com.github.javaxcel.core.util.ObjectUtils;
 
 /**
  * Abstract handler for type of {@link TemporalAccessor}
@@ -49,7 +49,7 @@ public abstract class AbstractTemporalAccessorTypeHandler<T extends TemporalAcce
     @Override
     protected String writeInternal(T value, Object... arguments) {
         // Resolve field from arguments.
-        Field field = FieldUtils.resolveFirst(Field.class, arguments);
+        Field field = ObjectUtils.resolveFirst(Field.class, arguments);
         if (field == null) {
             return stringify(value, this.defaultFormatter);
         }
@@ -65,7 +65,7 @@ public abstract class AbstractTemporalAccessorTypeHandler<T extends TemporalAcce
     @Override
     public T read(String value, Object... arguments) {
         // Resolve field from arguments.
-        Field field = FieldUtils.resolveFirst(Field.class, arguments);
+        Field field = ObjectUtils.resolveFirst(Field.class, arguments);
         if (field == null) {
             return parse(value, this.defaultFormatter);
         }

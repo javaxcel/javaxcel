@@ -19,7 +19,7 @@ package com.github.javaxcel.core.converter.handler.impl.lang;
 import java.lang.reflect.Field;
 
 import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
-import com.github.javaxcel.core.util.FieldUtils;
+import com.github.javaxcel.core.util.ObjectUtils;
 
 /**
  * Handler for type of {@link Enum}
@@ -42,7 +42,7 @@ public class EnumTypeHandler extends AbstractExcelTypeHandler<Enum> {
     @SuppressWarnings("unchecked")
     public Enum read(String value, Object... arguments) {
         // Resolve field from arguments.
-        Field field = FieldUtils.resolveFirst(Field.class, arguments);
+        Field field = ObjectUtils.resolveFirst(Field.class, arguments);
         if (field == null) {
             return null;
         }

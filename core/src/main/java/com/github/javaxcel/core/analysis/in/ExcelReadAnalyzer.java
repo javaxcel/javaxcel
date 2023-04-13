@@ -29,6 +29,7 @@ import com.github.javaxcel.core.converter.in.ExcelReadExpressionConverter;
 import com.github.javaxcel.core.converter.in.ExcelReadHandlerConverter;
 import com.github.javaxcel.core.in.strategy.impl.UseSetters;
 import com.github.javaxcel.core.util.FieldUtils;
+import com.github.javaxcel.core.util.ObjectUtils;
 
 /**
  * Analyzer for reading Excel
@@ -80,7 +81,7 @@ public class ExcelReadAnalyzer extends AbstractExcelAnalyzer {
 
     @Override
     protected int analyzeFlags(Field field, Object[] arguments) {
-        UseSetters us = FieldUtils.resolveFirst(UseSetters.class, arguments);
+        UseSetters us = ObjectUtils.resolveFirst(UseSetters.class, arguments);
 
         int flags = 0x00;
         flags |= field.isAnnotationPresent(ExcelReadExpression.class) ? EXPRESSION : HANDLER;

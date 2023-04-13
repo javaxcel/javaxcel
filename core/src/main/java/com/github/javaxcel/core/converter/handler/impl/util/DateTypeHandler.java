@@ -26,7 +26,7 @@ import io.github.imsejin.common.util.StringUtils;
 
 import com.github.javaxcel.core.annotation.ExcelDateTimeFormat;
 import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
-import com.github.javaxcel.core.util.FieldUtils;
+import com.github.javaxcel.core.util.ObjectUtils;
 
 /**
  * Handler for type of {@link Date}
@@ -46,7 +46,7 @@ public class DateTypeHandler extends AbstractExcelTypeHandler<Date> {
     @Override
     protected String writeInternal(Date value, Object... arguments) {
         // Resolve field from arguments.
-        Field field = FieldUtils.resolveFirst(Field.class, arguments);
+        Field field = ObjectUtils.resolveFirst(Field.class, arguments);
         if (field == null) {
             return stringify(value, DEFAULT_PATTERN);
         }
@@ -62,7 +62,7 @@ public class DateTypeHandler extends AbstractExcelTypeHandler<Date> {
     @Override
     public Date read(String value, Object... arguments) throws ParseException {
         // Resolve field from arguments.
-        Field field = FieldUtils.resolveFirst(Field.class, arguments);
+        Field field = ObjectUtils.resolveFirst(Field.class, arguments);
         if (field == null) {
             return parse(value, DEFAULT_PATTERN);
         }

@@ -38,7 +38,7 @@ import lombok.Setter;
 
 import com.github.javaxcel.core.TestUtils;
 import com.github.javaxcel.core.util.ExcelUtils;
-import com.github.javaxcel.core.util.FieldUtils;
+import com.github.javaxcel.core.util.ObjectUtils;
 
 public abstract class MapWriterTester {
 
@@ -85,7 +85,7 @@ public abstract class MapWriterTester {
                 throw new IllegalArgumentException("Invalid extension of Excel file: " + extension);
         }
 
-        Integer number = FieldUtils.resolveFirst(Integer.class, Objects.requireNonNull(givenModel.args));
+        Integer number = ObjectUtils.resolveFirst(Integer.class, Objects.requireNonNull(givenModel.args));
         int mockCount = number == null ? 8192 : number;
 
         return new WhenModel(out, workbook, mockCount);

@@ -27,8 +27,6 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import org.jetbrains.annotations.Nullable;
-
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 import io.github.imsejin.common.util.ReflectionUtils;
 import io.github.imsejin.common.util.StringUtils;
@@ -185,32 +183,6 @@ public final class FieldUtils {
         }
 
         return map;
-    }
-
-    @Nullable
-    @SuppressWarnings("unchecked")
-    public static <T> T resolveFirst(Class<T> type, Object... arguments) {
-        for (Object argument : arguments) {
-            if (type.isInstance(argument)) {
-                return (T) argument;
-            }
-        }
-
-        return null;
-    }
-
-    @Nullable
-    @SuppressWarnings("unchecked")
-    public static <T> T resolveLast(Class<T> type, Object... arguments) {
-        for (int i = arguments.length - 1; i >= 0; i--) {
-            Object argument = arguments[i];
-
-            if (type.isInstance(argument)) {
-                return (T) argument;
-            }
-        }
-
-        return null;
     }
 
 }
