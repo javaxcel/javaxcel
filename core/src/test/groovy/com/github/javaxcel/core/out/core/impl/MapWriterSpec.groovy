@@ -1,5 +1,6 @@
 package com.github.javaxcel.core.out.core.impl
 
+
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.TempDir
@@ -12,7 +13,10 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook
 
 import com.github.pjfanning.xlsx.StreamingReader
 
+import io.github.imsejin.common.util.StringUtils
+
 import com.github.javaxcel.core.Javaxcel
+import com.github.javaxcel.core.out.strategy.impl.DefaultValue
 import com.github.javaxcel.core.out.strategy.impl.KeyNames
 import com.github.javaxcel.core.out.strategy.impl.SheetName
 import com.github.javaxcel.core.util.ExcelUtils
@@ -75,9 +79,6 @@ class MapWriterSpec extends Specification {
                 .write(out, maps)
 
         then:
-        Files.isRegularFile(filePath)
-
-        and:
         def sheets = ExcelUtils.getSheets(ExcelUtils.getWorkbook(filePath.toFile()))
         sheets.size() == 2
         sheets*.sheetName == (1..sheets.size()).collect { "Sheet-Rotation" + it }
@@ -85,6 +86,42 @@ class MapWriterSpec extends Specification {
         and:
         def columns = sheets.collectMany { sheet -> sheet[0].collect { cell -> cell.stringCellValue } }.unique()
         columns == keys
+
+        cleanup:
+        out.close()
+    }
+
+    def "Writes maps with default value option"() {
+        given:
+        def defaultValue = "(default)"
+        def maps = [
+                [alpha: null, beta: 64],
+                [alpha: "John", beta: null],
+                [alpha: "", beta: 8],
+        ]
+
+        and:
+        def filePath = path.resolve("map-writer-default-value.xlsx")
+        def out = Files.newOutputStream(filePath)
+
+        when:
+        Javaxcel.newInstance()
+                .writer(new SXSSFWorkbook())
+                .options(new DefaultValue(defaultValue))
+                .write(out, maps)
+
+        then:
+        def workbook = StreamingReader.builder().open(filePath.toFile())
+        ExcelUtils.getNumOfModels(workbook) == maps.size()
+
+        and: "There is no empty value on cell"
+        def cellValues = workbook.collectMany { sheet -> sheet.collectMany { row -> row.collect { it.stringCellValue } } }
+        cellValues.every { !StringUtils.isNullOrEmpty(it) }
+
+        and: "Empty values must be converted as the given default value"
+        def mapValues = maps.collectMany { it.values() }
+        def emptyMapValueCount = mapValues.count { it == null || it instanceof String && StringUtils.isNullOrEmpty(it) }
+        emptyMapValueCount == cellValues.count { it == defaultValue }
 
         cleanup:
         out.close()

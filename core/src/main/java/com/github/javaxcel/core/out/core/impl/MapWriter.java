@@ -243,7 +243,7 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
     protected String createCellValue(Map<String, Object> model, int columnIndex) {
         Object value = model.get(this.keys.get(columnIndex));
 
-        if (value != null) {
+        if (!isNullOrEmptyString(value)) {
             return value.toString();
         }
 
@@ -252,6 +252,18 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
         }
 
         return null;
+    }
+
+    private static boolean isNullOrEmptyString(@Nullable Object object) {
+        if (object == null) {
+            return true;
+        }
+
+        if (object instanceof CharSequence) {
+            return ((CharSequence) object).length() == 0;
+        }
+
+        return false;
     }
 
 }
