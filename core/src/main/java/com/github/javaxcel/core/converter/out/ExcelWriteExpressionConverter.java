@@ -40,6 +40,7 @@ import com.github.javaxcel.core.analysis.ExcelAnalysis;
 import com.github.javaxcel.core.analysis.out.ExcelWriteAnalyzer;
 import com.github.javaxcel.core.annotation.ExcelWriteExpression;
 import com.github.javaxcel.core.util.FieldUtils;
+import com.github.javaxcel.core.util.ObjectUtils;
 
 /**
  * Converter for writing Excel with expression(SpEL)
@@ -121,7 +122,7 @@ public class ExcelWriteExpressionConverter implements ExcelWriteConverter {
         Object value = Objects.requireNonNull(cache.getExpression(), "Never throw").getValue(context);
 
         // Returns the result of expression.
-        if (!isNullOrEmptyString(value)) {
+        if (!ObjectUtils.isNullOrEmptyCharSequence(value)) {
             // Forces the evaluated value to be a string
             // even if desired return type of expression is not String.
             return value.toString();
@@ -130,7 +131,7 @@ public class ExcelWriteExpressionConverter implements ExcelWriteConverter {
         String defaultValue = cache.getAnalysis().getDefaultMeta().getValue();
 
         // Returns null if the converted value is null or empty string.
-        if (isNullOrEmptyString(defaultValue)) {
+        if (ObjectUtils.isNullOrEmptyCharSequence(defaultValue)) {
             return null;
         }
 
@@ -159,18 +160,6 @@ public class ExcelWriteExpressionConverter implements ExcelWriteConverter {
         } else {
             throw new AssertionError("Never throw; ExcelWriteAnalyzer adds the flags into each analysis");
         }
-    }
-
-    private static boolean isNullOrEmptyString(@Nullable Object object) {
-        if (object == null) {
-            return true;
-        }
-
-        if (object instanceof CharSequence) {
-            return ((CharSequence) object).length() == 0;
-        }
-
-        return false;
     }
 
     private static class Cache {

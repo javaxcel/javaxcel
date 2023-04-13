@@ -10,6 +10,38 @@ import java.util.concurrent.TimeUnit
 @Subject(ObjectUtils)
 class ObjectUtilsSpec extends Specification {
 
+    def "Returns whether to be null or empty character sequence"() {
+        expect:
+        ObjectUtils.isNullOrEmptyCharSequence(value) == expected
+
+        where:
+        value                   | expected
+        null                    | true
+        ""                      | true
+        new StringBuffer()      | true
+        new StringBuilder()     | true
+        " "                     | false
+        new StringBuffer(" ")   | false
+        new StringBuilder(" ")  | false
+        new Object()            | false
+        "null"                  | false
+        0                       | false
+        0L                      | false
+        0.0F                    | false
+        0.0D                    | false
+        BigInteger.valueOf(0)   | false
+        BigDecimal.valueOf(0.0) | false
+        new Object[0]           | false
+        new CharSequence[0]     | false
+        new String[0]           | false
+        new StringBuffer[0]     | false
+        new StringBuilder[0]    | false
+        []                      | false
+        [] as Set               | false
+        [:]                     | false
+        (() -> { })             | false
+    }
+
     def "Resolves the first matched object in arguments"() {
         when:
         def resolution = ObjectUtils.resolveFirst(type, arguments as Object[])
@@ -24,7 +56,7 @@ class ObjectUtilsSpec extends Specification {
         Object     | [null, 1, 2, 3]                                            || 1
         Number     | [new Object(), "alpha", 0.15, 10]                          || 0.15
         String     | [2, null, "beta", String, "gamma"]                         || "beta"
-        Enum       | [AccessMode.READ, TimeUnit.DAYS, CRLReason.UNUSED] || AccessMode.READ
+        Enum       | [AccessMode.READ, TimeUnit.DAYS, CRLReason.UNUSED]         || AccessMode.READ
         Comparable | [0, "delta", 128L, 3.14D, BigInteger.ZERO, BigDecimal.TEN] || 0
     }
 

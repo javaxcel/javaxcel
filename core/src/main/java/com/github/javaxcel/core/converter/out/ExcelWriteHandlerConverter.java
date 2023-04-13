@@ -36,6 +36,7 @@ import com.github.javaxcel.core.analysis.out.ExcelWriteAnalyzer;
 import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
 import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
 import com.github.javaxcel.core.util.FieldUtils;
+import com.github.javaxcel.core.util.ObjectUtils;
 
 /**
  * Converter for writing Excel with type handler
@@ -99,7 +100,7 @@ public class ExcelWriteHandlerConverter implements ExcelWriteConverter {
         Object value = getValueOf(model, field);
 
         // Returns default value if the value is null or empty string.
-        if (isNullOrEmptyString(value)) {
+        if (ObjectUtils.isNullOrEmptyCharSequence(value)) {
             ExcelAnalysis analysis = this.analysisMap.get(field);
             String defaultValue = analysis.getDefaultMeta().getValue();
 
@@ -116,7 +117,7 @@ public class ExcelWriteHandlerConverter implements ExcelWriteConverter {
         String converted = handleInternal(field, type, value);
 
         // Returns null if the converted value is null or empty string.
-        if (isNullOrEmptyString(converted)) {
+        if (ObjectUtils.isNullOrEmptyCharSequence(converted)) {
             return null;
         }
 
@@ -139,18 +140,6 @@ public class ExcelWriteHandlerConverter implements ExcelWriteConverter {
         } else {
             throw new AssertionError("Never throw; ExcelWriteAnalyzer adds the flags into each analysis");
         }
-    }
-
-    private static boolean isNullOrEmptyString(@Nullable Object object) {
-        if (object == null) {
-            return true;
-        }
-
-        if (object instanceof CharSequence) {
-            return ((CharSequence) object).length() == 0;
-        }
-
-        return false;
     }
 
     private String handleInternal(Field field, Class<?> type, Object value) {

@@ -20,6 +20,7 @@ import com.github.javaxcel.core.out.strategy.impl.DefaultValue
 import com.github.javaxcel.core.out.strategy.impl.KeyNames
 import com.github.javaxcel.core.out.strategy.impl.SheetName
 import com.github.javaxcel.core.util.ExcelUtils
+import com.github.javaxcel.core.util.ObjectUtils
 import com.github.javaxcel.test.util.TestUtils
 
 @Subject(MapWriter)
@@ -119,9 +120,9 @@ class MapWriterSpec extends Specification {
         cellValues.every { !StringUtils.isNullOrEmpty(it) }
 
         and: "Empty values must be converted as the given default value"
-        def mapValues = maps.collectMany { it.values() }
-        def emptyMapValueCount = mapValues.count { it == null || it instanceof String && StringUtils.isNullOrEmpty(it) }
-        emptyMapValueCount == cellValues.count { it == defaultValue }
+        def emptyMapValueCount = maps.collectMany { it.values() }.count { ObjectUtils.isNullOrEmptyCharSequence(it) }
+        def emptyCellValueCount = cellValues.count { it == defaultValue }
+        emptyMapValueCount == emptyCellValueCount
 
         cleanup:
         out.close()

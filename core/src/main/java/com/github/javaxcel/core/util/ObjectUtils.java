@@ -21,13 +21,43 @@ import org.jetbrains.annotations.Nullable;
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
 /**
- * Utilities for on {@link Object}.
+ * Utilities for {@link Object}.
+ *
+ * @since 0.10.0
  */
 public final class ObjectUtils {
 
     @ExcludeFromGeneratedJacocoReport
     private ObjectUtils() {
         throw new UnsupportedOperationException(getClass().getName() + " is not allowed to instantiate");
+    }
+
+    /**
+     * Checks whether the object is null or empty character sequence.
+     *
+     * <pre><code>
+     *     isNullOrEmptyCharSequence(null);                  // true
+     *     isNullOrEmptyCharSequence("");                    // true
+     *     isNullOrEmptyCharSequence(new StringBuffer();     // true
+     *     isNullOrEmptyCharSequence(new StringBuilder();    // true
+     *     isNullOrEmptyCharSequence(" ");                   // false
+     *     isNullOrEmptyCharSequence(new StringBuffer(" ");  // false
+     *     isNullOrEmptyCharSequence(new StringBuilder(" "); // false
+     * </code></pre>
+     *
+     * @param object object
+     * @return whether the object is null or empty character sequence
+     */
+    public static boolean isNullOrEmptyCharSequence(@Nullable Object object) {
+        if (object == null) {
+            return true;
+        }
+
+        if (object instanceof CharSequence) {
+            return ((CharSequence) object).length() == 0;
+        }
+
+        return false;
     }
 
     @Nullable

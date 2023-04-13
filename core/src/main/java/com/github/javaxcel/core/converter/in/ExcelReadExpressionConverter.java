@@ -36,6 +36,7 @@ import com.github.javaxcel.core.analysis.ExcelAnalysis;
 import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer;
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelReadExpression;
+import com.github.javaxcel.core.util.ObjectUtils;
 
 /**
  * Converter for reading Excel with expression(SpEL)
@@ -96,7 +97,7 @@ public class ExcelReadExpressionConverter implements ExcelReadConverter {
         Object value = convertInternal(variables, field);
 
         // Returns the result of expression.
-        if (!isNullOrEmptyString(value)) {
+        if (!ObjectUtils.isNullOrEmptyCharSequence(value)) {
             return value;
         }
 
@@ -117,7 +118,7 @@ public class ExcelReadExpressionConverter implements ExcelReadConverter {
         value = convertInternal(newVariables, field);
 
         // Returns null if the value converted by default is also null or empty string.
-        if (isNullOrEmptyString(value)) {
+        if (ObjectUtils.isNullOrEmptyCharSequence(value)) {
             return null;
         }
 
@@ -139,18 +140,6 @@ public class ExcelReadExpressionConverter implements ExcelReadConverter {
     }
 
     // -------------------------------------------------------------------------------------------------
-
-    private static boolean isNullOrEmptyString(@Nullable Object object) {
-        if (object == null) {
-            return true;
-        }
-
-        if (object instanceof CharSequence) {
-            return ((CharSequence) object).length() == 0;
-        }
-
-        return false;
-    }
 
     private static class Cache {
         private final ExcelAnalysis analysis;

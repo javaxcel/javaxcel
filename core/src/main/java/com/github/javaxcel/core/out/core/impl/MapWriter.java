@@ -40,6 +40,7 @@ import com.github.javaxcel.core.out.strategy.impl.Filter;
 import com.github.javaxcel.core.out.strategy.impl.HeaderStyles;
 import com.github.javaxcel.core.out.strategy.impl.KeyNames;
 import com.github.javaxcel.core.util.ExcelUtils;
+import com.github.javaxcel.core.util.ObjectUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
 
 import static java.util.Comparator.*;
@@ -243,7 +244,7 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
     protected String createCellValue(Map<String, Object> model, int columnIndex) {
         Object value = model.get(this.keys.get(columnIndex));
 
-        if (!isNullOrEmptyString(value)) {
+        if (!ObjectUtils.isNullOrEmptyCharSequence(value)) {
             return value.toString();
         }
 
@@ -252,18 +253,6 @@ public class MapWriter extends AbstractExcelWriter<Map<String, Object>> {
         }
 
         return null;
-    }
-
-    private static boolean isNullOrEmptyString(@Nullable Object object) {
-        if (object == null) {
-            return true;
-        }
-
-        if (object instanceof CharSequence) {
-            return ((CharSequence) object).length() == 0;
-        }
-
-        return false;
     }
 
 }
