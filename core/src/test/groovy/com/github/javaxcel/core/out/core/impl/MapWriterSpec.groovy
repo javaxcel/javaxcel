@@ -1,6 +1,5 @@
 package com.github.javaxcel.core.out.core.impl
 
-
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.TempDir
@@ -9,6 +8,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
+import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.streaming.SXSSFWorkbook
 
 import com.github.pjfanning.xlsx.StreamingReader
@@ -126,6 +126,69 @@ class MapWriterSpec extends Specification {
 
         cleanup:
         out.close()
+    }
+
+    def "Writes maps with key names option"() {
+        given:
+        def hssfWorkbook = new HSSFWorkbook()
+
+        and:
+        // To create multiple sheets, generates models as many
+        // as the amount exceeds the maximum number of rows per sheet.
+        def mockCount = ExcelUtils.getMaxRows(hssfWorkbook) * 1.1
+        List<Map<String, Object>> maps = (0..<mockCount).collect {
+            TestUtils.randomizeMap(4) {
+                "FIELD_" + (it + 1)
+            }
+        }
+
+        and:
+        def filePath = path.resolve("map-writer-key-names.xls")
+        def out = Files.newOutputStream(filePath)
+
+        when:
+        Javaxcel.newInstance()
+                .writer(hssfWorkbook)
+                .options(keyNames)
+                .write(out, maps)
+
+        then: "All header names at each sheet must be sorted"
+        def workbook = ExcelUtils.getWorkbook(filePath.toFile())
+        def headers = workbook.collect { sheet -> sheet[0].collect { it.stringCellValue } }
+        workbook.numberOfSheets == headers.size()
+
+        and:
+        headers == [expected] * workbook.numberOfSheets
+
+        cleanup:
+        out.close()
+
+        where:
+        keyNames                                                                          | expected
+        new KeyNames((1..4).collect { "FIELD_" + it })                                    | (1..4).collect { "FIELD_" + it }
+        new KeyNames((1..4).collect { "FIELD_" + it }, (1..4).collect { "column_" + it }) | (1..4).collect { "column_" + it }
+    }
+
+    def "Fails to write maps with key names option"() {
+        given:
+        def workbook = Mock(Workbook)
+
+        when:
+        Javaxcel.newInstance()
+                .writer(workbook)
+                .options(keyNames.call())
+                .write(null, maps)
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.message.startsWith(message)
+
+        where:
+        maps                 | keyNames                                      | message
+        []                   | { new KeyNames([]) }                          | "keyOrders is not allowed to be null or empty"
+        [[a: 1, b: 2]]       | { new KeyNames(["A", "B", "C"], ["a", "b"]) } | "newKeyNames.size is not equal to keyOrders.size"
+        [[A: 1, B: 2]]       | { new KeyNames(["A", "B", "C"]) }             | "MapWriter.keys is not equal to keyMap.orders.size"
+        [[A: 1, b: 2, C: 3]] | { new KeyNames(["A", "B", "C"]) }             | "MapWriter.keys is at variance with keyMap.orders.keySet"
     }
 
 }
