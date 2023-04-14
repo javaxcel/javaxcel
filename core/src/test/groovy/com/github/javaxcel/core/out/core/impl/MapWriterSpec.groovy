@@ -61,12 +61,12 @@ class MapWriterSpec extends Specification {
     def "Writes maps into each sheet with rotation"() {
         given:
         def keys = ["ALPHA", "BETA", "GAMMA"]
-        def workbook = new HSSFWorkbook()
+        def hSSFWorkbook = new HSSFWorkbook()
 
         and:
         // To create multiple sheets, generates models as many
         // as the amount exceeds the maximum number of rows per sheet.
-        def mockCount = ExcelUtils.getMaxRows(workbook) * 1.1
+        def mockCount = ExcelUtils.getMaxRows(hSSFWorkbook) * 1.1
         List<Map<String, Object>> maps = (0..<mockCount).collect { TestUtils.randomizeMap(keys) }
 
         and:
@@ -75,18 +75,18 @@ class MapWriterSpec extends Specification {
 
         when:
         Javaxcel.newInstance()
-                .writer(workbook)
-                .options(new SheetName("Sheet-Rotation"), new KeyNames(keys))
+                .writer(hSSFWorkbook)
+                .options(new SheetName("Sheet-Rotation"))
                 .write(out, maps)
 
         then:
-        def sheets = ExcelUtils.getSheets(ExcelUtils.getWorkbook(filePath.toFile()))
-        sheets.size() == 2
-        sheets*.sheetName == (1..sheets.size()).collect { "Sheet-Rotation" + it }
+        def workbook = ExcelUtils.getWorkbook(filePath.toFile())
+        workbook.numberOfSheets == 2
+        workbook*.sheetName == (1..workbook.numberOfSheets).collect { "Sheet-Rotation" + it }
 
         and:
-        def columns = sheets.collectMany { sheet -> sheet[0].collect { cell -> cell.stringCellValue } }.unique()
-        columns == keys
+        def headers = workbook.collect { sheet -> sheet[0].collect { it.stringCellValue }.toSet() }
+        headers == [keys.toSet()] * workbook.numberOfSheets
 
         cleanup:
         out.close()
