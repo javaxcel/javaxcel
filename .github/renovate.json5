@@ -38,6 +38,16 @@
         ],
         // easy-random is based on jdk 11 since 5.0.0.
         "allowedVersions": "<5.0.0"
+      },
+      {
+        "matchPackageNames": [
+          "org.springframework:spring-expression"
+        ],
+        "matchManagers": [
+          "maven"
+        ],
+        // spring framework 6 is based on jdk 17.
+        "allowedVersions": "<6.0.0"
       }
     ]
   },
