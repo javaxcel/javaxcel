@@ -61,11 +61,10 @@ public final class ObjectUtils {
     }
 
     @Nullable
-    @SuppressWarnings("unchecked")
     public static <T> T resolveFirst(Class<T> type, Object... arguments) {
         for (Object argument : arguments) {
             if (type.isInstance(argument)) {
-                return (T) argument;
+                return type.cast(argument);
             }
         }
 
@@ -73,13 +72,12 @@ public final class ObjectUtils {
     }
 
     @Nullable
-    @SuppressWarnings("unchecked")
     public static <T> T resolveLast(Class<T> type, Object... arguments) {
         for (int i = arguments.length - 1; i >= 0; i--) {
             Object argument = arguments[i];
 
             if (type.isInstance(argument)) {
-                return (T) argument;
+                return type.cast(argument);
             }
         }
 
