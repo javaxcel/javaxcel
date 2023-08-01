@@ -40,6 +40,7 @@
 ### Dependencies
 
 - ⬆️ Upgrade: intransitive dependency `spring-expression` from `5.3.25` to `5.3.26`
+- ⬆️ Upgrade: test dependency `junit5` from `5.9.2` to `5.10.0`
 
 # v0.9.2
 
