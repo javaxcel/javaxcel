@@ -73,7 +73,7 @@
         <spock.version>2.3-groovy-4.0</spock.version>
         <lombok.version>1.18.28</lombok.version>
         <jmh.version>1.36</jmh.version>
-        <byte-buddy.version>1.14.8</byte-buddy.version>
+        <byte-buddy.version>1.14.9</byte-buddy.version>
         <easy-random.version>4.3.0</easy-random.version>
         <excel-streaming-reader.version>4.1.2</excel-streaming-reader.version>
     </properties>
