@@ -63,7 +63,7 @@
         <!--        <apache-poi.version>4.1.2</apache-poi.version>-->
 
         <!-- Dependency versions -->
-        <spring-expression.version>5.3.30</spring-expression.version>
+        <spring-expression.version>5.3.31</spring-expression.version>
         <common-utils.version>0.14.0</common-utils.version>
         <jetbrains-annotations.version>24.0.1</jetbrains-annotations.version>
 
