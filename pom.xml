@@ -75,7 +75,7 @@
         <jmh.version>1.36</jmh.version>
         <byte-buddy.version>1.14.10</byte-buddy.version>
         <easy-random.version>4.3.0</easy-random.version>
-        <excel-streaming-reader.version>4.2.0</excel-streaming-reader.version>
+        <excel-streaming-reader.version>4.2.1</excel-streaming-reader.version>
     </properties>
 
     <repositories>
