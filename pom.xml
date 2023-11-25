@@ -65,7 +65,7 @@
         <!-- Dependency versions -->
         <spring-expression.version>5.3.31</spring-expression.version>
         <common-utils.version>0.14.0</common-utils.version>
-        <jetbrains-annotations.version>24.0.1</jetbrains-annotations.version>
+        <jetbrains-annotations.version>24.1.0</jetbrains-annotations.version>
 
         <!-- Test dependency versions -->
         <junit5.version>5.10.1</junit5.version>
