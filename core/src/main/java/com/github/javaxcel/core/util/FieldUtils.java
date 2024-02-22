@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -32,7 +33,6 @@ import io.github.imsejin.common.util.ReflectionUtils;
 import io.github.imsejin.common.util.StringUtils;
 
 import com.github.javaxcel.core.annotation.ExcelColumn;
-import com.github.javaxcel.core.annotation.ExcelIgnore;
 import com.github.javaxcel.core.annotation.ExcelModel;
 
 import static java.util.stream.Collectors.*;
@@ -54,7 +54,7 @@ public final class FieldUtils {
      * {@code true}, this returns its own declared fields.
      * Otherwise, this returns its own declared fields including super classes' fields.
      *
-     * <p> This doesn't return the fields annotated with {@link ExcelIgnore}.
+     * <p> This doesn't return the fields on {@link ExcelColumn} whose {@link ExcelColumn#ignored()} is {@code true}.
      *
      * <p> If the model class' {@link ExcelModel#explicit()} is {@code true},
      * this excludes the fields not annotated with {@link ExcelColumn}.
@@ -63,7 +63,6 @@ public final class FieldUtils {
      * @return targeted fields
      * @see ExcelModel#includeSuper()
      * @see ExcelModel#explicit()
-     * @see ExcelIgnore
      */
     public static List<Field> getTargetedFields(Class<?> type) {
         // Gets the fields depending on the policies.
@@ -72,12 +71,14 @@ public final class FieldUtils {
                 ? Arrays.stream(type.getDeclaredFields())
                 : ReflectionUtils.getInheritedFields(type).stream();
 
-        // Excludes the synthetic fields
+        // Excludes the synthetic fields.
         Predicate<Field> filter = it -> !it.isSynthetic();
         // Excludes the static fields.
         filter = filter.and(it -> !Modifier.isStatic(it.getModifiers()));
         // Excludes the fields to be ignored.
-        filter = filter.and(it -> !it.isAnnotationPresent(ExcelIgnore.class));
+        filter = filter.and(it -> !Optional.ofNullable(it.getAnnotation(ExcelColumn.class))
+                .map(ExcelColumn::ignored)
+                .orElse(false));
         // Excludes the implicit fields.
         if (excelModel != null && excelModel.explicit()) {
             filter = filter.and(it -> it.isAnnotationPresent(ExcelColumn.class));

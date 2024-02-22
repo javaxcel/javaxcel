@@ -22,6 +22,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.github.javaxcel.core.in.core.ExcelReader;
+import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.strategy.impl.DefaultValue;
 import com.github.javaxcel.core.out.strategy.impl.EnumDropdown;
 import com.github.javaxcel.styler.ExcelStyleConfig;
@@ -41,6 +43,15 @@ public @interface ExcelColumn {
      * @return header name
      */
     String name() default "";
+
+    /**
+     * Indicates that a field will be excluded from targeted fields.
+     * The field won't be handled by {@link ExcelWriter} and {@link ExcelReader}.
+     *
+     * @return whether this column is excluded or not.
+     * @since 0.10.0
+     */
+    boolean ignored() default false;
 
     /**
      * Policy that determines whether this will set constraint to {@link Enum} field or not.

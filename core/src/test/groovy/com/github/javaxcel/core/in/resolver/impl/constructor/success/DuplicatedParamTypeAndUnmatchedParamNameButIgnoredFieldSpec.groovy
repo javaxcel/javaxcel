@@ -22,7 +22,6 @@ import spock.lang.Subject
 import java.lang.reflect.Constructor
 
 import com.github.javaxcel.core.annotation.ExcelColumn
-import com.github.javaxcel.core.annotation.ExcelIgnore
 import com.github.javaxcel.core.annotation.ExcelModel
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelConstructorResolver
 
@@ -50,7 +49,7 @@ class DuplicatedParamTypeAndUnmatchedParamNameButIgnoredFieldSpec extends Specif
     @SuppressWarnings("unused")
     private static class IgnoredField {
         final List<Integer> integers
-        @ExcelIgnore
+        @ExcelColumn(ignored = true)
         final List<String> strings
 
         IgnoredField(List<Integer> numbers) {
