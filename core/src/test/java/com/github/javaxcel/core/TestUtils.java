@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
@@ -43,7 +44,7 @@ import io.github.imsejin.common.assertion.Asserts;
 import io.github.imsejin.common.tool.TypeClassifier;
 import io.github.imsejin.common.util.MathUtils;
 
-import com.github.javaxcel.core.annotation.ExcelIgnore;
+import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.util.ExcelUtils;
 import com.github.javaxcel.core.util.FieldUtils;
 
@@ -153,7 +154,9 @@ public class TestUtils {
         @Override
         public boolean test(Field field) {
             // Excludes.
-            if (field.isAnnotationPresent(ExcelIgnore.class)) {
+            if (Optional.ofNullable(field.getAnnotation(ExcelColumn.class))
+                    .map(ExcelColumn::ignored)
+                    .orElse(false)) {
                 return true;
             }
 

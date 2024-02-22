@@ -32,7 +32,6 @@ import lombok.Cleanup;
 
 import com.github.javaxcel.core.TestUtils;
 import com.github.javaxcel.core.annotation.ExcelColumn;
-import com.github.javaxcel.core.annotation.ExcelIgnore;
 import com.github.javaxcel.core.annotation.ExcelModel;
 import com.github.javaxcel.core.core.ModelWriterTester;
 import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
@@ -42,7 +41,7 @@ import com.github.javaxcel.core.util.ExcelUtils;
 import static com.github.javaxcel.core.TestUtils.*;
 
 /**
- * @see ExcelIgnore
+ * @see ExcelColumn#ignored()
  * @see ExcelModel#explicit()
  * @see ExcelUtils#autoResizeColumns(Sheet, int)
  */
@@ -94,10 +93,10 @@ class IgnoreTest extends ModelWriterTester {
     private static class IgnoredModel {
         private long id;
 
-        @ExcelIgnore
+        @ExcelColumn(ignored = true)
         private Double width;
 
-        @ExcelIgnore
+        @ExcelColumn(ignored = true)
         private double height;
 
         private Double weight;

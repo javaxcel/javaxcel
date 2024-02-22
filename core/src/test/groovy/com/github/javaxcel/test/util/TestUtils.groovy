@@ -41,7 +41,7 @@ import org.jeasy.random.EasyRandomParameters
 import io.github.imsejin.common.assertion.Asserts
 import io.github.imsejin.common.util.MathUtils
 
-import com.github.javaxcel.core.annotation.ExcelIgnore
+import com.github.javaxcel.core.annotation.ExcelColumn
 import com.github.javaxcel.test.annotation.ExcludeOnPercentage
 
 final class TestUtils {
@@ -128,7 +128,7 @@ final class TestUtils {
         @Override
         boolean test(Field field) {
             // Excludes.
-            if (field.isAnnotationPresent(ExcelIgnore.class)) {
+            if (field.getAnnotation(ExcelColumn)?.ignored() ?: false) {
                 return true
             }
 

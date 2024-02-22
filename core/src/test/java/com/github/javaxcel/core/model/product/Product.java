@@ -14,7 +14,6 @@ import lombok.ToString;
 
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelDateTimeFormat;
-import com.github.javaxcel.core.annotation.ExcelIgnore;
 import com.github.javaxcel.core.annotation.ExcelModelCreator;
 
 @Getter
@@ -33,8 +32,7 @@ public class Product {
     @ExcelColumn(name = "API_ID")
     private UUID apiId;
 
-    @ExcelIgnore
-    @ExcelColumn(name = "가로")
+    @ExcelColumn(name = "가로", ignored = true)
     private Double width;
 
     @ExcelColumn(defaultValue = "(empty)") // Default value is ineffective to primitive type.

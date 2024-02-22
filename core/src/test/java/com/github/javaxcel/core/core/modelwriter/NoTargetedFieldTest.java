@@ -27,7 +27,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import io.github.imsejin.common.tool.Stopwatch;
 
 import com.github.javaxcel.core.TestUtils;
-import com.github.javaxcel.core.annotation.ExcelIgnore;
+import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelModel;
 import com.github.javaxcel.core.exception.NoTargetedFieldException;
 import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
@@ -60,9 +60,9 @@ class NoTargetedFieldTest {
     }
 
     private static class AllIgnoredModel {
-        @ExcelIgnore
+        @ExcelColumn(ignored = true)
         private int number;
-        @ExcelIgnore
+        @ExcelColumn(ignored = true)
         private Character character;
     }
 
