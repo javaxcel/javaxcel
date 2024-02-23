@@ -157,7 +157,7 @@ Model must has a constructor without parameters, so that `ExcelReader` can insta
 ## Exclude field
 
 ```java
-@ExcelIgnore
+@ExcelColumn(ignored = true)
 private String accessId;
 ```
 
@@ -167,7 +167,7 @@ private String accessId;
 | ------------ | ------------ | ----- | ----- | ------ | ------ |
 | 10000        | Choco cereal |       | 0.0   | 20.5   | 580.5  |
 
-If you want to exclude several fields, annotate `@ExcelIgnore` to them.
+If you want to exclude several fields, annotate `@ExcelColumn(ignored = true)` to them.
 
 <br>
 
@@ -187,11 +187,10 @@ If you want to exclude several fields, annotate `@ExcelIgnore` to them.
 ]
 ```
 
-`ExcelReader` will pass the fields that annotated `@ExcelIgnore` by.
+`ExcelReader` will pass the fields annotated with `@ExcelColumn(ignored = true)`.
 
-If column `accessId` exists in Excel sheet and `Product#accessId` is still annotated `@ExcelIgnore`,
-
-the exception will occur because of setting `accessId` to `width` (NumberFormatException).
+If column `accessId` exists in Excel sheet and `Product#accessId` is still annotated `@ExcelColumn(ignored = true)`,
+exception will occur because of setting `accessId` to `width` (NumberFormatException).
 
 <br><br>
 
@@ -304,10 +303,10 @@ If the field that is annotated by `@ExcelReadExpression`, its default value does
 class NoFieldModel {}
 
 class AllIgnoredModel {
-    @ExcelIgnore
+    @ExcelColumn(ignored = true)
     private int number;
     
-    @ExcelIgnore
+    @ExcelColumn(ignored = true)
     private Character character;
 }
 ```
@@ -649,7 +648,7 @@ You can also refer the other fields. We call this as `variable`.
 
 Field you can refer is only targeted field.
 
-It means you cannot refer the field that is annotated with `@ExcelIgnore` (or `ExcelModel#explicit()`).
+It means you cannot refer the field that is annotated with `@ExcelColumn(ignored = true)` (or `ExcelModel#explicit()`).
 
 If type of expression result is not `String`, the converter will invoke `Object#toString()`.
 
