@@ -17,17 +17,24 @@
 package com.github.javaxcel.core.analysis;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Objects;
 
 import org.jetbrains.annotations.Nullable;
 
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
+import io.github.imsejin.common.assertion.Asserts;
+import lombok.Getter;
+import lombok.ToString;
 
 import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
+import com.github.javaxcel.core.validator.ExcelColumnValidator;
 
 /**
  * @since 0.9.0
  */
+@Getter
+@ToString
 public final class ExcelAnalysisImpl implements ExcelAnalysis {
 
     private final Field field;
@@ -37,6 +44,8 @@ public final class ExcelAnalysisImpl implements ExcelAnalysis {
     private DefaultMeta defaultMeta;
 
     private ExcelTypeHandler<?> handler;
+
+    private List<ExcelColumnValidator> validators;
 
     public ExcelAnalysisImpl(Field field) {
         this.field = field;
@@ -77,11 +86,14 @@ public final class ExcelAnalysisImpl implements ExcelAnalysis {
                 () -> getClass().getSimpleName() + ".handler cannot be null");
     }
 
-    @Override
-    @ExcludeFromGeneratedJacocoReport
-    public String toString() {
-        return "ExcelAnalysisImpl(field=" + field + ", flags=" + flags + ", defaultMeta=" + defaultMeta + ", handler="
-                + handler + ')';
+    public void setValidators(List<ExcelColumnValidator> validators) {
+        Asserts.that(validators)
+                .describedAs("{0}.validators cannot be null", getClass().getSimpleName())
+                .isNotNull()
+                .describedAs("{0}.validators cannot contain null", getClass().getSimpleName())
+                .doesNotContainNull();
+
+        this.validators = validators;
     }
 
     // -------------------------------------------------------------------------------------------------

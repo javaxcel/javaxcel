@@ -43,6 +43,7 @@ import com.github.javaxcel.core.in.resolver.AbstractExcelModelExecutableResolver
 import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 import com.github.javaxcel.core.in.strategy.impl.Parallel;
 import com.github.javaxcel.core.util.FieldUtils;
+import com.github.javaxcel.core.validator.support.ExcelColumnValidators;
 
 import static java.util.stream.Collectors.*;
 
@@ -65,6 +66,8 @@ public class ModelReader<T> extends AbstractExcelReader<T> {
     private final ExcelModelCreationProcessor<T> modelProcessor;
 
     private ExcelReadConverter converter;
+
+    private ExcelColumnValidators validators;
 
     /**
      * Creates a reader for model.
@@ -109,6 +112,9 @@ public class ModelReader<T> extends AbstractExcelReader<T> {
         // Creates a converter.
         this.converter = new ExcelReadConverters(analyses, registry);
 
+        // Creates a validator.
+        this.validators = new ExcelColumnValidators(analyses);
+
         // ExcelModelCreationProcessor needs the analyses.
         this.modelProcessor.setAnalyses(analyses);
     }
@@ -149,6 +155,11 @@ public class ModelReader<T> extends AbstractExcelReader<T> {
         Map<String, Object> mock = new HashMap<>();
         for (Field field : this.fields) {
             String key = field.getName();
+
+            // Validates each column value.
+            String columnValue = variables.get(key);
+            this.validators.validate(columnValue, field);
+
             Object value = this.converter.convert(variables, field);
 
             mock.put(key, value);

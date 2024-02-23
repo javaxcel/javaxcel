@@ -26,6 +26,7 @@ import com.github.javaxcel.core.in.core.ExcelReader;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.strategy.impl.DefaultValue;
 import com.github.javaxcel.core.out.strategy.impl.EnumDropdown;
+import com.github.javaxcel.core.validator.ExcelColumnValidator;
 import com.github.javaxcel.styler.ExcelStyleConfig;
 import com.github.javaxcel.styler.NoStyleConfig;
 
@@ -124,5 +125,15 @@ public @interface ExcelColumn {
      * @see ExcelModel#bodyStyle() ExcelModel.bodyStyle
      */
     Class<? extends ExcelStyleConfig> bodyStyle() default NoStyleConfig.class;
+
+    /**
+     * Validators for cell value when reading each cell.
+     *
+     * <p> This is applied only {@link ExcelReader}.
+     *
+     * @return column validators
+     * @since 0.10.0
+     */
+    Class<? extends ExcelColumnValidator>[] validators() default {};
 
 }

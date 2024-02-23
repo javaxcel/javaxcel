@@ -17,6 +17,8 @@
 package com.github.javaxcel.core.analysis.out;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.List;
 
 import com.github.javaxcel.core.analysis.AbstractExcelAnalyzer;
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta;
@@ -32,6 +34,7 @@ import com.github.javaxcel.core.out.strategy.impl.DefaultValue;
 import com.github.javaxcel.core.out.strategy.impl.UseGetters;
 import com.github.javaxcel.core.util.FieldUtils;
 import com.github.javaxcel.core.util.ObjectUtils;
+import com.github.javaxcel.core.validator.ExcelColumnValidator;
 
 /**
  * Analyzer for writing Excel
@@ -117,6 +120,12 @@ public class ExcelWriteAnalyzer extends AbstractExcelAnalyzer {
         }
 
         return flags;
+    }
+
+    @Override
+    protected List<ExcelColumnValidator> analyzeValidators(Field field, Object[] arguments) {
+        // ExcelWriter doesn't support validation.
+        return Collections.emptyList();
     }
 
 }

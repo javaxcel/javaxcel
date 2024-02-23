@@ -27,6 +27,7 @@ import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta;
 import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
 import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
 import com.github.javaxcel.core.converter.in.support.FieldTypeResolver;
+import com.github.javaxcel.core.validator.ExcelColumnValidator;
 
 /**
  * Abstract analyzer for preparing the fields to handle for Excel
@@ -69,6 +70,10 @@ public abstract class AbstractExcelAnalyzer implements ExcelAnalyzer {
                 analysis.setHandler(handler);
             }
 
+            // Analyzes validators for the field.
+            List<ExcelColumnValidator> validators = analyzeValidators(field, arguments);
+            analysis.setValidators(validators);
+
             // Analyzes flags for the field.
             int flags = analyzeFlags(field, arguments);
             analysis.addFlags(flags);
@@ -98,5 +103,15 @@ public abstract class AbstractExcelAnalyzer implements ExcelAnalyzer {
      * @return flags
      */
     protected abstract int analyzeFlags(Field field, Object[] arguments);
+
+    /**
+     * Analyzes the fields and returns validators for it.
+     *
+     * @param field      targeted field
+     * @param arguments optional arguments
+     * @return validators for excel column
+     * @since 0.10.0
+     */
+    protected abstract List<ExcelColumnValidator> analyzeValidators(Field field, Object[] arguments);
 
 }
