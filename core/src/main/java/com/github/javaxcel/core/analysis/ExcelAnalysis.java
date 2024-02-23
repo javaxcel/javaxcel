@@ -17,12 +17,14 @@
 package com.github.javaxcel.core.analysis;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
 import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer;
 import com.github.javaxcel.core.analysis.out.ExcelWriteAnalyzer;
 import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
+import com.github.javaxcel.core.validator.ExcelColumnValidator;
 
 /**
  * Result of the field from analyzer
@@ -61,6 +63,14 @@ public interface ExcelAnalysis {
      */
     @Nullable
     ExcelTypeHandler<?> getHandler();
+
+    /**
+     * Returns validators.
+     *
+     * @return column validators
+     * @since 0.10.0
+     */
+    List<ExcelColumnValidator> getValidators();
 
     /**
      * Has flag boolean.

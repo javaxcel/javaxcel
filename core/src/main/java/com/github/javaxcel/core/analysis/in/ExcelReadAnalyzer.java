@@ -17,6 +17,12 @@
 package com.github.javaxcel.core.analysis.in;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
+
+import io.github.imsejin.common.util.ArrayUtils;
+import io.github.imsejin.common.util.ReflectionUtils;
 
 import com.github.javaxcel.core.analysis.AbstractExcelAnalyzer;
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta;
@@ -30,6 +36,9 @@ import com.github.javaxcel.core.converter.in.ExcelReadHandlerConverter;
 import com.github.javaxcel.core.in.strategy.impl.UseSetters;
 import com.github.javaxcel.core.util.FieldUtils;
 import com.github.javaxcel.core.util.ObjectUtils;
+import com.github.javaxcel.core.validator.ExcelColumnValidator;
+
+import static java.util.stream.Collectors.*;
 
 /**
  * Analyzer for reading Excel
@@ -99,6 +108,19 @@ public class ExcelReadAnalyzer extends AbstractExcelAnalyzer {
         }
 
         return flags;
+    }
+
+    @Override
+    protected List<ExcelColumnValidator> analyzeValidators(Field field, Object[] arguments) {
+        ExcelColumn columnAnnotation = field.getAnnotation(ExcelColumn.class);
+        if (columnAnnotation != null && !ArrayUtils.isNullOrEmpty(columnAnnotation.validators())) {
+            return Stream.of(columnAnnotation.validators())
+                    .distinct()
+                    .map(type -> (ExcelColumnValidator) ReflectionUtils.instantiate(type))
+                    .collect(toList());
+        }
+
+        return Collections.emptyList();
     }
 
 }
