@@ -34,6 +34,7 @@
     13. [Add a handler for custom type](#add-a-handler-for-custom-type)
     14. [Support java.util.Map](#support-javautilmap)
     15. [Integrate with excel-streaming-reader](#integrate-with-excel-streaming-reader)
+    16. [Validate value](#validate-value)
 
 <br><br>
 
@@ -1066,6 +1067,8 @@ The result is
 ]
 ```
 
+<br><br>
+
 ## Integrate with excel-streaming-reader
 
 ```java
@@ -1078,3 +1081,61 @@ List<Product> products = Javaxcel.newInstance()
 ```
 
 Javaxcel supports integration with [excel-streaming-reader](https://github.com/pjfanning/excel-streaming-reader).
+
+<br><br>
+
+## Validate value
+
+### reader:
+
+```java
+class Item {
+    @ExcelColumn(validators = PositiveNumberValidator.class)
+    private Long id;
+}
+
+class PositiveNumberValidator implements ExcelColumnValidator {
+    @Override
+    public void validate(String cellValue) {
+        long number = Long.parseLong(cellValue);
+        if (number <= 0) {
+            throw new IllegalAccessException("Invalid cell value: " + cellValue);
+        }
+    }  
+}
+```
+
+You can validate cell values for field on the model when `ExcelReader` reads cell values.
+
+Create an implementation of `ExcelColumnValidator` and then designate the validator to `@ExcelColumn.validators`.
+If validation fails, you should throw exception. 
+
+```java
+class Item {
+    @ExcelColumn(validators = {CapitalAlphabetValidator.class, NotNullValidator.class})
+    private String code;
+}
+
+class CapitalAlphabetValidator implements ExcelColumnValidator {
+    @Override
+    public void validate(String cellValue) {
+        if (!cellValue.matches("^[A-Z]{8}$")) { // This will occur NullPointerException.
+            throw new IllegalAccessException("Invalid cell value: " + cellValue);
+        }
+    }  
+}
+
+class NotNullValidator implements ExcelColumnValidator {
+    @Override
+    public void validate(String cellValue) {
+        if (cellValue == null) {
+            throw new IllegalAccessException("Invalid cell value: null");
+        }
+    }  
+}
+```
+
+If `Item.code` is null, `CapitalAlphabetValidator` will throw `NullPointerException`.
+The parameter `cellValue` is nullable, so you must take care of validators order.
+
+Validators check a cell value in the order which is designated on `@ExcelColumn.validators`.
