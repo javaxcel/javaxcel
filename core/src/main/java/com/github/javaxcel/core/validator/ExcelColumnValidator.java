@@ -16,6 +16,8 @@
 
 package com.github.javaxcel.core.validator;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.github.javaxcel.core.annotation.ExcelColumn;
 
 /**
@@ -31,6 +33,6 @@ public interface ExcelColumnValidator {
      *
      * @param cellValue column value from a cell
      */
-    void validate(String cellValue);
+    void validate(@Nullable String cellValue);
 
 }
