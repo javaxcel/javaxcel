@@ -66,7 +66,7 @@ class NoTargetedFieldTest {
         private Character character;
     }
 
-    @ExcelModel(explicit = true)
+    @ExcelModel(onlyExplicitlyAnnotated = true)
     private static class ExplicitModel {
         private Long id;
         private String name;

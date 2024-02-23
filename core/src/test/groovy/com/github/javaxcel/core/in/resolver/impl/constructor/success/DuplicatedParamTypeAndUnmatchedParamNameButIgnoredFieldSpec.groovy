@@ -59,7 +59,7 @@ class DuplicatedParamTypeAndUnmatchedParamNameButIgnoredFieldSpec extends Specif
     }
 
     @SuppressWarnings("unused")
-    @ExcelModel(explicit = true)
+    @ExcelModel(onlyExplicitlyAnnotated = true)
     private static class ExplicitField {
         @ExcelColumn
         final List<Integer> integers

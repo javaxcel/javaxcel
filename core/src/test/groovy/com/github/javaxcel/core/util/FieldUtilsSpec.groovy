@@ -156,14 +156,14 @@ class FieldUtilsSpec extends Specification {
         String f1
     }
 
-    @ExcelModel(explicit = true)
+    @ExcelModel(onlyExplicitlyAnnotated = true)
     private static class Explicit {
         @ExcelColumn
         Double f0
         String f1
     }
 
-    @ExcelModel(explicit = true)
+    @ExcelModel(onlyExplicitlyAnnotated = true)
     private static class Parent {
         @ExcelColumn
         Double f0
@@ -178,7 +178,7 @@ class FieldUtilsSpec extends Specification {
         String f1
     }
 
-    @ExcelModel(explicit = true, includeSuper = true)
+    @ExcelModel(onlyExplicitlyAnnotated = true, includeSuper = true)
     private static class ExplicitAndIncludedSuper extends Parent {
         String f1
     }

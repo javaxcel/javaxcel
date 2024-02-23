@@ -56,13 +56,13 @@ public final class FieldUtils {
      *
      * <p> This doesn't return the fields on {@link ExcelColumn} whose {@link ExcelColumn#ignored()} is {@code true}.
      *
-     * <p> If the model class' {@link ExcelModel#explicit()} is {@code true},
+     * <p> If {@link ExcelModel#onlyExplicitlyAnnotated()} on the model class is {@code true},
      * this excludes the fields not annotated with {@link ExcelColumn}.
      *
      * @param type type of the object
      * @return targeted fields
      * @see ExcelModel#includeSuper()
-     * @see ExcelModel#explicit()
+     * @see ExcelModel#onlyExplicitlyAnnotated()
      */
     public static List<Field> getTargetedFields(Class<?> type) {
         // Gets the fields depending on the policies.
@@ -79,8 +79,8 @@ public final class FieldUtils {
         filter = filter.and(it -> !Optional.ofNullable(it.getAnnotation(ExcelColumn.class))
                 .map(ExcelColumn::ignored)
                 .orElse(false));
-        // Excludes the implicit fields.
-        if (excelModel != null && excelModel.explicit()) {
+        // Excludes the fields which is not annotated with @ExcelColumn.
+        if (excelModel != null && excelModel.onlyExplicitlyAnnotated()) {
             filter = filter.and(it -> it.isAnnotationPresent(ExcelColumn.class));
         }
 
