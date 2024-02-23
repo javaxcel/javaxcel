@@ -28,7 +28,7 @@ import com.github.javaxcel.styler.ExcelStyleConfig;
 import com.github.javaxcel.styler.NoStyleConfig;
 
 /**
- *
+ * Excel model.
  */
 @Documented
 @Target(ElementType.TYPE)
@@ -53,7 +53,7 @@ public @interface ExcelModel {
      *
      * @return policy that determines whether this will select explicitly designated fields or not.
      */
-    boolean explicit() default false;
+    boolean onlyExplicitlyAnnotated() default false;
 
     /**
      * Policy that determines whether this will set constraint to {@link Enum} field or not.

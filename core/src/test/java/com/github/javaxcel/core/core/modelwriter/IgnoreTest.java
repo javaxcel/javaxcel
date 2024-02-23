@@ -42,7 +42,7 @@ import static com.github.javaxcel.core.TestUtils.*;
 
 /**
  * @see ExcelColumn#ignored()
- * @see ExcelModel#explicit()
+ * @see ExcelModel#onlyExplicitlyAnnotated()
  * @see ExcelUtils#autoResizeColumns(Sheet, int)
  */
 @StopwatchProvider
@@ -102,7 +102,7 @@ class IgnoreTest extends ModelWriterTester {
         private Double weight;
     }
 
-    @ExcelModel(explicit = true)
+    @ExcelModel(onlyExplicitlyAnnotated = true)
     private static class ExplicitModel {
         @ExcelColumn
         private Long id;

@@ -18,7 +18,11 @@ import com.github.javaxcel.core.internal.style.DefaultHeaderStyleConfig;
 @Setter
 @ToString
 @EqualsAndHashCode(of = {"cpu", "disk", "manufacturer", "price"})
-@ExcelModel(explicit = true, headerStyle = DefaultHeaderStyleConfig.class, bodyStyle = DefaultBodyStyleConfig.class)
+@ExcelModel(
+        onlyExplicitlyAnnotated = true,
+        headerStyle = DefaultHeaderStyleConfig.class,
+        bodyStyle = DefaultBodyStyleConfig.class
+)
 public class Computer {
 
     @ExcludeOnPercentage(0.1)
