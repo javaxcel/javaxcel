@@ -16,6 +16,9 @@
 
 package com.github.javaxcel.core.exception;
 
+import lombok.Getter;
+
+@Getter
 public class NoTargetedFieldException extends JavaxcelException {
 
     private final Class<?> type;
@@ -38,10 +41,6 @@ public class NoTargetedFieldException extends JavaxcelException {
     public NoTargetedFieldException(Class<?> type, Throwable cause, String format, Object... args) {
         super(cause, format, args);
         this.type = type;
-    }
-
-    public Class<?> getType() {
-        return type;
     }
 
 }

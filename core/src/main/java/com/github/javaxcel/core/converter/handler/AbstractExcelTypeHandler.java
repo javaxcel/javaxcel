@@ -16,7 +16,10 @@
 
 package com.github.javaxcel.core.converter.handler;
 
+import org.jetbrains.annotations.NotNull;
+
 import io.github.imsejin.common.assertion.Asserts;
+import lombok.Getter;
 
 /**
  * Handler for type to help you to implement easily.
@@ -24,8 +27,10 @@ import io.github.imsejin.common.assertion.Asserts;
  * @param <T> type of object to handle
  * @since 0.8.0
  */
+@Getter
 public abstract class AbstractExcelTypeHandler<T> implements ExcelTypeHandler<T> {
 
+    @NotNull
     private final Class<T> type;
 
     /**
@@ -39,11 +44,6 @@ public abstract class AbstractExcelTypeHandler<T> implements ExcelTypeHandler<T>
                 .isNotNull();
 
         this.type = type;
-    }
-
-    @Override
-    public Class<T> getType() {
-        return this.type;
     }
 
     @Override

@@ -20,9 +20,9 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 import io.github.imsejin.common.assertion.Asserts;
 import lombok.Getter;
 import lombok.ToString;
@@ -43,6 +43,7 @@ public final class ExcelAnalysisImpl implements ExcelAnalysis {
 
     private DefaultMeta defaultMeta;
 
+    @Nullable
     private ExcelTypeHandler<?> handler;
 
     private List<ExcelColumnValidator> validators;
@@ -51,34 +52,13 @@ public final class ExcelAnalysisImpl implements ExcelAnalysis {
         this.field = field;
     }
 
-    @Override
-    public Field getField() {
-        return this.field;
-    }
-
-    @Override
-    public int getFlags() {
-        return this.flags;
-    }
-
     public void addFlags(int flags) {
         this.flags |= flags;
-    }
-
-    @Override
-    public DefaultMeta getDefaultMeta() {
-        return this.defaultMeta;
     }
 
     public void setDefaultMeta(DefaultMeta defaultMeta) {
         this.defaultMeta = Objects.requireNonNull(defaultMeta,
                 () -> getClass().getSimpleName() + ".defaultMeta cannot be null");
-    }
-
-    @Nullable
-    @Override
-    public ExcelTypeHandler<?> getHandler() {
-        return this.handler;
     }
 
     public void setHandler(ExcelTypeHandler<?> handler) {
@@ -98,33 +78,20 @@ public final class ExcelAnalysisImpl implements ExcelAnalysis {
 
     // -------------------------------------------------------------------------------------------------
 
+    @Getter
+    @ToString
     public static final class DefaultMetaImpl implements DefaultMeta {
         public static final DefaultMetaImpl EMPTY = new DefaultMetaImpl(null, Source.NONE);
 
+        @Nullable
         private final String value;
 
+        @NotNull
         private final Source source;
 
-        public DefaultMetaImpl(@Nullable String value, Source source) {
+        public DefaultMetaImpl(@Nullable String value, @NotNull Source source) {
             this.value = value;
             this.source = source;
-        }
-
-        @Nullable
-        @Override
-        public String getValue() {
-            return this.value;
-        }
-
-        @Override
-        public Source getSource() {
-            return this.source;
-        }
-
-        @Override
-        @ExcludeFromGeneratedJacocoReport
-        public String toString() {
-            return "DefaultMetaImpl(value=" + value + ", source=" + source + ')';
         }
     }
 
