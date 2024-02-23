@@ -1135,7 +1135,7 @@ class NotNullValidator implements ExcelColumnValidator {
 }
 ```
 
-If `Item.code` is null, `CapitalAlphabetValidator` will throw `NullPointerException`.
+If a cell value for `Item.code` is null, `CapitalAlphabetValidator` will throw `NullPointerException`.
 The parameter `cellValue` is nullable, so you must take care of validators order.
 
 Validators check a cell value in the order which is designated on `@ExcelColumn.validators`.
