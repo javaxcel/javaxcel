@@ -1112,7 +1112,8 @@ If validation fails, you should throw exception.
 
 ```java
 class Item {
-    @ExcelColumn(validators = {CapitalAlphabetValidator.class, NotNullValidator.class})
+    @ExcelColumn(validators = {CapitalAlphabetValidator.class, NotNullValidator.class}) // Bad :(
+//  @ExcelColumn(validators = {NotNullValidator.class, CapitalAlphabetValidator.class}) // Good :)
     private String code;
 }
 
