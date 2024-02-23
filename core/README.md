@@ -647,8 +647,8 @@ You can also refer the other fields. We call this as `variable`.
 <br>
 
 Field you can refer is only targeted field.
-
-It means you cannot refer the field that is annotated with `@ExcelColumn(ignored = true)` (or `ExcelModel#explicit()`).
+It means you cannot refer the field that is annotated with `@ExcelColumn(ignored = true)`
+or the field is not annotated with `@ExcelColumn` when its model is annotated with `@ExcelModel(onlyExplicitlyAnnotated = true)`.
 
 If type of expression result is not `String`, the converter will invoke `Object#toString()`.
 
