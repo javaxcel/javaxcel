@@ -24,8 +24,10 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import io.github.imsejin.common.assertion.Asserts;
+import lombok.Getter;
 
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelModel;
@@ -38,10 +40,16 @@ import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
  * @param <T> type of model
  * @since 0.8.0
  */
+@Getter
 public class ExcelWriteContext<T> {
 
+    @NotNull
     private final Workbook workbook;
+
+    @NotNull
     private final Class<T> modelType;
+
+    @NotNull
     private final Class<? extends ExcelWriter<T>> writerType;
 
     /**
@@ -50,22 +58,29 @@ public class ExcelWriteContext<T> {
      * To prevent {@link NullPointerException} from being thrown,
      * initialize this field with empty map.
      */
-    private Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> strategyMap = Collections.emptyMap();
+    @NotNull
+    private Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> strategyMap;
+
     private List<T> list;
 
+    @Nullable
     private Sheet sheet;
+
+    @Nullable
     private List<T> chunk;
 
     /**
      * @see ExcelColumn#headerStyle()
      * @see ExcelModel#headerStyle()
      */
+    @Nullable
     private CellStyle[] headerStyles;
 
     /**
      * @see ExcelColumn#bodyStyle()
      * @see ExcelModel#bodyStyle()
      */
+    @Nullable
     private CellStyle[] bodyStyles;
 
     public ExcelWriteContext(Workbook workbook, Class<T> modelType, Class<? extends ExcelWriter<T>> writerType) {
@@ -86,29 +101,10 @@ public class ExcelWriteContext<T> {
         this.workbook = workbook;
         this.modelType = modelType;
         this.writerType = writerType;
+        this.strategyMap = Collections.emptyMap();
     }
 
-    @NotNull
-    public Workbook getWorkbook() {
-        return this.workbook;
-    }
-
-    @NotNull
-    public Class<T> getModelType() {
-        return this.modelType;
-    }
-
-    @NotNull
-    public Class<? extends ExcelWriter<?>> getWriterType() {
-        return this.writerType;
-    }
-
-    @NotNull
-    public Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> getStrategyMap() {
-        return this.strategyMap;
-    }
-
-    public void setStrategyMap(Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> strategyMap) {
+    public void setStrategyMap(@NotNull Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> strategyMap) {
         Asserts.that(strategyMap)
                 .describedAs("ExcelWriteContext.strategyMap is not allowed to be null")
                 .isNotNull()
@@ -118,12 +114,7 @@ public class ExcelWriteContext<T> {
         this.strategyMap = strategyMap;
     }
 
-    @NotNull
-    public List<T> getList() {
-        return this.list;
-    }
-
-    public void setList(List<T> list) {
+    public void setList(@NotNull List<T> list) {
         Asserts.that(list)
                 .describedAs("ExcelWriteContext.list is not allowed to be null")
                 .isNotNull();
@@ -131,12 +122,7 @@ public class ExcelWriteContext<T> {
         this.list = list;
     }
 
-    @NotNull
-    public List<T> getChunk() {
-        return this.chunk;
-    }
-
-    public void setChunk(List<T> chunk) {
+    public void setChunk(@NotNull List<T> chunk) {
         Asserts.that(chunk)
                 .describedAs("ExcelWriteContext.chunk is not allowed to be null")
                 .isNotNull();
@@ -144,12 +130,7 @@ public class ExcelWriteContext<T> {
         this.chunk = chunk;
     }
 
-    @NotNull
-    public Sheet getSheet() {
-        return this.sheet;
-    }
-
-    public void setSheet(Sheet sheet) {
+    public void setSheet(@NotNull Sheet sheet) {
         Asserts.that(chunk)
                 .describedAs("ExcelWriteContext.sheet is not allowed to be null")
                 .isNotNull();
@@ -157,11 +138,7 @@ public class ExcelWriteContext<T> {
         this.sheet = sheet;
     }
 
-    public CellStyle[] getHeaderStyles() {
-        return this.headerStyles;
-    }
-
-    public void setHeaderStyles(CellStyle[] headerStyles) {
+    public void setHeaderStyles(@NotNull CellStyle[] headerStyles) {
         Asserts.that(headerStyles)
                 .describedAs("ExcelWriteContext.headerStyles is not allowed to be null or empty: {0}", headerStyles)
                 .isNotNull().isNotEmpty();
@@ -169,11 +146,7 @@ public class ExcelWriteContext<T> {
         this.headerStyles = headerStyles;
     }
 
-    public CellStyle[] getBodyStyles() {
-        return this.bodyStyles;
-    }
-
-    public void setBodyStyles(CellStyle[] bodyStyles) {
+    public void setBodyStyles(@NotNull CellStyle[] bodyStyles) {
         Asserts.that(bodyStyles)
                 .describedAs("ExcelWriteContext.bodyStyles is not allowed to be null or empty: {0}", bodyStyles)
                 .isNotNull().isNotEmpty();
