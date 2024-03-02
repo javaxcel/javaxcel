@@ -33,6 +33,8 @@ import io.github.imsejin.common.util.StringUtils;
 import com.github.javaxcel.core.annotation.ExcelModelCreator.FieldName;
 import com.github.javaxcel.core.exception.InvalidExcelModelCreatorException;
 
+import lombok.Getter;
+
 import static java.util.stream.Collectors.*;
 
 /**
@@ -77,7 +79,9 @@ public class ExcelModelExecutableParameterNameResolver {
     public static final class ResolvedParameter {
         private static final ParameterNameDiscoverer DISCOVERER = new DefaultParameterNameDiscoverer();
 
+        @Getter
         private final String name;
+        @Getter
         private final boolean annotated;
         private final MethodParameter methodParameter;
 
@@ -106,10 +110,6 @@ public class ExcelModelExecutableParameterNameResolver {
             this.methodParameter = methodParameter;
         }
 
-        public String getName() {
-            return this.name;
-        }
-
         public Class<?> getType() {
             return this.methodParameter.getParameterType();
         }
@@ -120,10 +120,6 @@ public class ExcelModelExecutableParameterNameResolver {
 
         public Executable getDeclaringExecutable() {
             return this.methodParameter.getExecutable();
-        }
-
-        public boolean isAnnotated() {
-            return this.annotated;
         }
 
         @Override
