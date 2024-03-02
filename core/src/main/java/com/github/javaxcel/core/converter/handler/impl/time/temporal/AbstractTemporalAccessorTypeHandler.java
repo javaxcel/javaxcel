@@ -47,7 +47,7 @@ public abstract class AbstractTemporalAccessorTypeHandler<T extends TemporalAcce
     // -------------------------------------------------------------------------------------------------
 
     @Override
-    protected String writeInternal(T value, Object... arguments) {
+    public String write(T value, Object... arguments) {
         // Resolve field from arguments.
         Field field = ObjectUtils.resolveFirst(Field.class, arguments);
         if (field == null) {

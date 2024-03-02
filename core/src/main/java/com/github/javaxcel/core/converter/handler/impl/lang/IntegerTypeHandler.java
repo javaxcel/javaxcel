@@ -34,7 +34,7 @@ public class IntegerTypeHandler extends AbstractExcelTypeHandler<Integer> {
     }
 
     @Override
-    protected String writeInternal(Integer value, Object... arguments) {
+    public String write(Integer value, Object... arguments) {
         return value.toString();
     }
 

@@ -30,7 +30,7 @@ public class StringTypeHandler extends AbstractExcelTypeHandler<String> {
     }
 
     @Override
-    protected String writeInternal(String value, Object... arguments) {
+    public String write(String value, Object... arguments) {
         return value;
     }
 

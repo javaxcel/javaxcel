@@ -34,7 +34,7 @@ public class LongTypeHandler extends AbstractExcelTypeHandler<Long> {
     }
 
     @Override
-    protected String writeInternal(Long value, Object... arguments) {
+    public String write(Long value, Object... arguments) {
         return value.toString();
     }
 

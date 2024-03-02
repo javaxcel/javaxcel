@@ -34,7 +34,7 @@ public class BooleanTypeHandler extends AbstractExcelTypeHandler<Boolean> {
     }
 
     @Override
-    protected String writeInternal(Boolean value, Object... arguments) {
+    public String write(Boolean value, Object... arguments) {
         return value.toString();
     }
 

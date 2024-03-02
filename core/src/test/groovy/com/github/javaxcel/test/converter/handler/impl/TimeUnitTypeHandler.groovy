@@ -29,7 +29,7 @@ class TimeUnitTypeHandler extends AbstractExcelTypeHandler<TimeUnit> {
     }
 
     @Override
-    protected String writeInternal(TimeUnit value, Object... arguments) {
+    String write(TimeUnit value, Object... arguments) {
         switch (value) {
             case DAYS:
                 return "days"

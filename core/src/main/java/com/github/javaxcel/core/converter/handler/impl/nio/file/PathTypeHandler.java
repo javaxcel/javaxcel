@@ -33,7 +33,7 @@ public class PathTypeHandler extends AbstractExcelTypeHandler<Path> {
     }
 
     @Override
-    protected String writeInternal(Path value, Object... arguments) {
+    public String write(Path value, Object... arguments) {
         return value.toString();
     }
 

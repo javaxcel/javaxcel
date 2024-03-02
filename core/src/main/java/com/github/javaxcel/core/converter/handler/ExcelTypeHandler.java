@@ -34,19 +34,19 @@ public interface ExcelTypeHandler<T> {
     /**
      * Stringifies the value with arguments to write in Excel file.
      *
-     * @param value     object value
+     * @param value     handled value
      * @param arguments optional arguments
      * @return string value
      * @throws Exception if failed to handle the value
      */
-    String write(Object value, Object... arguments) throws Exception;
+    String write(T value, Object... arguments) throws Exception;
 
     /**
      * Instantiates the handled type with string value read from Excel file and arguments.
      *
      * @param value     string value
      * @param arguments optional arguments
-     * @return object value
+     * @return handled value
      * @throws Exception if failed to handle the value
      */
     T read(String value, Object... arguments) throws Exception;
