@@ -33,7 +33,7 @@ public class URLTypeHandler extends AbstractExcelTypeHandler<URL> {
     }
 
     @Override
-    protected String writeInternal(URL value, Object... arguments) {
+    public String write(URL value, Object... arguments) {
         return value.toString();
     }
 

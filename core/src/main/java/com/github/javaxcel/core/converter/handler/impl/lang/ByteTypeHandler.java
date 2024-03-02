@@ -34,7 +34,7 @@ public class ByteTypeHandler extends AbstractExcelTypeHandler<Byte> {
     }
 
     @Override
-    protected String writeInternal(Byte value, Object... arguments) {
+    public String write(Byte value, Object... arguments) {
         return value.toString();
     }
 

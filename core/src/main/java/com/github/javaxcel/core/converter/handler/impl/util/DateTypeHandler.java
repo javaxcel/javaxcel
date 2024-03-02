@@ -44,7 +44,7 @@ public class DateTypeHandler extends AbstractExcelTypeHandler<Date> {
     }
 
     @Override
-    protected String writeInternal(Date value, Object... arguments) {
+    public String write(Date value, Object... arguments) {
         // Resolve field from arguments.
         Field field = ObjectUtils.resolveFirst(Field.class, arguments);
         if (field == null) {

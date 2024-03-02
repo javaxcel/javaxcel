@@ -34,7 +34,7 @@ public class FloatTypeHandler extends AbstractExcelTypeHandler<Float> {
     }
 
     @Override
-    protected String writeInternal(Float value, Object... arguments) {
+    public String write(Float value, Object... arguments) {
         return value.toString();
     }
 

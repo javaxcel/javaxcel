@@ -224,10 +224,11 @@ public class ExcelWriteHandlerConverter implements ExcelWriteConverter {
         return sb.append(']').toString();
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private String handleConcrete(Field field, Class<?> type, Object value) {
         ExcelAnalysis analysis = this.analysisMap.get(field);
 
-        ExcelTypeHandler<?> handler;
+        ExcelTypeHandler handler;
         if (analysis != null && analysis.doesHandlerResolved()) {
             // When ExcelWriteAnalyzer has analysis for the field and its handler is resolved.
             handler = analysis.getHandler();

@@ -34,7 +34,7 @@ public class EnumTypeHandler extends AbstractExcelTypeHandler<Enum> {
     }
 
     @Override
-    protected String writeInternal(Enum value, Object... arguments) {
+    public String write(Enum value, Object... arguments) {
         return value.name();
     }
 

@@ -32,7 +32,7 @@ public class BigDecimalTypeHandler extends AbstractExcelTypeHandler<BigDecimal> 
     }
 
     @Override
-    protected String writeInternal(BigDecimal value, Object... arguments) {
+    public String write(BigDecimal value, Object... arguments) {
         return value.stripTrailingZeros().toString();
     }
 

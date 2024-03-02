@@ -34,7 +34,7 @@ public class LocaleTypeHandler extends AbstractExcelTypeHandler<Locale> {
     }
 
     @Override
-    protected String writeInternal(Locale value, Object... arguments) {
+    public String write(Locale value, Object... arguments) {
         boolean l = !value.getLanguage().isEmpty();
         boolean c = !value.getCountry().isEmpty();
         boolean v = !value.getVariant().isEmpty();

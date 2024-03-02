@@ -34,7 +34,7 @@ public class CharacterTypeHandler extends AbstractExcelTypeHandler<Character> {
     }
 
     @Override
-    protected String writeInternal(Character value, Object... arguments) {
+    public String write(Character value, Object... arguments) {
         return value.toString();
     }
 

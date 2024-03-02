@@ -34,7 +34,7 @@ public class ShortTypeHandler extends AbstractExcelTypeHandler<Short> {
     }
 
     @Override
-    protected String writeInternal(Short value, Object... arguments) {
+    public String write(Short value, Object... arguments) {
         return value.toString();
     }
 

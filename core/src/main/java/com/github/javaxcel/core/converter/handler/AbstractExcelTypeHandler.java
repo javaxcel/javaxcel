@@ -18,8 +18,9 @@ package com.github.javaxcel.core.converter.handler;
 
 import org.jetbrains.annotations.NotNull;
 
-import io.github.imsejin.common.assertion.Asserts;
 import lombok.Getter;
+
+import io.github.imsejin.common.assertion.Asserts;
 
 /**
  * Handler for type to help you to implement easily.
@@ -45,21 +46,5 @@ public abstract class AbstractExcelTypeHandler<T> implements ExcelTypeHandler<T>
 
         this.type = type;
     }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public final String write(Object value, Object... arguments) throws Exception {
-        return writeInternal((T) value, arguments);
-    }
-
-    /**
-     * Stringifies the value with arguments to write in Excel file.
-     *
-     * @param value     specific value
-     * @param arguments optional arguments
-     * @return string value
-     * @throws Exception if failed to handle the value
-     */
-    protected abstract String writeInternal(T value, Object... arguments) throws Exception;
 
 }

@@ -34,7 +34,7 @@ public class DoubleTypeHandler extends AbstractExcelTypeHandler<Double> {
     }
 
     @Override
-    protected String writeInternal(Double value, Object... arguments) {
+    public String write(Double value, Object... arguments) {
         return value.toString();
     }
 
