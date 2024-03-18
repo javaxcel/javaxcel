@@ -14,25 +14,21 @@
  * limitations under the License.
  */
 
-package com.github.javaxcel.core.validator;
-
-import org.jetbrains.annotations.Nullable;
-
-import com.github.javaxcel.core.annotation.ExcelValidation;
+package com.github.javaxcel.core.exception;
 
 /**
- * Validator for excel column.
+ * Exception for validation of excel column
  *
  * @since 0.10.0
- * @see ExcelValidation#validators()
  */
-public interface ExcelColumnValidator {
+public class ExcelColumnValidationException extends JavaxcelException {
 
-    /**
-     * Checks if column value is valid or not.
-     *
-     * @param cellValue column value from a cell
-     */
-    void validate(@Nullable String cellValue);
+    public ExcelColumnValidationException(String format, Object... args) {
+        super(format, args);
+    }
+
+    public ExcelColumnValidationException(Throwable cause, String format, Object... args) {
+        super(cause, format, args);
+    }
 
 }
