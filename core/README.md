@@ -1090,7 +1090,11 @@ Javaxcel supports integration with [excel-streaming-reader](https://github.com/p
 
 ```java
 class Item {
-    @ExcelColumn(validators = PositiveNumberValidator.class)
+    @ExcelColumn(
+            validation = @ExcelValidation(
+                    validators = PositiveNumberValidator.class
+            )
+    )
     private Long id;
 }
 
@@ -1107,13 +1111,17 @@ class PositiveNumberValidator implements ExcelColumnValidator {
 
 You can validate cell values for field on the model when `ExcelReader` reads cell values.
 
-Create an implementation of `ExcelColumnValidator` and then designate the validator to `@ExcelColumn.validators`.
+Create an implementation of `ExcelColumnValidator` and then designate the validator to `@ExcelColumn.validation.validators`.
 If validation fails, you should throw exception. 
 
 ```java
 class Item {
-    @ExcelColumn(validators = {CapitalAlphabetValidator.class, NotNullValidator.class}) // Bad :(
-//  @ExcelColumn(validators = {NotNullValidator.class, CapitalAlphabetValidator.class}) // Good :)
+    @ExcelColumn(
+            validation = @ExcelValidation(
+                    validators = {CapitalAlphabetValidator.class, NotNullValidator.class}    // Bad :(
+                    // validators = {NotNullValidator.class, CapitalAlphabetValidator.class} // Good :)
+            )
+    )
     private String code;
 }
 
@@ -1139,4 +1147,18 @@ class NotNullValidator implements ExcelColumnValidator {
 If a cell value for `Item.code` is null, `CapitalAlphabetValidator` will throw `NullPointerException`.
 The parameter `cellValue` is nullable, so you must take care of validators order.
 
-Validators check a cell value in the order which is designated on `@ExcelColumn.validators`.
+Validators check a cell value in the order which is designated on `@ExcelColumn.validation.validators`.
+
+```java
+class Image {
+    @ExcelColumn(
+            validation = @ExcelValidation(
+                    regexp = "^(jpe?g|png|gif|bmp|webp|tiff)$",
+                    flags = Pattern.CASE_INSENSITIVE
+            )
+    )
+    private String extension;
+}
+```
+
+You can also validate simply using a regular expression. That validation is processed first other than validators.
