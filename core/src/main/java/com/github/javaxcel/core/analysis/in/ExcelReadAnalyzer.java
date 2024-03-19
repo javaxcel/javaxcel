@@ -25,12 +25,18 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import io.github.imsejin.common.util.ReflectionUtils;
+import io.github.imsejin.common.util.StringUtils;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+
 import com.github.javaxcel.core.analysis.AbstractExcelAnalyzer;
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta;
 import com.github.javaxcel.core.analysis.ExcelAnalysis.DefaultMeta.Source;
 import com.github.javaxcel.core.analysis.ExcelAnalysisImpl.DefaultMetaImpl;
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelReadExpression;
+import com.github.javaxcel.core.annotation.ExcelValidation;
 import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
 import com.github.javaxcel.core.converter.in.ExcelReadExpressionConverter;
 import com.github.javaxcel.core.converter.in.ExcelReadHandlerConverter;
@@ -39,13 +45,6 @@ import com.github.javaxcel.core.in.strategy.impl.UseSetters;
 import com.github.javaxcel.core.util.FieldUtils;
 import com.github.javaxcel.core.util.ObjectUtils;
 import com.github.javaxcel.core.validator.ExcelColumnValidator;
-
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-
-import io.github.imsejin.common.util.ArrayUtils;
-import io.github.imsejin.common.util.ReflectionUtils;
-import io.github.imsejin.common.util.StringUtils;
 
 import static java.util.stream.Collectors.*;
 
@@ -122,25 +121,25 @@ public class ExcelReadAnalyzer extends AbstractExcelAnalyzer {
     @Override
     protected List<ExcelColumnValidator> analyzeValidators(Field field, Object[] arguments) {
         ExcelColumn columnAnnotation = field.getAnnotation(ExcelColumn.class);
-        if (columnAnnotation != null && !ArrayUtils.isNullOrEmpty(columnAnnotation.validations())) {
-            return Stream.of(columnAnnotation.validations())
-                    .flatMap(validation -> {
-                        Stream<ExcelColumnValidator> s = Stream.of(validation.validators())
-                                .map(ReflectionUtils::instantiate);
+        if (columnAnnotation != null) {
+            ExcelValidation validation = columnAnnotation.validation();
 
-                        String regexp = validation.regexp();
-                        if (StringUtils.isNullOrEmpty(regexp)) {
-                            return s;
-                        }
-
-                        Pattern pattern = Pattern.compile(regexp, validation.flags());
-                        ExcelColumnRegExpValidator validator = new ExcelColumnRegExpValidator(pattern);
-
-                        // Puts an ExcelColumnRegExpValidator first,
-                        // because it is intended to provide a simple validator.
-                        return Stream.concat(Stream.of(validator), s);
-                    })
+            List<ExcelColumnValidator> validators = Stream.of(validation.validators())
+                    .map(ReflectionUtils::instantiate)
                     .collect(toList());
+
+            String regexp = validation.regexp();
+            if (StringUtils.isNullOrEmpty(regexp)) {
+                return Collections.unmodifiableList(validators);
+            }
+
+            Pattern pattern = Pattern.compile(regexp, validation.flags());
+            ExcelColumnRegExpValidator validator = new ExcelColumnRegExpValidator(pattern);
+
+            // Puts an ExcelColumnRegExpValidator first, because it is intended to provide a simple validator.
+            validators.add(0, validator);
+
+            return Collections.unmodifiableList(validators);
         }
 
         return Collections.emptyList();

@@ -126,13 +126,13 @@ public @interface ExcelColumn {
     Class<? extends ExcelStyleConfig> bodyStyle() default NoStyleConfig.class;
 
     /**
-     * Validations for cell value when reading each cell.
+     * Validation for cell value when reading each cell.
      *
      * <p> This is applied only {@link ExcelReader}.
      *
-     * @return column validations
+     * @return column validation
      * @since 0.10.0
      */
-    ExcelValidation[] validations() default {};
+    ExcelValidation validation() default @ExcelValidation;
 
 }

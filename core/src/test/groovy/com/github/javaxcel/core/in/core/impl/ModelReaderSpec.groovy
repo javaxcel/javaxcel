@@ -26,13 +26,14 @@ import java.util.regex.Pattern
 
 import org.apache.poi.xssf.streaming.SXSSFWorkbook
 
+import com.github.pjfanning.xlsx.StreamingReader
+
 import com.github.javaxcel.core.Javaxcel
 import com.github.javaxcel.core.annotation.ExcelColumn
 import com.github.javaxcel.core.annotation.ExcelValidation
 import com.github.javaxcel.core.exception.ExcelColumnValidationException
 import com.github.javaxcel.test.validator.NotNullColumnValidator
 import com.github.javaxcel.test.validator.NumericUuidColumnValidator
-import com.github.pjfanning.xlsx.StreamingReader
 
 @Subject(ModelReader)
 class ModelReaderSpec extends Specification {
@@ -144,7 +145,7 @@ class ModelReaderSpec extends Specification {
 
     private static class Model0 {
         @ExcelColumn(
-                validations = @ExcelValidation(
+                validation = @ExcelValidation(
                         validators = NotNullColumnValidator
                 )
         )
@@ -153,7 +154,7 @@ class ModelReaderSpec extends Specification {
 
     private static class Model1 {
         @ExcelColumn(
-                validations = @ExcelValidation(
+                validation = @ExcelValidation(
                         regexp = /^([A-Z][a-z]*)+$/,
                         flags = Pattern.UNICODE_CASE
                 )
@@ -163,7 +164,7 @@ class ModelReaderSpec extends Specification {
 
     private static class Model2 {
         @ExcelColumn(
-                validations = @ExcelValidation(
+                validation = @ExcelValidation(
                         regexp = /^[a-z0-9-]{36}$/,
                         flags = Pattern.CASE_INSENSITIVE,
                         validators = [NotNullColumnValidator, NumericUuidColumnValidator]
@@ -174,7 +175,7 @@ class ModelReaderSpec extends Specification {
 
     private static class Model3 {
         @ExcelColumn(
-                validations = @ExcelValidation(
+                validation = @ExcelValidation(
                         validators = [NumericUuidColumnValidator, NotNullColumnValidator]
                 )
         )
