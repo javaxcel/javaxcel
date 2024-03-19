@@ -1118,8 +1118,8 @@ If validation fails, you should throw exception.
 class Item {
     @ExcelColumn(
             validation = @ExcelValidation(
-                    validators = {CapitalAlphabetValidator.class, NotNullValidator.class}    // Bad :(
-                    // validators = {NotNullValidator.class, CapitalAlphabetValidator.class} // Good :)
+                    validators = {CapitalAlphabetValidator.class, NotNullValidator.class} // Bad :(
+//                  validators = {NotNullValidator.class, CapitalAlphabetValidator.class} // Good :)
             )
     )
     private String code;
