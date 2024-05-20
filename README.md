@@ -23,7 +23,7 @@
     <a href="https://sonarcloud.io/summary/overall?id=javaxcel_javaxcel">
         <img alt="Sonarcloud Maintainability Rating" src="https://sonarcloud.io/api/project_badges/measure?project=javaxcel_javaxcel&metric=sqale_rating"/>
     </a>
-    <a href="https://www.codacy.com/gh/javaxcel/javaxcel/dashboard">
+    <a href="https://app.codacy.com/gh/javaxcel/javaxcel/dashboard">
         <img alt="Codacy grade" src="https://img.shields.io/codacy/grade/6895ee87f26f491182e361d59e6f40b8?style=flat&logo=codacy">
     </a>
     <img alt="jdk8" src="https://img.shields.io/badge/jdk-8-orange?style=flat">
