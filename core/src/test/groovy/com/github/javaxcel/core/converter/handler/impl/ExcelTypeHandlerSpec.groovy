@@ -110,6 +110,9 @@ class ExcelTypeHandlerSpec extends Specification {
         new BigIntegerTypeHandler()     || new BigInteger("-35237475481502034810582047")                                | "-35237475481502034810582047"
         new BigDecimalTypeHandler()     || new BigDecimal("3.141592653580")                                             | "3.14159265358"
         new BigDecimalTypeHandler()     || new BigDecimal("3.141592653580")                                             | "3.14159265358"
+        new BigDecimalTypeHandler()     || new BigDecimal("097E5")                                                      | "9700000"
+        new BigDecimalTypeHandler()     || new BigDecimal("8804E+9")                                                    | "8804000000000"
+        new BigDecimalTypeHandler()     || new BigDecimal("-2.564E-5")                                                  | "-0.00002564"
         // java.util
         new DateTypeHandler()           || new Date(2022 - 1900, 12 - 1, 31, 23, 59, 59)                                | "2022-12-31 23:59:59"
         new UUIDTypeHandler()           || UUID.fromString("d7930b58-f7b0-43c0-af15-08c0f99e33df")                      | "d7930b58-f7b0-43c0-af15-08c0f99e33df"
