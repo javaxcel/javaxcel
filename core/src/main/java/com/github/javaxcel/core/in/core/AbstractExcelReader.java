@@ -17,6 +17,7 @@
 package com.github.javaxcel.core.in.core;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -263,26 +264,50 @@ public abstract class AbstractExcelReader<T> implements ExcelReader<T>, ExcelRea
         for (int i = 0; i < columnCount; i++) {
             Cell cell = row.getCell(i);
 
-            String cellValue;
-            if (cell == null) {
-                cellValue = null;
-            } else if (this.formulaEvaluator == null) {
-                cellValue = cell.getStringCellValue();
-            } else {
-                // Evaluates the formula and returns a stringified value.
-                cellValue = DATA_FORMATTER.formatCellValue(cell, this.formulaEvaluator);
-            }
-
-            // Converts empty string to null because when CellType is BLANK,
-            // DataFormatter returns empty string.
             String headerName = this.context.getHeaderNames().get(i);
-            map.put(headerName, StringUtils.ifNullOrEmpty(cellValue, (String) null));
+            String cellValue = readCell(cell);
+
+            map.put(headerName, cellValue);
         }
 
         // Increases read count of row.
         this.context.increaseReadCount();
 
         return Collections.unmodifiableMap(map);
+    }
+
+    @Nullable
+    private String readCell(@Nullable Cell cell) {
+        if (cell == null) {
+            return null;
+        }
+
+        String cellValue;
+        switch (cell.getCellType()) {
+            case STRING:
+                cellValue = cell.getStringCellValue();
+                break;
+            case NUMERIC:
+                cellValue = BigDecimal.valueOf(cell.getNumericCellValue()).stripTrailingZeros().toPlainString();
+                break;
+            case BOOLEAN:
+                cellValue = String.valueOf(cell.getBooleanCellValue());
+                break;
+            case FORMULA:
+                if (this.formulaEvaluator != null) {
+                    // Evaluates the formula and returns a stringified value.
+                    cellValue = DATA_FORMATTER.formatCellValue(cell, this.formulaEvaluator);
+                } else {
+                    cellValue = null;
+                }
+                break;
+            default:
+                cellValue = null;
+        }
+
+        // Converts empty string to null because when CellType is BLANK,
+        // DataFormatter returns empty string.
+        return StringUtils.ifNullOrEmpty(cellValue, (String) null);
     }
 
     // Overridable -------------------------------------------------------------------------------------
