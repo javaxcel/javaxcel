@@ -53,7 +53,7 @@ public class BigIntegerTypeHandler extends AbstractExcelTypeHandler<BigInteger> 
      *     BigInteger.valueOf(Long.parseLong(String))  avgt    5  276.014 ±  5.460  ns/op
      * </pre>
      *
-     * <p> When a string consists of 19 or less digits, there is a significant difference.
+     * <p> When a string consists of 19 or fewer digits, there is a significant difference.
      *
      * <pre>
      *     Benchmark                                   Mode  Cnt    Score    Error  Units
