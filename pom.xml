@@ -65,7 +65,7 @@
         <!-- Dependency versions -->
         <spring-expression.version>5.3.39</spring-expression.version>
         <common-utils.version>0.14.0</common-utils.version>
-        <jetbrains-annotations.version>24.1.0</jetbrains-annotations.version>
+        <jetbrains-annotations.version>26.0.1</jetbrains-annotations.version>
         <lombok.version>1.18.34</lombok.version>
 
         <!-- Test dependency versions -->
