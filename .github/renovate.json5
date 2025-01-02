@@ -29,6 +29,16 @@
   },
   "minor": {
     "packageRules": [
+      {
+        "matchPackageNames": [
+          "org.springframework:spring-expression"
+        ],
+        "matchManagers": [
+          "maven"
+        ],
+        // spring framework 6 has an issue about MethodParameter.
+        "allowedVersions": "<6.0.0"
+      }
     ]
   },
 }
