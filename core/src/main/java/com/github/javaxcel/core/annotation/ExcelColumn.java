@@ -86,13 +86,13 @@ public @interface ExcelColumn {
      *
      * <pre><code>
      *      // Converted through handler.
-     *      &#064;ExcelColumn(defaultValue = "00000000-0000-0000-0000-000000000000")
+     *      {@code @}ExcelColumn(defaultValue = "00000000-0000-0000-0000-000000000000")
      *      private UUID uuid;
      *
      *      // Converted through expression.
-     *      &#064;ExcelColumn(defaultValue = "0:0")
-     *      &#064;ExcelWriteExpression("#uuid.mostSignificantBits + ':' + #uuid.leastSignificantBits")
-     *      &#064;ExcelReadExpression("new java.util.UUID(#uuid.split(':')[0], #uuid.split(':')[1])")
+     *      {@code @}ExcelColumn(defaultValue = "0:0")
+     *      {@code @}ExcelWriteExpression("#uuid.mostSignificantBits + ':' + #uuid.leastSignificantBits")
+     *      {@code @}ExcelReadExpression("new java.util.UUID(#uuid.split(':')[0], #uuid.split(':')[1])")
      *      private UUID uuid;
      * </code></pre>
      *

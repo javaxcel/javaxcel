@@ -45,6 +45,8 @@ public @interface ExcelValidation {
     /**
      * Regular expression for cell value when reading each cell.
      *
+     * <p> If you define, internal column validator using regular expression is added first.
+     *
      * @return regular expression
      */
     @Language("RegExp")
