@@ -76,9 +76,7 @@ public class FieldTypeResolver {
         Class<?> iterableType = null;
 
         while (true) {
-            if (type instanceof Class) {
-                Class<?> clazz = (Class<?>) type;
-
+            if (type instanceof Class<?> clazz) {
                 if (clazz.isArray()) {
                     elementType = clazz.getComponentType();
                     kind = Kind.ARRAY;
@@ -100,8 +98,7 @@ public class FieldTypeResolver {
             // class Sample<S, C extends Iterable<S>> {
             //     private C c;
             // } ... typeVariable.bounds == [Iterable<S>]
-            if (type instanceof TypeVariable) {
-                TypeVariable<?> typeVariable = (TypeVariable<?>) type;
+            if (type instanceof TypeVariable<?> typeVariable) {
                 type = typeVariable.getBounds()[0];
                 continue;
             }
@@ -109,8 +106,7 @@ public class FieldTypeResolver {
             // class Sample<S extends Number> {
             //     private S[][] s;
             // } ... genericArrayType.genericComponentType == S[]
-            if (type instanceof GenericArrayType) {
-                GenericArrayType genericArrayType = (GenericArrayType) type;
+            if (type instanceof GenericArrayType genericArrayType) {
                 elementType = genericArrayType.getGenericComponentType();
                 kind = Kind.ARRAY;
                 break;
@@ -120,13 +116,12 @@ public class FieldTypeResolver {
             //     private Iterable<Sample<Long>> samples;
             // } ... parameterizedType.rawType == Iterable.class
             // ... parameterizedType.actualTypeArguments == [Sample]
-            if (type instanceof ParameterizedType) {
-                ParameterizedType parameterizedType = (ParameterizedType) type;
+            if (type instanceof ParameterizedType parameterizedType) {
                 Type rawType = parameterizedType.getRawType();
 
-                if (rawType instanceof Class && Iterable.class.isAssignableFrom((Class<?>) rawType)) {
+                if (rawType instanceof Class<?> clazz && Iterable.class.isAssignableFrom(clazz)) {
                     elementType = parameterizedType.getActualTypeArguments()[0];
-                    iterableType = (Class<?>) rawType;
+                    iterableType = clazz;
                     kind = Kind.ITERABLE;
                     break;
                 } else {
@@ -138,8 +133,7 @@ public class FieldTypeResolver {
             // When type is wildcard type:
             // List<? super java.lang.String>
             // List<? extends java.lang.String>
-            if (type instanceof WildcardType) {
-                WildcardType wildcardType = (WildcardType) type;
+            if (type instanceof WildcardType wildcardType) {
                 Type[] lowerBounds = wildcardType.getLowerBounds();
 
                 Type boundedType;

@@ -53,8 +53,8 @@ public final class ObjectUtils {
             return true;
         }
 
-        if (object instanceof CharSequence) {
-            return ((CharSequence) object).length() == 0;
+        if (object instanceof CharSequence charSequence) {
+            return charSequence.isEmpty();
         }
 
         return false;

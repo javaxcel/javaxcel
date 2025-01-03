@@ -380,8 +380,8 @@ public final class ExcelUtils {
      * @see Sheet#autoSizeColumn(int)
      */
     public static void autoResizeColumns(Sheet sheet, int numOfColumns) {
-        if (sheet instanceof SXSSFSheet) {
-            ((SXSSFSheet) sheet).trackAllColumnsForAutoSizing();
+        if (sheet instanceof SXSSFSheet sxssfSheet) {
+            sxssfSheet.trackAllColumnsForAutoSizing();
             /*
             If use parallel stream, you will see the following error logs.
 

@@ -146,9 +146,9 @@ public class ExcelWriteHandlerConverter implements ExcelWriteConverter {
         if (type.isArray()) {
             // Supports multidimensional array type.
             return handleArray(field, value);
-        } else if (value instanceof Iterable) {
+        } else if (value instanceof Iterable<?> iterable) {
             // Supports nested iterable type.
-            return handleIterable(field, (Iterable<?>) value);
+            return handleIterable(field, iterable);
         } else {
             return handleConcrete(field, type, value);
         }

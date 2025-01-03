@@ -100,8 +100,8 @@ public class ExcelReadHandlerConverter implements ExcelReadConverter {
 
             if (StringUtils.isNullOrEmpty(defaultValue)) {
                 // When the default value is not specified.
-                if (type instanceof Class) {
-                    return ClassUtils.initialValueOf((Class<?>) type);
+                if (type instanceof Class<?> clazz) {
+                    return ClassUtils.initialValueOf(clazz);
                 }
 
                 // Returns null as default value, because initial value of the type is always null
