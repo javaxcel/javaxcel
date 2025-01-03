@@ -19,9 +19,8 @@ package com.github.javaxcel.core.out.strategy.impl;
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
+import com.github.javaxcel.core.out.core.AbstractExcelWriter;
 import com.github.javaxcel.core.out.core.ExcelWriter;
-import com.github.javaxcel.core.out.core.impl.MapWriter;
-import com.github.javaxcel.core.out.core.impl.ModelWriter;
 import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 
 /**
@@ -33,7 +32,7 @@ public class HiddenExtraColumns implements ExcelWriteStrategy {
 
     public boolean isSupported(ExcelWriteContext<?> context) {
         Class<? extends ExcelWriter<?>> writerType = context.getWriterType();
-        return ModelWriter.class.isAssignableFrom(writerType) || MapWriter.class.isAssignableFrom(writerType);
+        return AbstractExcelWriter.class.isAssignableFrom(writerType);
     }
 
     @Override

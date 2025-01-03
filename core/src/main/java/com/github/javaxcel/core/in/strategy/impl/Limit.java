@@ -19,9 +19,8 @@ package com.github.javaxcel.core.in.strategy.impl;
 import io.github.imsejin.common.assertion.Asserts;
 
 import com.github.javaxcel.core.in.context.ExcelReadContext;
+import com.github.javaxcel.core.in.core.AbstractExcelReader;
 import com.github.javaxcel.core.in.core.ExcelReader;
-import com.github.javaxcel.core.in.core.impl.MapReader;
-import com.github.javaxcel.core.in.core.impl.ModelReader;
 import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 
 /**
@@ -49,7 +48,7 @@ public class Limit implements ExcelReadStrategy {
     @Override
     public boolean isSupported(ExcelReadContext<?> context) {
         Class<? extends ExcelReader<?>> writerType = context.getReaderType();
-        return ModelReader.class.isAssignableFrom(writerType) || MapReader.class.isAssignableFrom(writerType);
+        return AbstractExcelReader.class.isAssignableFrom(writerType);
     }
 
     @Override
