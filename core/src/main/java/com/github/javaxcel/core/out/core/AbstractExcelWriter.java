@@ -31,6 +31,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
 import org.jetbrains.annotations.VisibleForTesting;
@@ -46,6 +47,7 @@ import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.lifecycle.ExcelWriteLifecycle;
 import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 import com.github.javaxcel.core.out.strategy.impl.AutoResizedColumns;
+import com.github.javaxcel.core.out.strategy.impl.CloseResource;
 import com.github.javaxcel.core.out.strategy.impl.HiddenExtraColumns;
 import com.github.javaxcel.core.out.strategy.impl.HiddenExtraRows;
 import com.github.javaxcel.core.out.strategy.impl.SheetName;
@@ -178,6 +180,7 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
         }
 
         save(out);
+        closeResource(out);
 
         // Lifecycle method.
         complete(this.context);
@@ -301,6 +304,25 @@ public abstract class AbstractExcelWriter<T> implements ExcelWriter<T>, ExcelWri
     private void applyHiddenExtraColumns() {
         if (this.context.getStrategyMap().containsKey(HiddenExtraColumns.class)) {
             ExcelUtils.hideExtraColumns(this.context.getSheet(), getColumnCount());
+        }
+    }
+
+    private void closeResource(OutputStream out) {
+        if (!this.context.getStrategyMap().containsKey(CloseResource.class)) {
+            return;
+        }
+
+        try {
+            Workbook workbook = context.getWorkbook();
+
+            // To remove temporary files when using SXSSFWorkbook.
+            if (workbook instanceof SXSSFWorkbook sxssfWorkbook) {
+                sxssfWorkbook.dispose();
+            }
+
+            workbook.close();
+            out.close();
+        } catch (Exception ignored) {
         }
     }
 
