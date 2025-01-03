@@ -22,6 +22,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.intellij.lang.annotations.Language;
+
 import com.github.javaxcel.core.converter.out.ExcelWriteExpressionConverter;
 
 /**
@@ -43,6 +45,7 @@ public @interface ExcelWriteExpression {
      * @see ExcelWriteExpressionConverter
      * @see org.springframework.expression.Expression
      */
+    @Language("SpEL")
     String value();
 
 }
