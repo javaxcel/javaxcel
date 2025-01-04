@@ -7,12 +7,10 @@
 # BlueJ files
 *.ctxt
 
-.DS_Store
-
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+# Package Files
 *.jar
 *.war
 *.nar
@@ -24,6 +22,14 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
+# MacOS Finder Option File
+.DS_Store
+
+# Windows Explorer File
+thumbs.db
+desktop.ini
+
+# Maven
 target/
 !.mvn/wrapper/maven-wrapper.jar
 
