@@ -110,7 +110,7 @@ public abstract class AbstractExcelAnalyzer implements ExcelAnalyzer {
      * @param field      targeted field
      * @param arguments optional arguments
      * @return validators for excel column
-     * @since 0.10.0
+     * @since 0.20.0
      */
     protected abstract List<ExcelColumnValidator> analyzeValidators(Field field, Object[] arguments);
 

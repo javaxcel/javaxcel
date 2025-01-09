@@ -29,7 +29,7 @@ import com.github.javaxcel.core.validator.ExcelColumnValidator;
  *
  * <p> This is applied only {@link ExcelReader}.
  *
- * @since 0.10.0
+ * @since 0.20.0
  */
 public @interface ExcelValidation {
 

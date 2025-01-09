@@ -187,7 +187,7 @@ public final class ExcelUtils {
      *
      * @param filePath path of Excel file
      * @return the number of rows
-     * @since 0.10.0
+     * @since 0.20.0
      */
     public static long getNumOfRows(Path filePath) {
         Pattern sheetXmlPattern = Pattern.compile("^xl/worksheets/sheet[0-9]+\\.xml$");

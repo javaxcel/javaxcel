@@ -23,7 +23,7 @@ import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 /**
  * Utilities for {@link Object}.
  *
- * @since 0.10.0
+ * @since 0.20.0
  */
 public final class ObjectUtils {
 

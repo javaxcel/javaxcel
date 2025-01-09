@@ -19,7 +19,7 @@ package com.github.javaxcel.core.exception;
 /**
  * Exception for validation of excel column
  *
- * @since 0.10.0
+ * @since 0.20.0
  */
 public class ExcelColumnValidationException extends JavaxcelException {
 

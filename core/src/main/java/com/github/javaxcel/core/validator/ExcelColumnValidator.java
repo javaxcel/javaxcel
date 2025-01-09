@@ -23,7 +23,7 @@ import com.github.javaxcel.core.annotation.ExcelValidation;
 /**
  * Validator for excel column.
  *
- * @since 0.10.0
+ * @since 0.20.0
  * @see ExcelValidation#validators()
  */
 public interface ExcelColumnValidator {

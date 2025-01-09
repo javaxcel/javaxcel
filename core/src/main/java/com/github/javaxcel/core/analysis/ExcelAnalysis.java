@@ -68,7 +68,7 @@ public interface ExcelAnalysis {
      * Returns validators.
      *
      * @return column validators
-     * @since 0.10.0
+     * @since 0.20.0
      */
     List<ExcelColumnValidator> getValidators();
 

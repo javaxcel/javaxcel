@@ -49,7 +49,7 @@ public @interface ExcelColumn {
      * The field won't be handled by {@link ExcelWriter} and {@link ExcelReader}.
      *
      * @return whether this column is excluded or not.
-     * @since 0.10.0
+     * @since 0.20.0
      */
     boolean ignored() default false;
 
@@ -131,7 +131,7 @@ public @interface ExcelColumn {
      * <p> This is applied only {@link ExcelReader}.
      *
      * @return column validation
-     * @since 0.10.0
+     * @since 0.20.0
      */
     ExcelValidation validation() default @ExcelValidation;
 

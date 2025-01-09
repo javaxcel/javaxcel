@@ -26,7 +26,7 @@ import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 /**
  * Strategy for resource close
  *
- * @since 0.10.0
+ * @since 0.20.0
  */
 public class CloseResource implements ExcelWriteStrategy {
 

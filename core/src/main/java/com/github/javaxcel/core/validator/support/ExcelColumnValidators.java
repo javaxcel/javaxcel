@@ -28,7 +28,7 @@ import com.github.javaxcel.core.validator.ExcelColumnValidator;
 /**
  * Container of validators for each cell value.
  *
- * @since 0.10.0
+ * @since 0.20.0
  */
 public final class ExcelColumnValidators {
 
