@@ -40,8 +40,9 @@ public class ExcelTypeHandlerRegistryImpl implements ExcelTypeHandlerRegistry {
 
     @Nullable
     @Override
-    public ExcelTypeHandler<?> getHandler(Class<?> type) {
-        return this.handlerMap.get(type);
+    @SuppressWarnings("unchecked")
+    public <T> ExcelTypeHandler<T> getHandler(Class<? extends T> type) {
+        return (ExcelTypeHandler<T>) this.handlerMap.get(type);
     }
 
     @Override

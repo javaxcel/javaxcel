@@ -33,9 +33,10 @@ public interface ExcelTypeHandlerRegistry {
      * Returns a handler of the type.
      *
      * @param type handled type
+     * @param <T>  type
      * @return type handler
      */
-    ExcelTypeHandler<?> getHandler(Class<?> type);
+    <T> ExcelTypeHandler<T> getHandler(Class<? extends T> type);
 
     /**
      * Returns all registered types.
