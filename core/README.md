@@ -101,8 +101,8 @@ There is a list that contains a `Product`.
 ### writer:
 
 ```java
-File dest = new File("/data", "products.xlsx")
-OutputStream out = Files.newOutputStream(dest.toPath());
+Path dest = Path.of("/data", "products.xlsx");
+OutputStream out = Files.newOutputStream(dest);
 Workbook workbook = new SXSSFWorkbook();
 
 Javaxcel.newInstance()
