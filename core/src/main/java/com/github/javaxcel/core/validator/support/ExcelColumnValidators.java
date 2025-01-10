@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.github.javaxcel.core.analysis.ExcelAnalysis;
+import com.github.javaxcel.core.internal.analysis.ExcelAnalysis;
 import com.github.javaxcel.core.validator.ExcelColumnValidator;
 
 /**

@@ -21,7 +21,7 @@ import spock.lang.Subject
 import java.util.concurrent.BlockingDeque
 import java.util.concurrent.BlockingQueue
 
-import com.github.javaxcel.core.converter.in.ExcelReadHandlerConverter
+import com.github.javaxcel.core.internal.converter.in.ExcelReadHandlerConverter
 
 @Subject(ExcelReadHandlerConverter)
 @SuppressWarnings("unused")

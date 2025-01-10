@@ -37,8 +37,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import com.github.javaxcel.core.TestUtils;
-import com.github.javaxcel.core.util.ExcelUtils;
-import com.github.javaxcel.core.util.ObjectUtils;
+import com.github.javaxcel.core.internal.util.ExcelUtils;
+import com.github.javaxcel.core.internal.util.ObjectUtils;
 
 public abstract class MapWriterTester {
 

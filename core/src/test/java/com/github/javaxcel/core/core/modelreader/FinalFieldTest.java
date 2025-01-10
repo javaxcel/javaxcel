@@ -33,8 +33,8 @@ import lombok.ToString;
 import com.github.javaxcel.core.TestUtils;
 import com.github.javaxcel.core.annotation.ExcelModelCreator;
 import com.github.javaxcel.core.core.ModelReaderTester;
+import com.github.javaxcel.core.internal.util.ExcelUtils;
 import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
-import com.github.javaxcel.core.util.ExcelUtils;
 
 import static org.assertj.core.api.Assertions.*;
 

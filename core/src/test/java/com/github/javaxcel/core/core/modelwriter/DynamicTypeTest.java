@@ -36,8 +36,8 @@ import io.github.imsejin.common.tool.Stopwatch;
 import lombok.Cleanup;
 
 import com.github.javaxcel.core.core.ModelWriterTester;
+import com.github.javaxcel.core.internal.util.ExcelUtils;
 import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
-import com.github.javaxcel.core.util.ExcelUtils;
 
 import static com.github.javaxcel.core.TestUtils.*;
 

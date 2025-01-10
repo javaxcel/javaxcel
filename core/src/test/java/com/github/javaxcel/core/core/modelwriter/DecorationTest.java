@@ -51,18 +51,18 @@ import com.github.javaxcel.core.annotation.ExcelModel;
 import com.github.javaxcel.core.core.ModelWriterTester;
 import com.github.javaxcel.core.internal.style.DefaultBodyStyleConfig;
 import com.github.javaxcel.core.internal.style.DefaultHeaderStyleConfig;
+import com.github.javaxcel.core.internal.util.ExcelUtils;
+import com.github.javaxcel.core.internal.util.FieldUtils;
 import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.strategy.impl.BodyStyles;
 import com.github.javaxcel.core.out.strategy.impl.HeaderStyles;
-import com.github.javaxcel.core.util.ExcelUtils;
-import com.github.javaxcel.core.util.FieldUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
 import com.github.javaxcel.styler.NoStyleConfig;
 import com.github.javaxcel.styler.config.Configurer;
 
 import static com.github.javaxcel.core.TestUtils.*;
-import static com.github.javaxcel.core.util.ExcelUtils.*;
+import static com.github.javaxcel.core.internal.util.ExcelUtils.*;
 import static java.util.stream.Collectors.*;
 import static org.assertj.core.api.Assertions.*;
 

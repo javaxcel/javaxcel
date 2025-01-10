@@ -21,7 +21,7 @@ import spock.lang.Subject
 import java.nio.file.AccessMode
 import java.util.concurrent.TimeUnit
 
-import com.github.javaxcel.core.converter.out.ExcelWriteHandlerConverter
+import com.github.javaxcel.core.internal.converter.out.ExcelWriteHandlerConverter
 
 @Subject(ExcelWriteHandlerConverter)
 @SuppressWarnings("unused")

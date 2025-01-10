@@ -37,12 +37,12 @@ import com.github.javaxcel.core.annotation.ExcelModel;
 import com.github.javaxcel.core.core.ModelWriterTester;
 import com.github.javaxcel.core.internal.style.DefaultBodyStyleConfig;
 import com.github.javaxcel.core.internal.style.DefaultHeaderStyleConfig;
+import com.github.javaxcel.core.internal.util.ExcelUtils;
 import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
 import com.github.javaxcel.core.out.strategy.impl.AutoResizedColumns;
 import com.github.javaxcel.core.out.strategy.impl.HiddenExtraColumns;
 import com.github.javaxcel.core.out.strategy.impl.HiddenExtraRows;
 import com.github.javaxcel.core.out.strategy.impl.SheetName;
-import com.github.javaxcel.core.util.ExcelUtils;
 
 import static com.github.javaxcel.core.TestUtils.*;
 import static org.assertj.core.api.Assertions.*;

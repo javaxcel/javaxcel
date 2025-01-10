@@ -38,10 +38,10 @@ import com.github.javaxcel.core.TestUtils;
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelModel;
 import com.github.javaxcel.core.core.ModelWriterTester;
+import com.github.javaxcel.core.internal.util.ExcelUtils;
 import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.strategy.impl.DefaultValue;
-import com.github.javaxcel.core.util.ExcelUtils;
 
 import static com.github.javaxcel.core.TestUtils.*;
 import static org.assertj.core.api.Assertions.*;

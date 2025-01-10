@@ -1,0 +1,120 @@
+/*
+ * Copyright 2022 Javaxcel
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.github.javaxcel.core.internal.analysis;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import io.github.imsejin.common.assertion.Asserts;
+
+import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
+import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
+import com.github.javaxcel.core.internal.converter.in.support.FieldTypeResolver;
+import com.github.javaxcel.core.validator.ExcelColumnValidator;
+
+/**
+ * Abstract analyzer for preparing the fields to handle for Excel
+ *
+ * @since 0.9.0
+ */
+public abstract class AbstractExcelAnalyzer implements ExcelAnalyzer {
+
+    private final ExcelTypeHandlerRegistry registry;
+
+    /**
+     * Instantiates a new analyzer for Excel.
+     *
+     * @param registry registry of handlers
+     */
+    protected AbstractExcelAnalyzer(ExcelTypeHandlerRegistry registry) {
+        this.registry = registry;
+    }
+
+    @Override
+    public final List<ExcelAnalysis> analyze(List<Field> fields, Object... arguments) {
+        Asserts.that(fields)
+                .describedAs("ExcelAnalyzer cannot analyze null as fields")
+                .isNotNull()
+                .describedAs("ExcelAnalyzer cannot analyze empty fields")
+                .isNotEmpty();
+
+        List<ExcelAnalysis> analyses = new ArrayList<>();
+        for (Field field : fields) {
+            ExcelAnalysisImpl analysis = new ExcelAnalysisImpl(field);
+
+            // Analyzes default value information for the field.
+            DefaultValueInfo defaultValueInfo = analyzeDefaultValueInformation(field, arguments);
+            analysis.setDefaultValueInfo(defaultValueInfo);
+
+            // Analyzes handler for the field.
+            ExcelTypeHandler<?> handler = analyzeHandler(field, arguments);
+            if (handler != null) {
+                analysis.setHandler(handler);
+            }
+
+            // Analyzes validators for the field.
+            List<ExcelColumnValidator> validators = analyzeValidators(field, arguments);
+            analysis.setValidators(validators);
+
+            // Analyzes flags for the field.
+            int flags = analyzeFlags(field, arguments);
+            analysis.addFlags(flags);
+
+            analyses.add(analysis);
+        }
+
+        return Collections.unmodifiableList(analyses);
+    }
+
+    protected ExcelTypeHandler<?> analyzeHandler(Field field, Object[] arguments) {
+        Class<?> concreteType = FieldTypeResolver.resolveConcreteType(field);
+        return this.registry.getHandler(concreteType);
+    }
+
+    // -------------------------------------------------------------------------------------------------
+
+    /**
+     * Analyzes the field and returns default value information of it.
+     *
+     * @param field     targeted field
+     * @param arguments optional arguments
+     * @return default value information
+     */
+    protected abstract DefaultValueInfo analyzeDefaultValueInformation(Field field, Object[] arguments);
+
+    /**
+     * Analyzes the fields and returns flags for it.
+     *
+     * @param field     targeted field
+     * @param arguments optional arguments
+     * @return flags
+     */
+    protected abstract int analyzeFlags(Field field, Object[] arguments);
+
+    /**
+     * Analyzes the fields and returns validators for it.
+     *
+     * @param field      targeted field
+     * @param arguments optional arguments
+     * @return validators for excel column
+     * @since 0.20.0
+     */
+    protected abstract List<ExcelColumnValidator> analyzeValidators(Field field, Object[] arguments);
+
+}

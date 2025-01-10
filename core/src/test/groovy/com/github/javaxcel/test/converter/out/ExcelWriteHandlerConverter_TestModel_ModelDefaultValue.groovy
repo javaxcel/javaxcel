@@ -19,7 +19,7 @@ package com.github.javaxcel.test.converter.out
 import spock.lang.Subject
 
 import com.github.javaxcel.core.annotation.ExcelModel
-import com.github.javaxcel.core.converter.out.ExcelWriteHandlerConverter
+import com.github.javaxcel.core.internal.converter.out.ExcelWriteHandlerConverter
 
 @Subject(ExcelWriteHandlerConverter)
 @SuppressWarnings("unused")

@@ -23,13 +23,13 @@ import spock.lang.Subject
 
 import java.util.concurrent.TimeUnit
 
-import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer
 import com.github.javaxcel.core.annotation.ExcelModelCreator
 import com.github.javaxcel.core.annotation.ExcelModelCreator.FieldName
 import com.github.javaxcel.core.converter.handler.registry.impl.DefaultExcelTypeHandlerRegistry
 import com.github.javaxcel.core.in.resolver.AbstractExcelModelExecutableResolver
 import com.github.javaxcel.core.in.strategy.impl.UseSetters
-import com.github.javaxcel.core.util.FieldUtils
+import com.github.javaxcel.core.internal.analysis.in.ExcelReadAnalyzer
+import com.github.javaxcel.core.internal.util.FieldUtils
 
 @Subject(ExcelModelCreationProcessor)
 class ExcelModelCreationProcessorSpec extends Specification {

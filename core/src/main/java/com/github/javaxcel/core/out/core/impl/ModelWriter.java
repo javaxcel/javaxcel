@@ -16,6 +16,7 @@
 
 package com.github.javaxcel.core.out.core.impl;
 
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Collections;
@@ -39,15 +40,17 @@ import io.github.imsejin.common.util.ArrayUtils;
 import io.github.imsejin.common.util.ReflectionUtils;
 import io.github.imsejin.common.util.StringUtils;
 
-import com.github.javaxcel.core.analysis.ExcelAnalysis;
-import com.github.javaxcel.core.analysis.ExcelAnalyzer;
-import com.github.javaxcel.core.analysis.out.ExcelWriteAnalyzer;
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelModel;
 import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
-import com.github.javaxcel.core.converter.out.ExcelWriteConverter;
-import com.github.javaxcel.core.converter.out.support.ExcelWriteConverters;
 import com.github.javaxcel.core.exception.NoTargetedFieldException;
+import com.github.javaxcel.core.internal.analysis.ExcelAnalysis;
+import com.github.javaxcel.core.internal.analysis.ExcelAnalyzer;
+import com.github.javaxcel.core.internal.analysis.out.ExcelWriteAnalyzer;
+import com.github.javaxcel.core.internal.converter.out.ExcelWriteConverter;
+import com.github.javaxcel.core.internal.converter.out.support.ExcelWriteConverters;
+import com.github.javaxcel.core.internal.util.ExcelUtils;
+import com.github.javaxcel.core.internal.util.FieldUtils;
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.core.AbstractExcelWriter;
 import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
@@ -56,8 +59,6 @@ import com.github.javaxcel.core.out.strategy.impl.EnumDropdown;
 import com.github.javaxcel.core.out.strategy.impl.Filter;
 import com.github.javaxcel.core.out.strategy.impl.HeaderNames;
 import com.github.javaxcel.core.out.strategy.impl.HeaderStyles;
-import com.github.javaxcel.core.util.ExcelUtils;
-import com.github.javaxcel.core.util.FieldUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
 import com.github.javaxcel.styler.NoStyleConfig;
 
@@ -102,7 +103,7 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
 
         // To prevent exception from occurring on multi-threaded environment,
         // Permits access to the fields that are not accessible. (ExcelReadStrategy.Parallel)
-        fields.stream().filter(it -> !it.isAccessible()).forEach(it -> it.setAccessible(true));
+        fields.forEach(AccessibleObject::trySetAccessible);
         this.fields = Collections.unmodifiableList(fields);
 
         Asserts.that(registry)

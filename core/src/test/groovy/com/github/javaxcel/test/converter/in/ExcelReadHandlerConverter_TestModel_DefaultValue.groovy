@@ -19,7 +19,7 @@ package com.github.javaxcel.test.converter.in
 import spock.lang.Subject
 
 import com.github.javaxcel.core.annotation.ExcelColumn
-import com.github.javaxcel.core.converter.in.ExcelReadHandlerConverter
+import com.github.javaxcel.core.internal.converter.in.ExcelReadHandlerConverter
 
 @Subject(ExcelReadHandlerConverter)
 @SuppressWarnings("unused")

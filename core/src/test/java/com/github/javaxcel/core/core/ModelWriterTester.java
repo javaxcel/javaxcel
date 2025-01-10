@@ -35,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import com.github.javaxcel.core.TestUtils;
-import com.github.javaxcel.core.util.ExcelUtils;
+import com.github.javaxcel.core.internal.util.ExcelUtils;
 
 public abstract class ModelWriterTester {
 

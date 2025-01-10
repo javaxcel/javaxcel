@@ -18,9 +18,8 @@ package com.github.javaxcel.core.converter.handler;
 
 import org.jetbrains.annotations.NotNull;
 
-import lombok.Getter;
-
 import io.github.imsejin.common.assertion.Asserts;
+import lombok.Getter;
 
 /**
  * Handler for type to help you to implement easily.

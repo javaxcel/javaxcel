@@ -29,14 +29,14 @@ import io.github.imsejin.common.assertion.Asserts;
 import io.github.imsejin.common.util.CollectionUtils;
 import io.github.imsejin.common.util.ReflectionUtils;
 
-import com.github.javaxcel.core.analysis.ExcelAnalysis;
-import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer;
 import com.github.javaxcel.core.annotation.ExcelModelCreator;
-import com.github.javaxcel.core.converter.in.ExcelReadConverter;
 import com.github.javaxcel.core.exception.NoTargetedFieldException;
 import com.github.javaxcel.core.in.resolver.ExcelModelExecutableParameterNameResolver;
 import com.github.javaxcel.core.in.resolver.ExcelModelExecutableParameterNameResolver.ResolvedParameter;
-import com.github.javaxcel.core.util.FieldUtils;
+import com.github.javaxcel.core.internal.analysis.ExcelAnalysis;
+import com.github.javaxcel.core.internal.analysis.in.ExcelReadAnalyzer;
+import com.github.javaxcel.core.internal.converter.in.ExcelReadConverter;
+import com.github.javaxcel.core.internal.util.FieldUtils;
 
 import static java.util.stream.Collectors.*;
 
@@ -124,9 +124,7 @@ public class ExcelModelCreationProcessor<T> {
 
         // To prevent exception from occurring on multi-threaded environment,
         // Permits access to the executable that is not accessible. (ExcelReadStrategy.Parallel)
-        if (!executable.isAccessible()) {
-            executable.setAccessible(true);
-        }
+        executable.trySetAccessible();
 
         this.executable = executable;
 

@@ -21,7 +21,7 @@ import spock.lang.Subject
 import io.github.imsejin.common.assertion.Asserts
 import io.github.imsejin.common.util.ArrayUtils
 
-import com.github.javaxcel.core.converter.out.ExcelWriteHandlerConverter
+import com.github.javaxcel.core.internal.converter.out.ExcelWriteHandlerConverter
 
 @Subject(ExcelWriteHandlerConverter)
 class ExcelWriteHandlerConverter_TestModel_Array1D {

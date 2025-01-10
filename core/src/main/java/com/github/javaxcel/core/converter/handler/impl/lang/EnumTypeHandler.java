@@ -19,7 +19,7 @@ package com.github.javaxcel.core.converter.handler.impl.lang;
 import java.lang.reflect.Field;
 
 import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
-import com.github.javaxcel.core.util.ObjectUtils;
+import com.github.javaxcel.core.internal.util.ObjectUtils;
 
 /**
  * Handler for type of {@link Enum}

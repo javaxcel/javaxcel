@@ -45,8 +45,8 @@ import io.github.imsejin.common.tool.TypeClassifier;
 import io.github.imsejin.common.util.MathUtils;
 
 import com.github.javaxcel.core.annotation.ExcelColumn;
-import com.github.javaxcel.core.util.ExcelUtils;
-import com.github.javaxcel.core.util.FieldUtils;
+import com.github.javaxcel.core.internal.util.ExcelUtils;
+import com.github.javaxcel.core.internal.util.FieldUtils;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;

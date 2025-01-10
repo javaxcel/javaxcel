@@ -34,6 +34,7 @@ import lombok.Cleanup;
 import com.github.javaxcel.core.TestUtils;
 import com.github.javaxcel.core.core.MapWriterTester;
 import com.github.javaxcel.core.internal.style.DefaultHeaderStyleConfig;
+import com.github.javaxcel.core.internal.util.ExcelUtils;
 import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
 import com.github.javaxcel.core.out.strategy.impl.AutoResizedColumns;
 import com.github.javaxcel.core.out.strategy.impl.BodyStyles;
@@ -41,7 +42,6 @@ import com.github.javaxcel.core.out.strategy.impl.HeaderStyles;
 import com.github.javaxcel.core.out.strategy.impl.HiddenExtraColumns;
 import com.github.javaxcel.core.out.strategy.impl.HiddenExtraRows;
 import com.github.javaxcel.core.out.strategy.impl.SheetName;
-import com.github.javaxcel.core.util.ExcelUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
 
 import static com.github.javaxcel.core.TestUtils.*;

@@ -43,6 +43,7 @@ import io.github.imsejin.common.util.NumberUtils;
 import io.github.imsejin.common.util.StringUtils;
 
 import com.github.javaxcel.core.exception.WritingExcelException;
+import com.github.javaxcel.core.internal.util.ExcelUtils;
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
 import com.github.javaxcel.core.out.lifecycle.ExcelWriteLifecycle;
 import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
@@ -51,7 +52,6 @@ import com.github.javaxcel.core.out.strategy.impl.CloseResource;
 import com.github.javaxcel.core.out.strategy.impl.HiddenExtraColumns;
 import com.github.javaxcel.core.out.strategy.impl.HiddenExtraRows;
 import com.github.javaxcel.core.out.strategy.impl.SheetName;
-import com.github.javaxcel.core.util.ExcelUtils;
 import com.github.javaxcel.styler.ExcelStyleConfig;
 import com.github.javaxcel.styler.NoStyleConfig;
 

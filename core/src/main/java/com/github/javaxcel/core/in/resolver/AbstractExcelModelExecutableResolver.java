@@ -36,7 +36,7 @@ import com.github.javaxcel.core.exception.NoResolvableExcelModelCreatorException
 import com.github.javaxcel.core.in.resolver.ExcelModelExecutableParameterNameResolver.ResolvedParameter;
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelConstructorResolver;
 import com.github.javaxcel.core.in.resolver.impl.ExcelModelMethodResolver;
-import com.github.javaxcel.core.util.FieldUtils;
+import com.github.javaxcel.core.internal.util.FieldUtils;
 
 import static java.util.stream.Collectors.*;
 

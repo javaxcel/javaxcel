@@ -29,9 +29,9 @@ import com.github.javaxcel.core.annotation.ExcelDateTimeFormat;
 import com.github.javaxcel.core.annotation.ExcelModel;
 import com.github.javaxcel.core.converter.handler.impl.lang.EnumTypeHandler;
 import com.github.javaxcel.core.core.ModelReaderTester;
+import com.github.javaxcel.core.internal.util.ExcelUtils;
 import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
 import com.github.javaxcel.core.model.toy.EducationToy;
-import com.github.javaxcel.core.util.ExcelUtils;
 
 import static org.assertj.core.api.Assertions.*;
 

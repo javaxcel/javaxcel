@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 
 import org.intellij.lang.annotations.Language;
 
-import com.github.javaxcel.core.converter.in.ExcelReadExpressionConverter;
+import com.github.javaxcel.core.internal.converter.in.ExcelReadExpressionConverter;
 
 /**
  * Expression for conversion of cell value to field value.

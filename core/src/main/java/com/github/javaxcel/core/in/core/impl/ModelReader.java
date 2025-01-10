@@ -16,6 +16,7 @@
 
 package com.github.javaxcel.core.in.core.impl;
 
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -29,12 +30,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import io.github.imsejin.common.assertion.Asserts;
 
-import com.github.javaxcel.core.analysis.ExcelAnalysis;
-import com.github.javaxcel.core.analysis.ExcelAnalyzer;
-import com.github.javaxcel.core.analysis.in.ExcelReadAnalyzer;
 import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
-import com.github.javaxcel.core.converter.in.ExcelReadConverter;
-import com.github.javaxcel.core.converter.in.support.ExcelReadConverters;
 import com.github.javaxcel.core.exception.NoTargetedFieldException;
 import com.github.javaxcel.core.in.context.ExcelReadContext;
 import com.github.javaxcel.core.in.core.AbstractExcelReader;
@@ -42,7 +38,12 @@ import com.github.javaxcel.core.in.processor.ExcelModelCreationProcessor;
 import com.github.javaxcel.core.in.resolver.AbstractExcelModelExecutableResolver;
 import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 import com.github.javaxcel.core.in.strategy.impl.Parallel;
-import com.github.javaxcel.core.util.FieldUtils;
+import com.github.javaxcel.core.internal.analysis.ExcelAnalysis;
+import com.github.javaxcel.core.internal.analysis.ExcelAnalyzer;
+import com.github.javaxcel.core.internal.analysis.in.ExcelReadAnalyzer;
+import com.github.javaxcel.core.internal.converter.in.ExcelReadConverter;
+import com.github.javaxcel.core.internal.converter.in.support.ExcelReadConverters;
+import com.github.javaxcel.core.internal.util.FieldUtils;
 import com.github.javaxcel.core.validator.support.ExcelColumnValidators;
 
 import static java.util.stream.Collectors.*;
@@ -90,7 +91,7 @@ public class ModelReader<T> extends AbstractExcelReader<T> {
 
         // To prevent exception from occurring on multi-threaded environment,
         // Permits access to the fields that are not accessible. (ExcelReadStrategy.Parallel)
-        fields.stream().filter(it -> !it.isAccessible()).forEach(it -> it.setAccessible(true));
+        fields.forEach(AccessibleObject::trySetAccessible);
         this.fields = Collections.unmodifiableList(fields);
 
         Asserts.that(registry)

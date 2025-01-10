@@ -26,7 +26,7 @@ import io.github.imsejin.common.util.StringUtils;
 
 import com.github.javaxcel.core.annotation.ExcelDateTimeFormat;
 import com.github.javaxcel.core.converter.handler.AbstractExcelTypeHandler;
-import com.github.javaxcel.core.util.ObjectUtils;
+import com.github.javaxcel.core.internal.util.ObjectUtils;
 
 /**
  * Handler for type of {@link Date}

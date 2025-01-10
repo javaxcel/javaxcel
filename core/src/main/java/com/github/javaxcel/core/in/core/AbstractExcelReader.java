@@ -48,7 +48,7 @@ import com.github.javaxcel.core.in.lifecycle.ExcelReadLifecycle;
 import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 import com.github.javaxcel.core.in.strategy.impl.KeyNames;
 import com.github.javaxcel.core.in.strategy.impl.Limit;
-import com.github.javaxcel.core.util.ExcelUtils;
+import com.github.javaxcel.core.internal.util.ExcelUtils;
 
 import static java.util.Comparator.*;
 import static java.util.stream.Collectors.*;

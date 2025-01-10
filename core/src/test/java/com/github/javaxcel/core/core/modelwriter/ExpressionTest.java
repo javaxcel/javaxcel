@@ -40,10 +40,10 @@ import com.github.javaxcel.core.annotation.ExcelModel;
 import com.github.javaxcel.core.annotation.ExcelWriteExpression;
 import com.github.javaxcel.core.core.ModelWriterTester;
 import com.github.javaxcel.core.in.strategy.impl.KeyNames;
+import com.github.javaxcel.core.internal.util.ExcelUtils;
+import com.github.javaxcel.core.internal.util.FieldUtils;
 import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
 import com.github.javaxcel.core.model.creature.Human;
-import com.github.javaxcel.core.util.ExcelUtils;
-import com.github.javaxcel.core.util.FieldUtils;
 
 import static com.github.javaxcel.core.TestUtils.*;
 import static java.util.stream.Collectors.*;

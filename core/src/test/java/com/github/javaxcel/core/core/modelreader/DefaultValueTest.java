@@ -29,9 +29,9 @@ import io.github.imsejin.common.tool.Stopwatch;
 
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.core.ModelReaderTester;
+import com.github.javaxcel.core.internal.util.ExcelUtils;
 import com.github.javaxcel.core.junit.annotation.StopwatchProvider;
 import com.github.javaxcel.core.model.product.Product;
-import com.github.javaxcel.core.util.ExcelUtils;
 
 import static org.assertj.core.api.Assertions.*;
 

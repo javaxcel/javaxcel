@@ -28,8 +28,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import io.github.imsejin.common.tool.RandomString
 
 import com.github.javaxcel.core.Javaxcel
+import com.github.javaxcel.core.internal.util.ExcelUtils
 import com.github.javaxcel.core.out.strategy.impl.HeaderNames
-import com.github.javaxcel.core.util.ExcelUtils
 
 @Subject(MapReader)
 class MapReaderSpec extends Specification {
