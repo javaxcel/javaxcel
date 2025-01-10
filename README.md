@@ -85,11 +85,11 @@ implementation 'org.apache.poi:poi-ooxml:a.b.c'
 // Creates an instance of Javaxcel.
 Javaxcel javaxcel = Javaxcel.newInstance();
 
-File src = new File("/data", "old-products.xls");
-File dest = new File("/data", "new-products.xlsx");
+Path src = Path.of("/data", "old-products.xls");
+Path dest = Path.of("/data", "new-products.xlsx");
 
-try (InputStream in = Files.newInputStream(src.toPath());
-        OutputStream out = Files.newOutputStream(dest.toPath());
+try (InputStream in = Files.newInputStream(src);
+        OutputStream out = Files.newOutputStream(dest);
         Workbook oldWorkbook = new HSSFWorkbook(in);
         Workbook newWorkbook = new SXSSFWorkbook()) {
     // Reads all the sheets and returns data as a list.
