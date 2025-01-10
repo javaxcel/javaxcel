@@ -19,92 +19,82 @@ package com.github.javaxcel.core.converter.handler.registry.impl
 import spock.lang.Specification
 import spock.lang.Subject
 
-import io.github.imsejin.common.util.ReflectionUtils
-
-import com.github.javaxcel.core.converter.handler.impl.io.FileTypeHandler
-import com.github.javaxcel.core.converter.handler.impl.math.BigIntegerTypeHandler
-import com.github.javaxcel.core.converter.handler.impl.util.DateTypeHandler
-import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry
-import com.github.javaxcel.test.converter.handler.impl.ObjectTypeHandler
+import java.nio.file.Path
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.Month
+import java.time.MonthDay
+import java.time.OffsetDateTime
+import java.time.OffsetTime
+import java.time.Year
+import java.time.YearMonth
+import java.time.ZonedDateTime
 
 @Subject(DefaultExcelTypeHandlerRegistry)
 class DefaultExcelTypeHandlerRegistrySpec extends Specification {
 
-    def "Gets a handler by type"() {
+    def "Already added handlers by default"() {
         given:
-        def registry = new DefaultExcelTypeHandlerRegistry() as ExcelTypeHandlerRegistry
-        def allTypes = registry.allTypes as List<Class<?>>
+        def registry = new DefaultExcelTypeHandlerRegistry()
 
         when:
-        def handlers = allTypes.collect { registry.getHandler it }
+        def handler = registry.getHandler(type)
 
         then:
-        allTypes.size() == handlers.size()
-        allTypes == handlers.collect { it.type }
+        handler != null
+        handler.type == type
 
-        expect:
-        registry.getHandler(File).class == FileTypeHandler
-        registry.getHandler(new File("") {}.class) == null
-        registry.getHandler(BigInteger).class == BigIntegerTypeHandler
-        registry.getHandler(new BigInteger("0") {}.class) == null
-        registry.getHandler(Date).class == DateTypeHandler
-        registry.getHandler(new Date() {}.class) == null
-    }
-
-    def "Gets all the added type"() {
-        given:
-        def registry = new DefaultExcelTypeHandlerRegistry() as ExcelTypeHandlerRegistry
-
-        when:
-        def allTypes = registry.allTypes
-
-        then:
-        allTypes != null
-        allTypes.stream().noneMatch(Objects::isNull)
-        def handlerMap = ReflectionUtils.getFieldValue(registry, registry.class.superclass.getDeclaredField("handlerMap")) as Map
-        allTypes == handlerMap.keySet()
-    }
-
-    def "Adds a type handler"() {
-        given:
-        def registry = new DefaultExcelTypeHandlerRegistry() as ExcelTypeHandlerRegistry
-
-        when: "Add new type handler on class java.lang.Object"
-        def added = registry.add(Object, new ObjectTypeHandler())
-
-        then:
-        added
-
-        when: "Override type handler on class java.lang.Object"
-        def overridden = registry.add(Object, new ObjectTypeHandler())
-
-        then:
-        !overridden
-    }
-
-    def "Adds a registry"() {
-        given:
-        def registry = new DefaultExcelTypeHandlerRegistry() as ExcelTypeHandlerRegistry
-        def newRegistry = new ExcelTypeHandlerRegistryImpl()
-
-        when: "Add empty registry to the other"
-        def addedNone = !registry.addAll(registry)
-
-        then:
-        addedNone
-
-        when: "Add new type handler with new registry"
-        newRegistry.add(Object, new ObjectTypeHandler())
-        def addedNew = registry.addAll newRegistry
-
-        then:
-        addedNew
-
-        when: "Override type handlers with the same registry"
-        def overridden = !registry.addAll(new DefaultExcelTypeHandlerRegistry())
-
-        then:
-        overridden
+        where:
+        type << [
+                // primitive
+                boolean,
+                byte,
+                short,
+                char,
+                int,
+                long,
+                float,
+                double,
+                // java.lang
+                Boolean,
+                Byte,
+                Short,
+                Character,
+                Integer,
+                Long,
+                Float,
+                Double,
+                String,
+                Enum,
+                // java.math
+                BigInteger,
+                BigDecimal,
+                // java.util
+                Date,
+                UUID,
+                Locale,
+                // java.time
+                Year,
+                YearMonth,
+                Month,
+                MonthDay,
+                LocalTime,
+                LocalDate,
+                LocalDateTime,
+                ZonedDateTime,
+                OffsetTime,
+                OffsetDateTime,
+                Instant,
+                // java.net
+                URI,
+                URL,
+                // java.io
+                File,
+                // java.nio.file
+                Path,
+        ]
     }
 
 }

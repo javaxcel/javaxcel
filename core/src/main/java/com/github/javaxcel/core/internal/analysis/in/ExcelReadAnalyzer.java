@@ -27,8 +27,6 @@ import org.jetbrains.annotations.Nullable;
 
 import io.github.imsejin.common.util.ReflectionUtils;
 import io.github.imsejin.common.util.StringUtils;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelReadExpression;
@@ -147,11 +145,7 @@ public class ExcelReadAnalyzer extends AbstractExcelAnalyzer {
 
     // -------------------------------------------------------------------------------------------------
 
-    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-    private static class ExcelColumnRegExpValidator implements ExcelColumnValidator {
-        @NotNull
-        private final Pattern pattern;
-
+    private record ExcelColumnRegExpValidator(@NotNull Pattern pattern) implements ExcelColumnValidator {
         @Override
         public void validate(@Nullable String cellValue) {
             if (cellValue == null || !this.pattern.matcher(cellValue).matches()) {

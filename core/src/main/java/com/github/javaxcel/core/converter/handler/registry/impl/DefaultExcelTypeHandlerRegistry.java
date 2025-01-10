@@ -54,7 +54,7 @@ import com.github.javaxcel.core.converter.handler.impl.util.UUIDTypeHandler;
  *
  * @since 0.8.0
  */
-public class DefaultExcelTypeHandlerRegistry extends ExcelTypeHandlerRegistryImpl {
+public class DefaultExcelTypeHandlerRegistry extends StrictExcelTypeHandlerRegistry {
 
     public DefaultExcelTypeHandlerRegistry() {
         // primitive

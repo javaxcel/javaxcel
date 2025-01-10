@@ -28,15 +28,19 @@ import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
 import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
 
 /**
- * Simple implementation of handler registry.
+ * Registry which returns a handler matched strictly.
  *
  * <p> This doesn't have any handlers by default.
  *
  * @since 0.8.0
  */
-public class ExcelTypeHandlerRegistryImpl implements ExcelTypeHandlerRegistry {
+public class StrictExcelTypeHandlerRegistry implements ExcelTypeHandlerRegistry {
 
-    private final Map<Class<?>, ExcelTypeHandler<?>> handlerMap = new HashMap<>();
+    private final Map<Class<?>, ExcelTypeHandler<?>> handlerMap;
+
+    public StrictExcelTypeHandlerRegistry() {
+        this.handlerMap = new HashMap<>();
+    }
 
     @Nullable
     @Override

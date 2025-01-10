@@ -23,7 +23,7 @@ import org.jetbrains.annotations.VisibleForTesting;
 
 import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
 import com.github.javaxcel.core.converter.handler.registry.impl.DefaultExcelTypeHandlerRegistry;
-import com.github.javaxcel.core.converter.handler.registry.impl.ExcelTypeHandlerRegistryImpl;
+import com.github.javaxcel.core.converter.handler.registry.impl.StrictExcelTypeHandlerRegistry;
 import com.github.javaxcel.core.in.core.ExcelReader;
 import com.github.javaxcel.core.in.core.impl.MapReader;
 import com.github.javaxcel.core.in.core.impl.ModelReader;
@@ -54,7 +54,7 @@ public final class Javaxcel {
 
     public static Javaxcel newInstance(ExcelTypeHandlerRegistry registry) {
         // Defensive copy.
-        ExcelTypeHandlerRegistry clone = new ExcelTypeHandlerRegistryImpl();
+        ExcelTypeHandlerRegistry clone = new StrictExcelTypeHandlerRegistry();
         clone.addAll(registry);
 
         return new Javaxcel(clone);

@@ -58,15 +58,15 @@ public abstract class AbstractExcelAnalyzer implements ExcelAnalyzer {
         for (Field field : fields) {
             ExcelAnalysisImpl analysis = new ExcelAnalysisImpl(field);
 
-            // Analyzes default value information for the field.
-            DefaultValueInfo defaultValueInfo = analyzeDefaultValueInformation(field, arguments);
-            analysis.setDefaultValueInfo(defaultValueInfo);
-
             // Analyzes handler for the field.
             ExcelTypeHandler<?> handler = analyzeHandler(field, arguments);
             if (handler != null) {
                 analysis.setHandler(handler);
             }
+
+            // Analyzes default value information for the field.
+            DefaultValueInfo defaultValueInfo = analyzeDefaultValueInformation(field, arguments);
+            analysis.setDefaultValueInfo(defaultValueInfo);
 
             // Analyzes validators for the field.
             List<ExcelColumnValidator> validators = analyzeValidators(field, arguments);
@@ -82,12 +82,20 @@ public abstract class AbstractExcelAnalyzer implements ExcelAnalyzer {
         return Collections.unmodifiableList(analyses);
     }
 
+    // -------------------------------------------------------------------------------------------------
+
+    /**
+     * Analyzes the field and returns the handler matched.
+     *
+     * @param field     targeted field
+     * @param arguments optional arguments
+     * @return handler
+     * @since 0.20.0
+     */
     protected ExcelTypeHandler<?> analyzeHandler(Field field, Object[] arguments) {
         Class<?> concreteType = FieldTypeResolver.resolveConcreteType(field);
         return this.registry.getHandler(concreteType);
     }
-
-    // -------------------------------------------------------------------------------------------------
 
     /**
      * Analyzes the field and returns default value information of it.
@@ -96,7 +104,9 @@ public abstract class AbstractExcelAnalyzer implements ExcelAnalyzer {
      * @param arguments optional arguments
      * @return default value information
      */
-    protected abstract DefaultValueInfo analyzeDefaultValueInformation(Field field, Object[] arguments);
+    protected DefaultValueInfo analyzeDefaultValueInformation(Field field, Object[] arguments) {
+        return DefaultValueInfoImpl.EMPTY;
+    }
 
     /**
      * Analyzes the fields and returns flags for it.
@@ -105,7 +115,9 @@ public abstract class AbstractExcelAnalyzer implements ExcelAnalyzer {
      * @param arguments optional arguments
      * @return flags
      */
-    protected abstract int analyzeFlags(Field field, Object[] arguments);
+    protected int analyzeFlags(Field field, Object[] arguments) {
+        return 0;
+    }
 
     /**
      * Analyzes the fields and returns validators for it.
@@ -115,6 +127,8 @@ public abstract class AbstractExcelAnalyzer implements ExcelAnalyzer {
      * @return validators for excel column
      * @since 0.20.0
      */
-    protected abstract List<ExcelColumnValidator> analyzeValidators(Field field, Object[] arguments);
+    protected List<ExcelColumnValidator> analyzeValidators(Field field, Object[] arguments) {
+        return Collections.emptyList();
+    }
 
 }

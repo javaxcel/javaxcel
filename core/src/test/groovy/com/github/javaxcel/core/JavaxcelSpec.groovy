@@ -20,7 +20,7 @@ import spock.lang.Specification
 import spock.lang.Subject
 
 import com.github.javaxcel.core.converter.handler.registry.impl.DefaultExcelTypeHandlerRegistry
-import com.github.javaxcel.core.converter.handler.registry.impl.ExcelTypeHandlerRegistryImpl
+import com.github.javaxcel.core.converter.handler.registry.impl.StrictExcelTypeHandlerRegistry
 import com.github.javaxcel.test.converter.handler.impl.TimeUnitTypeHandler
 
 @Subject(Javaxcel)
@@ -39,7 +39,7 @@ class JavaxcelSpec extends Specification {
 
     def "Creates an instance with registry of handlers"() {
         given:
-        def registry = new ExcelTypeHandlerRegistryImpl()
+        def registry = new StrictExcelTypeHandlerRegistry()
         registry.add(new TimeUnitTypeHandler())
 
         when:

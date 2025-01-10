@@ -19,26 +19,26 @@ package com.github.javaxcel.core.internal.analysis;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
-
 /**
  * Implementation of default value information
  *
  * @since 0.9.0
  */
-@Getter
-@ToString
-@RequiredArgsConstructor
-public final class DefaultValueInfoImpl implements DefaultValueInfo {
+public record DefaultValueInfoImpl(
+        @Nullable String value,
+        @NotNull Source source
+) implements DefaultValueInfo {
 
     public static final DefaultValueInfoImpl EMPTY = new DefaultValueInfoImpl(null, Source.NONE);
 
-    @Nullable
-    private final String value;
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-    @NotNull
-    private final Source source;
+    @Override
+    public Source getSource() {
+        return this.source;
+    }
 
 }
