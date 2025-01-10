@@ -58,22 +58,22 @@ public class ExcelReadAnalyzer extends AbstractExcelAnalyzer {
     /**
      * Flag which indicates that the field should be handled by {@link ExcelReadHandlerConverter}.
      */
-    public static final int HANDLER = 0x01;
+    public static final int HANDLER = 0b0001;
 
     /**
      * Flag which indicates that the field should be handled by {@link ExcelReadExpressionConverter}.
      */
-    public static final int EXPRESSION = 0x02;
+    public static final int EXPRESSION = 0b0010;
 
     /**
      * Flag which indicates that value of the field should be set through access to field.
      */
-    public static final int FIELD_ACCESS = 0x04;
+    public static final int FIELD_ACCESS = 0b0100;
 
     /**
      * Flag which indicates that value of the field should be set through setter for the field.
      */
-    public static final int SETTER = 0x08;
+    public static final int SETTER = 0b1000;
 
     /**
      * Instantiates a new analyzer for reading Excel.
@@ -100,7 +100,7 @@ public class ExcelReadAnalyzer extends AbstractExcelAnalyzer {
     protected int analyzeFlags(Field field, Object[] arguments) {
         UseSetters us = ObjectUtils.resolveFirst(UseSetters.class, arguments);
 
-        int flags = 0x00;
+        int flags = 0;
         flags |= field.isAnnotationPresent(ExcelReadExpression.class) ? EXPRESSION : HANDLER;
         flags |= us == null ? FIELD_ACCESS : SETTER;
 

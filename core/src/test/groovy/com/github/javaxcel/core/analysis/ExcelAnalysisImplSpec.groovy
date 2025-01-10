@@ -43,7 +43,7 @@ class ExcelAnalysisImplSpec extends Specification {
     def "Adds the flags and then gets them"() {
         given:
         def field = Sample.getDeclaredField("name")
-        def numbers = [0x01, 0x04, 0x08, 0x20, 0x40]
+        def numbers = [0b0000001, 0b0000100, 0b0001000, 0b0100000, 0b1000000]
 
         when:
         def analysis = new ExcelAnalysisImpl(field)
@@ -61,8 +61,8 @@ class ExcelAnalysisImplSpec extends Specification {
             assert analysis.hasFlag(acc) // combination of the flags
             acc | cur
         }
-        !analysis.hasFlag(0x02)
-        !analysis.hasFlag(0x10)
+        !analysis.hasFlag(0b0000010)
+        !analysis.hasFlag(0b0010000)
 
         when: "Adds flags including missed flags"
         (numbers.first()..numbers.last()).each { analysis.addFlags(it) }
@@ -72,7 +72,7 @@ class ExcelAnalysisImplSpec extends Specification {
             2. ExcelAnalysis has all the flags from the least flag to the greatest flag.
             3. ExcelAnalysis.flags is the same as the next bit minus 1.
         """
-        analysis.hasFlag(0x02 | 0x10)
+        analysis.hasFlag(0b0000010 | 0b0010000)
         (numbers.first()..numbers.last()).each { assert analysis.hasFlag(it) }
         analysis.flags != flags
         analysis.flags == numbers.last() * 2 - 1

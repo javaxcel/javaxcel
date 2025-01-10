@@ -46,22 +46,22 @@ public class ExcelWriteAnalyzer extends AbstractExcelAnalyzer {
     /**
      * Flag which indicates that the field should be handled by {@link ExcelWriteHandlerConverter}.
      */
-    public static final int HANDLER = 0x01;
+    public static final int HANDLER = 0b0001;
 
     /**
      * Flag which indicates that the field should be handled by {@link ExcelWriteExpressionConverter}.
      */
-    public static final int EXPRESSION = 0x02;
+    public static final int EXPRESSION = 0b0010;
 
     /**
      * Flag which indicates that value of the field should be gotten through access to field.
      */
-    public static final int FIELD_ACCESS = 0x04;
+    public static final int FIELD_ACCESS = 0b0100;
 
     /**
      * Flag which indicates that value of the field should be gotten through getter for the field.
      */
-    public static final int GETTER = 0x08;
+    public static final int GETTER = 0b1000;
 
     /**
      * Instantiates a new analyzer for writing Excel.
@@ -104,7 +104,7 @@ public class ExcelWriteAnalyzer extends AbstractExcelAnalyzer {
     protected int analyzeFlags(Field field, Object[] arguments) {
         UseGetters ug = ObjectUtils.resolveFirst(UseGetters.class, arguments);
 
-        int flags = 0x00;
+        int flags = 0;
         flags |= field.isAnnotationPresent(ExcelWriteExpression.class) ? EXPRESSION : HANDLER;
         flags |= ug == null ? FIELD_ACCESS : GETTER;
 
