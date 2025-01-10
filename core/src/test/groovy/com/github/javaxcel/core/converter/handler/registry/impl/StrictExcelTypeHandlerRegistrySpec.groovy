@@ -21,7 +21,6 @@ import spock.lang.Subject
 
 import java.util.concurrent.TimeUnit
 
-import com.github.javaxcel.core.converter.handler.impl.io.FileTypeHandler
 import com.github.javaxcel.core.converter.handler.impl.lang.BooleanTypeHandler
 import com.github.javaxcel.core.converter.handler.impl.lang.ByteTypeHandler
 import com.github.javaxcel.core.converter.handler.impl.lang.CharacterTypeHandler
@@ -38,8 +37,7 @@ class StrictExcelTypeHandlerRegistrySpec extends Specification {
 
     def "Gets a handler matched by type strictly"() {
         given:
-//        def registry = new StrictExcelTypeHandlerRegistry()
-        def registry = new LenientExcelTypeHandlerRegistry()
+        def registry = new StrictExcelTypeHandlerRegistry()
 
         expect:
         registry.getHandler(Object) == null
@@ -47,15 +45,13 @@ class StrictExcelTypeHandlerRegistrySpec extends Specification {
         when:
         registry.add(new ObjectTypeHandler())
         registry.add(new TimeUnitTypeHandler())
-        registry.add(new FileTypeHandler())
 
         then:
-//        registry.getHandler(Object).class == ObjectTypeHandler
-//        registry.getHandler(new Object() {}.class) == null
-//        registry.getHandler(TimeUnit).class == TimeUnitTypeHandler
-//        TimeUnit.values().every { registry.getHandler(it.class).class == TimeUnitTypeHandler }
-//        registry.getHandler(Enum) == null
-        registry.getHandler(new File("") {}.class).class == FileTypeHandler
+        registry.getHandler(Object).class == ObjectTypeHandler
+        registry.getHandler(new Object() {}.class) == null
+        registry.getHandler(TimeUnit).class == TimeUnitTypeHandler
+        TimeUnit.values().every { registry.getHandler(it.class).class == TimeUnitTypeHandler }
+        registry.getHandler(Enum) == null
     }
 
     def "Gets all the added types"() {
