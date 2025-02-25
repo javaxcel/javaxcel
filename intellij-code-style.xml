@@ -1,4 +1,4 @@
-<code_scheme name="github-javaxcel-style" version="173">
+<code_scheme name="javaxcel" version="173">
   <option name="FORMATTER_TAGS_ENABLED" value="true" />
   <GroovyCodeStyleSettings>
     <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="99" />
@@ -52,7 +52,6 @@
         <emptyLine />
       </value>
     </option>
-    <option name="ENABLE_JAVADOC_FORMATTING" value="false" />
   </JavaCodeStyleSettings>
   <codeStyleSettings language="Groovy">
     <option name="SPACE_BEFORE_ARRAY_INITIALIZER_LBRACE" value="true" />
