@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataValidationHelper;
@@ -33,6 +34,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jetbrains.annotations.Nullable;
 
 import io.github.imsejin.common.assertion.Asserts;
@@ -337,6 +340,14 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
                 .describedAs("headerNames cannot have duplicated elements: {0}", headerNames)
                 .doesNotHaveDuplicates();
 
+        // Sets the default cell data format to text.
+        Workbook workbook = context.getWorkbook();
+        CellStyle defaultColumnStyle = null;
+        if (workbook instanceof HSSFWorkbook || workbook instanceof XSSFWorkbook || workbook instanceof SXSSFWorkbook) {
+            defaultColumnStyle = workbook.createCellStyle();
+            defaultColumnStyle.setDataFormat(workbook.getCreationHelper().createDataFormat().getFormat("@"));
+        }
+
         CellStyle[] headerStyles = context.getHeaderStyles();
 
         // Names the header given values.
@@ -346,6 +357,10 @@ public class ModelWriter<T> extends AbstractExcelWriter<T> {
 
             Cell cell = row.createCell(i);
             cell.setCellValue(headerName);
+
+            if (defaultColumnStyle != null) {
+                context.getSheet().setDefaultColumnStyle(i, defaultColumnStyle);
+            }
 
             if (ArrayUtils.isNullOrEmpty(headerStyles)) {
                 continue;
