@@ -59,7 +59,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Provided dependency version -->
-        <apache-poi.version>5.4.0</apache-poi.version>
+        <apache-poi.version>5.5.0</apache-poi.version>
 
         <!-- Dependency versions -->
         <spring-expression.version>5.3.39</spring-expression.version>
