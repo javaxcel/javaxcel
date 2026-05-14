@@ -17,12 +17,18 @@ WHY: The facade + interface model lets the library evolve internal implementatio
 - Style interface: `ExcelStyleConfig` (styler module) + `Configurer`
 - Annotations: all types under `core.annotation.*`
 - Strategy impls: `*/strategy/impl/**`
-- Reader/writer impls: `*/core/impl/**` (ModelReader, MapReader, ModelWriter, MapWriter)
+- Reader/writer impls: `*/core/impl/**`
+  - Primary engines: `DefaultExcelReader`, `DefaultExcelWriter`
+  - Deprecated shims: `ModelReader`, `MapReader`, `ModelWriter`, `MapWriter` (`@Deprecated(forRemoval = true)`)
+- Template writer: `out/template/ExcelTemplateWriter` interface + `out/template/impl/DefaultExcelTemplateWriter` engine
+  - Obtained via `Javaxcel.newInstance().templateWriter(workbook)`
+  - Renders `${...}` SpEL expressions and `jxc:` cell-comment directives (`each`, `if`)
 
 **NOT public API:**
-- Anything under `com.github.javaxcel.core.internal.*` (converters, util, context internals)
+- Anything under `com.github.javaxcel.core.internal.*` (converters, util, context internals, descriptor, assembler)
 - The shaded `com.github.javaxcel.internal.springframework.*` package (owned by the shade plugin — see `shaded-spring-expression.md`)
-- Abstract base classes (`AbstractExcelReader`, `AbstractExcelWriter`, `AbstractExcelTypeHandler`) — extend only from within the library
+- Abstract type handler base class (`AbstractExcelTypeHandler`) — extend only from within the library
+- (Removed) `AbstractExcelReader` and `AbstractExcelWriter` no longer exist; the lifecycle is owned by `DefaultExcelReader.read()` / `DefaultExcelWriter.write()`
 
 **Do:**
 ```java

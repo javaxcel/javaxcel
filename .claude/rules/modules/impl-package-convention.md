@@ -9,8 +9,11 @@ RULE: An implementation of an interface lives in an `impl/` sub-package relative
 
 WHY: Keeps interface contracts discoverable at the package root and prevents polluting it with multiple concrete classes.
 
-- `in/core/impl/ModelReader.java` and `in/core/impl/MapReader.java` implement `in/core/ExcelReader`.
-- `out/core/impl/ModelWriter.java` and `out/core/impl/MapWriter.java` implement `out/core/ExcelWriter`.
+- `in/core/impl/DefaultExcelReader.java` (primary engine) implements `in/core/ExcelReader`.
+- `in/core/impl/ModelReader.java` and `in/core/impl/MapReader.java` are `@Deprecated(forRemoval = true)` shims that delegate to `DefaultExcelReader`.
+- `out/core/impl/DefaultExcelWriter.java` (primary engine) implements `out/core/ExcelWriter`.
+- `out/core/impl/ModelWriter.java` and `out/core/impl/MapWriter.java` are `@Deprecated(forRemoval = true)` shims that delegate to `DefaultExcelWriter`.
+- `out/template/impl/DefaultExcelTemplateWriter.java` implements `out/template/ExcelTemplateWriter`.
 - `out/strategy/impl/{AutoResizedColumns,BodyStyles,CloseResource,DefaultValue,EnumDropdown,Filter,HeaderNames,HeaderStyles,HiddenExtraColumns,HiddenExtraRows,KeyNames,SheetName,UseGetters}.java` implement `out/strategy/ExcelWriteStrategy`.
 - `in/strategy/impl/{KeyNames,Limit,Parallel,UseSetters}.java` implement `in/strategy/ExcelReadStrategy`.
 - `converter/handler/registry/impl/{DefaultExcelTypeHandlerRegistry,StrictExcelTypeHandlerRegistry}.java` implement `converter/handler/registry/ExcelTypeHandlerRegistry`.

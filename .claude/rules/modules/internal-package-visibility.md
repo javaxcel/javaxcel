@@ -11,8 +11,11 @@ WHY: Internal classes may be `public` only so sibling sub-packages can cross pac
 
 - `internal/analysis/` — model reflection: `ExcelAnalysis`, `ExcelAnalyzer`, `AbstractExcelAnalyzer`, `ExcelAnalysisImpl`, `DefaultValueInfo`, `DefaultValueInfoImpl`, and sub-packages `in/` + `out/`.
 - `internal/converter/` — read/write converters + SpEL expression converters; sub-packages `in/`, `in/support/`, `out/`, `out/support/`.
+- `internal/descriptor/` — column descriptor abstraction: `ColumnDescriptor`, `FieldColumnDescriptor`, `MapKeyColumnDescriptor`, `ModelDescriptorFactory`, `MapDescriptorFactory`, `StrategyDedup`.
+- `internal/assembler/` — read-side model assembly: `ModelAssembler`, `MapAssembler`.
+- `internal/template/` — template engine: `DirectiveSpec`, `DirectiveParser`, `TemplateNode`, `SheetTemplate`, `TemplateScanner`, `TemplateEvaluator`, `MapPropertyAccessor`, `DirectiveScannerSupport`. Implements the `${...}` + `jxc:` directive evaluation that backs `ExcelTemplateWriter`.
 - `internal/util/` — `ObjectUtils`, `FieldUtils`, `ExcelUtils`.
-- Never import `com.github.javaxcel.core.internal.*` from `annotation/`, `in/core/` (except `AbstractExcelReader`), `out/core/` (except `AbstractExcelWriter`), `Javaxcel.java`, or the `styler` module.
+- Never import `com.github.javaxcel.core.internal.*` from `annotation/`, `Javaxcel.java`, or the `styler` module. The reader/writer engines under `in/core/impl` and `out/core/impl` (specifically `DefaultExcelReader` / `DefaultExcelWriter`) are the only allowed importers outside `internal/**`.
 - New internal utilities go under `internal/util/` — do NOT put them in the `common-utils` library (`io.github.imsejin`).
 - The shaded `com.github.javaxcel.internal.springframework.*` package is managed by the shade plugin; never create hand-written files there.
 
