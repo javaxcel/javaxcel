@@ -39,7 +39,7 @@ class ManyMethodsFromParentsSpec extends Specification {
         then:
         noExceptionThrown()
         method != null
-        method instanceof Method
+        (method instanceof Method)
 
         where:
         type << [Parent, Child]

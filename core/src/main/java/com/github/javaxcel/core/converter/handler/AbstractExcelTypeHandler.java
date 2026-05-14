@@ -16,8 +16,6 @@
 
 package com.github.javaxcel.core.converter.handler;
 
-import org.jetbrains.annotations.NotNull;
-
 import io.github.imsejin.common.assertion.Asserts;
 import lombok.Getter;
 
@@ -30,7 +28,6 @@ import lombok.Getter;
 @Getter
 public abstract class AbstractExcelTypeHandler<T> implements ExcelTypeHandler<T> {
 
-    @NotNull
     private final Class<T> type;
 
     /**

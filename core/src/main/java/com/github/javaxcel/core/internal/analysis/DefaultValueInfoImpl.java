@@ -16,8 +16,7 @@
 
 package com.github.javaxcel.core.internal.analysis;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Implementation of default value information
@@ -26,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public record DefaultValueInfoImpl(
         @Nullable String value,
-        @NotNull Source source
+        Source source
 ) implements DefaultValueInfo {
 
     public static final DefaultValueInfoImpl EMPTY = new DefaultValueInfoImpl(null, Source.NONE);

@@ -87,7 +87,7 @@ class DecorationTest extends ModelWriterTester {
                 .options(new HeaderStyles(Arrays.asList(DefaultHeaderStyleConfig.getRainbowHeader())))
                 .write(null, TestUtils.getMocks(WithModel.class, 10)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageStartingWith("headerStyles.size must be 1 or equal to fields.size");
+                .hasMessageStartingWith("headerStyles.size must be 1 or equal to columns.size");
         stopwatch.stop();
 
         stopwatch.start("set unmatched body style");
@@ -95,7 +95,7 @@ class DecorationTest extends ModelWriterTester {
                 .options(new BodyStyles(Arrays.asList(DefaultHeaderStyleConfig.getRainbowHeader())))
                 .write(null, TestUtils.getMocks(WithColumn.class, 10)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageStartingWith("bodyStyles.size must be 1 or equal to fields.size");
+                .hasMessageStartingWith("bodyStyles.size must be 1 or equal to columns.size");
     }
 
     @ParameterizedTest

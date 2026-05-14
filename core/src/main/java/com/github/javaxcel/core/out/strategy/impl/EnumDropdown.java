@@ -16,11 +16,11 @@
 
 package com.github.javaxcel.core.out.strategy.impl;
 
+import java.util.Map;
+
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
-import com.github.javaxcel.core.out.core.ExcelWriter;
-import com.github.javaxcel.core.out.core.impl.ModelWriter;
 import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 
 /**
@@ -32,8 +32,7 @@ public class EnumDropdown implements ExcelWriteStrategy {
 
     @Override
     public boolean isSupported(ExcelWriteContext<?> context) {
-        Class<? extends ExcelWriter<?>> writerType = context.getWriterType();
-        return ModelWriter.class.isAssignableFrom(writerType);
+        return !Map.class.isAssignableFrom(context.getModelType());
     }
 
     @Override

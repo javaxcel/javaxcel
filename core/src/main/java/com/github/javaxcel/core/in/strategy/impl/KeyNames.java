@@ -25,8 +25,6 @@ import io.github.imsejin.common.assertion.Asserts;
 import io.github.imsejin.common.util.StringUtils;
 
 import com.github.javaxcel.core.in.context.ExcelReadContext;
-import com.github.javaxcel.core.in.core.ExcelReader;
-import com.github.javaxcel.core.in.core.impl.MapReader;
 import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 
 /**
@@ -114,8 +112,7 @@ public class KeyNames implements ExcelReadStrategy {
 
     @Override
     public boolean isSupported(ExcelReadContext<?> context) {
-        Class<? extends ExcelReader<?>> writerType = context.getReaderType();
-        return MapReader.class.isAssignableFrom(writerType);
+        return Map.class.isAssignableFrom(context.getModelType());
     }
 
     @Override

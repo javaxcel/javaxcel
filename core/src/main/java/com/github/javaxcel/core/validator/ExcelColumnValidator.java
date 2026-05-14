@@ -16,7 +16,7 @@
 
 package com.github.javaxcel.core.validator;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import com.github.javaxcel.core.annotation.ExcelValidation;
 

@@ -16,76 +16,39 @@
 
 package com.github.javaxcel.core.in.core.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import io.github.imsejin.common.util.StringUtils;
-
-import com.github.javaxcel.core.in.context.ExcelReadContext;
-import com.github.javaxcel.core.in.core.AbstractExcelReader;
+import com.github.javaxcel.core.in.core.ExcelReader;
+import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 
 /**
- * Excel reader for {@link Map}
+ * Excel reader for {@link Map} — kept as a thin compatibility shim that
+ * delegates to {@link DefaultExcelReader}.
  *
- * @since 0.5.0
+ * @deprecated Construct via {@link com.github.javaxcel.core.Javaxcel#reader(Workbook)}
+ *             instead. This class will be removed in a future major release.
  */
-@SuppressWarnings("unchecked")
-public class MapReader extends AbstractExcelReader<Map<String, String>> {
+@Deprecated(forRemoval = true, since = "0.10.0")
+public class MapReader implements ExcelReader<Map<String, String>> {
 
-    private static final Class<Map<String, String>> MAP_TYPE;
+    private final DefaultExcelReader<Map<String, String>> delegate;
 
-    static {
-        try {
-            // Compiler doesn't allow instance of the class java.util.Map to generic variable
-            // defined by class. To solve the problem, we use the method Class.forName(String).
-            // This is the compile error message.
-            // incompatible types: java.lang.Class<java.util.Map> cannot be converted to java.lang.Class<T>
-            MAP_TYPE = (Class<Map<String, String>>) Class.forName(Map.class.getName());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Create a reader for {@link Map}.
-     *
-     * @param workbook Excel workbook
-     */
     public MapReader(Workbook workbook) {
-        super(workbook, MAP_TYPE);
+        this.delegate = DefaultExcelReader.forMap(workbook);
     }
 
     @Override
-    protected List<String> readHeader(ExcelReadContext<Map<String, String>> context) {
-        // If header names is empty, sets first row's values to it.
-        List<String> headerNames = new ArrayList<>();
-        for (Row header : context.getSheet()) {
-            int columnCount = header.getLastCellNum();
-
-            for (int i = 0; i < columnCount; i++) {
-                Cell cell = header.getCell(i);
-                String cellValue = cell == null ? null : cell.getStringCellValue();
-
-                // If cell value in first row is empty, sets stringified column number.
-                String headerName = StringUtils.ifNullOrEmpty(cellValue, String.valueOf(i));
-                headerNames.add(headerName);
-            }
-
-            // Reads only the first row.
-            break;
-        }
-
-        return headerNames;
+    public ExcelReader<Map<String, String>> options(ExcelReadStrategy... strategies) {
+        this.delegate.options(strategies);
+        return this;
     }
 
     @Override
-    protected List<Map<String, String>> readBody(ExcelReadContext<Map<String, String>> context) {
-        return super.readBodyAsMaps(context.getSheet());
+    public List<Map<String, String>> read() {
+        return this.delegate.read();
     }
 
 }

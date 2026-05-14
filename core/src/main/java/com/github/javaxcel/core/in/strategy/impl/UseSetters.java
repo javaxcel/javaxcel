@@ -16,11 +16,11 @@
 
 package com.github.javaxcel.core.in.strategy.impl;
 
+import java.util.Map;
+
 import io.github.imsejin.common.annotation.ExcludeFromGeneratedJacocoReport;
 
 import com.github.javaxcel.core.in.context.ExcelReadContext;
-import com.github.javaxcel.core.in.core.ExcelReader;
-import com.github.javaxcel.core.in.core.impl.ModelReader;
 import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 
 /**
@@ -32,8 +32,7 @@ public class UseSetters implements ExcelReadStrategy {
 
     @Override
     public boolean isSupported(ExcelReadContext<?> context) {
-        Class<? extends ExcelReader<?>> writerType = context.getReaderType();
-        return ModelReader.class.isAssignableFrom(writerType);
+        return !Map.class.isAssignableFrom(context.getModelType());
     }
 
     @Override

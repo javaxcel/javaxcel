@@ -25,8 +25,7 @@ import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import com.github.pjfanning.xlsx.StreamingReader;
 
@@ -138,10 +137,8 @@ public abstract class ModelReaderTester {
     @Getter
     @RequiredArgsConstructor
     protected static class GivenModel {
-        @NotNull
         private final File file;
-        @Nullable
-        private final Class<?> type;
+        private final @Nullable Class<?> type;
         private OutputStream outputStream;
         private Workbook workbook;
         private int mockCount;
@@ -159,7 +156,6 @@ public abstract class ModelReaderTester {
     @Getter
     @RequiredArgsConstructor
     protected static class ThenModel {
-        @NotNull
         private final List<?> models;
     }
 

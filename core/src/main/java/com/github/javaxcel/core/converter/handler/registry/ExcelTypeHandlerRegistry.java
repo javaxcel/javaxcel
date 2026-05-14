@@ -18,6 +18,8 @@ package com.github.javaxcel.core.converter.handler.registry;
 
 import java.util.Set;
 
+import org.jspecify.annotations.Nullable;
+
 import com.github.javaxcel.core.converter.handler.ExcelTypeHandler;
 
 /**
@@ -36,6 +38,7 @@ public interface ExcelTypeHandlerRegistry {
      * @param <T>  type
      * @return type handler
      */
+    @Nullable
     <T> ExcelTypeHandler<T> getHandler(Class<? extends T> type);
 
     /**

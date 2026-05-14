@@ -26,7 +26,6 @@ import java.util.Map;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.jetbrains.annotations.NotNull;
 
 import com.github.pjfanning.xlsx.StreamingReader;
 
@@ -135,7 +134,6 @@ public abstract class MapReaderTester {
     @Getter
     @RequiredArgsConstructor
     protected static class GivenModel {
-        @NotNull
         private final File file;
         private OutputStream outputStream;
         private Workbook workbook;
@@ -153,7 +151,6 @@ public abstract class MapReaderTester {
     @Getter
     @RequiredArgsConstructor
     protected static class ThenModel {
-        @NotNull
         private final List<Map<String, String>> maps;
     }
 

@@ -54,7 +54,7 @@ class ExcelUtilsSpec extends Specification {
 
         then:
         workbook != null
-        workbook instanceof HSSFWorkbook
+        (workbook instanceof HSSFWorkbook)
 
         when: "Writes Excel 2007 file"
         workbookPath = createWorkbookPath(new XSSFWorkbook())
@@ -62,7 +62,7 @@ class ExcelUtilsSpec extends Specification {
 
         then:
         workbook != null
-        workbook instanceof XSSFWorkbook
+        (workbook instanceof XSSFWorkbook)
 
         when: "Writes empty file"
         workbookPath = tempPath.resolve("${new RandomString().nextString(8)}.xlsx")

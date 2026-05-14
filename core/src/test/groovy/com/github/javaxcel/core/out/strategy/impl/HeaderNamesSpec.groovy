@@ -35,7 +35,7 @@ class HeaderNamesSpec extends Specification {
         def illegalHeaderNames = ["alpha", "beta", "alpha"]
         def contextMap = [
                 (ModelWriter.class): new ExcelWriteContext<>(Mock(Workbook), String, ModelWriter),
-                (MapWriter.class)  : new ExcelWriteContext<>(Mock(Workbook), String, MapWriter),
+                (MapWriter.class)  : new ExcelWriteContext<>(Mock(Workbook), Map, MapWriter),
         ]
 
         when: "Create strategy with legal argument"

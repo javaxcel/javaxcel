@@ -22,8 +22,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import io.github.imsejin.common.util.ReflectionUtils;
 import io.github.imsejin.common.util.StringUtils;
@@ -145,7 +144,7 @@ public class ExcelReadAnalyzer extends AbstractExcelAnalyzer {
 
     // -------------------------------------------------------------------------------------------------
 
-    private record ExcelColumnRegExpValidator(@NotNull Pattern pattern) implements ExcelColumnValidator {
+    private record ExcelColumnRegExpValidator(Pattern pattern) implements ExcelColumnValidator {
         @Override
         public void validate(@Nullable String cellValue) {
             if (cellValue == null || !this.pattern.matcher(cellValue).matches()) {

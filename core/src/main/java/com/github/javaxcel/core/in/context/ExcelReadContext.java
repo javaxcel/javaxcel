@@ -22,8 +22,7 @@ import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import io.github.imsejin.common.assertion.Asserts;
 import io.github.imsejin.common.util.StringUtils;
@@ -41,13 +40,10 @@ import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 @Getter
 public class ExcelReadContext<T> {
 
-    @NotNull
     private final Workbook workbook;
 
-    @NotNull
     private final Class<T> modelType;
 
-    @NotNull
     private final Class<? extends ExcelReader<T>> readerType;
 
     /**
@@ -56,7 +52,6 @@ public class ExcelReadContext<T> {
      * To prevent {@link NullPointerException} from being thrown,
      * initialize this field with empty map.
      */
-    @NotNull
     private Map<Class<? extends ExcelReadStrategy>, ExcelReadStrategy> strategyMap;
 
     private List<T> list;
@@ -67,7 +62,6 @@ public class ExcelReadContext<T> {
      * To prevent {@link NullPointerException} from being thrown,
      * initialize this field with empty list.
      */
-    @NotNull
     private List<String> headerNames;
 
     /**
@@ -75,11 +69,9 @@ public class ExcelReadContext<T> {
      */
     private int readCount;
 
-    @Nullable
-    private Sheet sheet;
+    private @Nullable Sheet sheet;
 
-    @Nullable
-    private List<T> chunk;
+    private @Nullable List<T> chunk;
 
     public ExcelReadContext(Workbook workbook, Class<T> modelType, Class<? extends ExcelReader<T>> readerType) {
         Asserts.that(workbook)
@@ -103,7 +95,7 @@ public class ExcelReadContext<T> {
         this.headerNames = Collections.emptyList();
     }
 
-    public void setStrategyMap(@NotNull Map<Class<? extends ExcelReadStrategy>, ExcelReadStrategy> strategyMap) {
+    public void setStrategyMap(Map<Class<? extends ExcelReadStrategy>, ExcelReadStrategy> strategyMap) {
         Asserts.that(strategyMap)
                 .describedAs("ExcelReadContext.strategyMap is not allowed to be null")
                 .isNotNull()
@@ -113,7 +105,7 @@ public class ExcelReadContext<T> {
         this.strategyMap = strategyMap;
     }
 
-    public void setList(@NotNull List<T> list) {
+    public void setList(List<T> list) {
         Asserts.that(list)
                 .describedAs("ExcelReadContext.list is not allowed to be null")
                 .isNotNull();
@@ -121,7 +113,7 @@ public class ExcelReadContext<T> {
         this.list = list;
     }
 
-    public void setHeaderNames(@NotNull List<String> headerNames) {
+    public void setHeaderNames(List<String> headerNames) {
         Asserts.that(headerNames)
                 .describedAs("ExcelReadContext.headerNames is not allowed to be null or empty: {0}", headerNames)
                 .isNotNull().isNotEmpty()
@@ -137,7 +129,7 @@ public class ExcelReadContext<T> {
         this.readCount++;
     }
 
-    public void setChunk(@NotNull List<T> chunk) {
+    public void setChunk(List<T> chunk) {
         Asserts.that(chunk)
                 .describedAs("ExcelReadContext.chunk is not allowed to be null")
                 .isNotNull()
@@ -147,7 +139,7 @@ public class ExcelReadContext<T> {
         this.chunk = chunk;
     }
 
-    public void setSheet(@NotNull Sheet sheet) {
+    public void setSheet(Sheet sheet) {
         Asserts.that(sheet)
                 .describedAs("ExcelReadContext.sheet is not allowed to be null")
                 .isNotNull();

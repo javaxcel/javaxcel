@@ -20,7 +20,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import io.github.imsejin.common.assertion.Asserts;
 import lombok.Getter;
@@ -42,8 +42,7 @@ public final class ExcelAnalysisImpl implements ExcelAnalysis {
 
     private DefaultValueInfo defaultValueInfo;
 
-    @Nullable
-    private ExcelTypeHandler<?> handler;
+    private @Nullable ExcelTypeHandler<?> handler;
 
     private List<ExcelColumnValidator> validators;
 

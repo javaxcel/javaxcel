@@ -26,8 +26,6 @@ import io.github.imsejin.common.assertion.Asserts;
 import io.github.imsejin.common.util.StringUtils;
 
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
-import com.github.javaxcel.core.out.core.ExcelWriter;
-import com.github.javaxcel.core.out.core.impl.MapWriter;
 import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 
 /**
@@ -219,8 +217,7 @@ public class KeyNames implements ExcelWriteStrategy {
 
     @Override
     public boolean isSupported(ExcelWriteContext<?> context) {
-        Class<? extends ExcelWriter<?>> writerType = context.getWriterType();
-        return MapWriter.class.isAssignableFrom(writerType);
+        return Map.class.isAssignableFrom(context.getModelType());
     }
 
     @Override

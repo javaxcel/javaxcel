@@ -187,8 +187,8 @@ class MapWriterSpec extends Specification {
         maps                 | keyNames                                      | message
         []                   | { new KeyNames([]) }                          | "keyOrders is not allowed to be null or empty"
         [[a: 1, b: 2]]       | { new KeyNames(["A", "B", "C"], ["a", "b"]) } | "newKeyNames.size is not equal to keyOrders.size"
-        [[A: 1, B: 2]]       | { new KeyNames(["A", "B", "C"]) }             | "MapWriter.keys is not equal to keyMap.orders.size"
-        [[A: 1, b: 2, C: 3]] | { new KeyNames(["A", "B", "C"]) }             | "MapWriter.keys is at variance with keyMap.orders.keySet"
+        [[A: 1, B: 2]]       | { new KeyNames(["A", "B", "C"]) }             | "KeyNames.orders.size must equal keys.size"
+        [[A: 1, b: 2, C: 3]] | { new KeyNames(["A", "B", "C"]) }             | "KeyNames.orders.keySet must contain only existing keys"
     }
 
 }

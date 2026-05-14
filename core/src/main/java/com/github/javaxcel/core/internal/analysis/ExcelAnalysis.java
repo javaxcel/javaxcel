@@ -19,7 +19,7 @@ package com.github.javaxcel.core.internal.analysis;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import com.github.javaxcel.core.annotation.ExcelColumn;
 import com.github.javaxcel.core.annotation.ExcelModel;

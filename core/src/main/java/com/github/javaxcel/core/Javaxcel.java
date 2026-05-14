@@ -25,19 +25,15 @@ import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegis
 import com.github.javaxcel.core.converter.handler.registry.impl.DefaultExcelTypeHandlerRegistry;
 import com.github.javaxcel.core.converter.handler.registry.impl.StrictExcelTypeHandlerRegistry;
 import com.github.javaxcel.core.in.core.ExcelReader;
-import com.github.javaxcel.core.in.core.impl.MapReader;
-import com.github.javaxcel.core.in.core.impl.ModelReader;
+import com.github.javaxcel.core.in.core.impl.DefaultExcelReader;
 import com.github.javaxcel.core.out.core.ExcelWriter;
-import com.github.javaxcel.core.out.core.impl.MapWriter;
-import com.github.javaxcel.core.out.core.impl.ModelWriter;
+import com.github.javaxcel.core.out.core.impl.DefaultExcelWriter;
 
 /**
  * Factory for creating the appropriate implementation of {@link ExcelWriter} and {@link ExcelReader}.
  *
- * @see ModelWriter
- * @see MapWriter
- * @see ModelReader
- * @see MapReader
+ * @see DefaultExcelWriter
+ * @see DefaultExcelReader
  */
 public final class Javaxcel {
 
@@ -69,7 +65,7 @@ public final class Javaxcel {
      * @return implementation that can handle the given type when you write
      */
     public <T> ExcelWriter<T> writer(Workbook workbook, Class<T> type) {
-        return new ModelWriter<>(workbook, type, this.registry);
+        return DefaultExcelWriter.forModel(workbook, type, this.registry);
     }
 
     /**
@@ -79,7 +75,7 @@ public final class Javaxcel {
      * @return implementation that can handle {@link Map} when you write
      */
     public ExcelWriter<Map<String, Object>> writer(Workbook workbook) {
-        return new MapWriter(workbook);
+        return DefaultExcelWriter.forMap(workbook);
     }
 
     /**
@@ -91,7 +87,7 @@ public final class Javaxcel {
      * @return implementation that can handle the given type when you read
      */
     public <T> ExcelReader<T> reader(Workbook workbook, Class<T> type) {
-        return new ModelReader<>(workbook, type, this.registry);
+        return DefaultExcelReader.forModel(workbook, type, this.registry);
     }
 
     /**
@@ -101,7 +97,7 @@ public final class Javaxcel {
      * @return implementation that can handle {@link Map} when you read
      */
     public ExcelReader<Map<String, String>> reader(Workbook workbook) {
-        return new MapReader(workbook);
+        return DefaultExcelReader.forMap(workbook);
     }
 
 }

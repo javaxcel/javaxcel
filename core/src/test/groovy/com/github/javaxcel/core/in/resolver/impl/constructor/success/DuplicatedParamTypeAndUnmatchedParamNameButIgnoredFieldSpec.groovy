@@ -38,7 +38,7 @@ class DuplicatedParamTypeAndUnmatchedParamNameButIgnoredFieldSpec extends Specif
         then:
         noExceptionThrown()
         constructor != null
-        constructor instanceof Constructor
+        (constructor instanceof Constructor)
 
         where:
         type << [IgnoredField, ExplicitField]

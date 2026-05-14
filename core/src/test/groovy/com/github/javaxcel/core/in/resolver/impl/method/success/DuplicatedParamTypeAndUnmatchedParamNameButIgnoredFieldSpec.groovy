@@ -39,7 +39,7 @@ class DuplicatedParamTypeAndUnmatchedParamNameButIgnoredFieldSpec extends Specif
         then:
         noExceptionThrown()
         method != null
-        method instanceof Method
+        (method instanceof Method)
 
         where:
         type << [IgnoredField, ExplicitField]

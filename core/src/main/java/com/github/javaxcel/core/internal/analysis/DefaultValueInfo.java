@@ -16,7 +16,7 @@
 
 package com.github.javaxcel.core.internal.analysis;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Default value information

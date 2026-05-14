@@ -26,8 +26,7 @@ import java.util.Objects;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import io.github.imsejin.common.tool.Stopwatch;
 import io.github.imsejin.common.util.FilenameUtils;
@@ -106,19 +105,15 @@ public abstract class MapWriterTester {
     @Getter
     @RequiredArgsConstructor
     protected static class GivenModel {
-        @NotNull
         private final File file;
-        @Nullable
-        private final Object[] args;
+        private final Object @Nullable [] args;
     }
 
     @Getter
     @Setter
     @AllArgsConstructor
     protected static class WhenModel {
-        @NotNull
         private final OutputStream outputStream;
-        @NotNull
         private final Workbook workbook;
         private int mockCount;
     }
@@ -126,7 +121,6 @@ public abstract class MapWriterTester {
     @Getter
     @RequiredArgsConstructor
     protected static class ThenModel {
-        @NotNull
         private final List<Map<String, Object>> models;
     }
 

@@ -73,7 +73,7 @@ class DecorationTest extends MapWriterTester {
                 .options(new HeaderStyles(Arrays.asList(rainbowHeader)))
                 .write(null, TestUtils.getRandomMaps(10, rainbowHeader.length - 1)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageStartingWith("headerStyles.size must be 1 or equal to keys.size");
+                .hasMessageStartingWith("headerStyles.size must be 1 or equal to columns.size");
         stopwatch.stop();
 
         stopwatch.start("set unmatched body style");
@@ -81,7 +81,7 @@ class DecorationTest extends MapWriterTester {
                 .options(new BodyStyles(Arrays.asList(rainbowHeader)))
                 .write(null, TestUtils.getRandomMaps(10, rainbowHeader.length + 1)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessageStartingWith("bodyStyles.size must be 1 or equal to keys.size");
+                .hasMessageStartingWith("bodyStyles.size must be 1 or equal to columns.size");
     }
 
     @Test

@@ -38,7 +38,7 @@ class AllModifiersSpec extends Specification {
         then:
         noExceptionThrown()
         constructor != null
-        constructor instanceof Constructor
+        (constructor instanceof Constructor)
 
         where:
         type << [Public, Protected, PackagePrivate, Private]

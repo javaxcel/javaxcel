@@ -85,7 +85,7 @@ class HeaderNamesTest extends ModelWriterTester {
                 .as("Throws IllegalArgumentException")
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessageMatching("^(ExcelWriteStrategy.HeaderNames.values is not allowed to be null or empty|" +
-                        "headerNames\\.size is not equal to the number of targeted fields in the class)[\\s\\S]+");
+                        "headerNames\\.size is not equal to columns\\.size)[\\s\\S]+");
     }
 
     @ParameterizedTest
