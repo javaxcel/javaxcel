@@ -28,12 +28,15 @@ import com.github.javaxcel.core.in.core.ExcelReader;
 import com.github.javaxcel.core.in.core.impl.DefaultExcelReader;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.core.impl.DefaultExcelWriter;
+import com.github.javaxcel.core.out.template.ExcelTemplateWriter;
+import com.github.javaxcel.core.out.template.impl.DefaultExcelTemplateWriter;
 
 /**
  * Factory for creating the appropriate implementation of {@link ExcelWriter} and {@link ExcelReader}.
  *
  * @see DefaultExcelWriter
  * @see DefaultExcelReader
+ * @see DefaultExcelTemplateWriter
  */
 public final class Javaxcel {
 
@@ -98,6 +101,23 @@ public final class Javaxcel {
      */
     public ExcelReader<Map<String, String>> reader(Workbook workbook) {
         return DefaultExcelReader.forMap(workbook);
+    }
+
+    /**
+     * Returns a template-based writer that evaluates {@code ${...}} SpEL
+     * expressions in cells and {@code jxc:} directives ({@code each}, {@code if})
+     * in cell comments against a context object.
+     *
+     * <p>The given {@code templateWorkbook} is consumed in place — its sheets
+     * are mutated to hold the rendered output. Load the template via
+     * {@link org.apache.poi.ss.usermodel.WorkbookFactory#create(java.io.InputStream)}
+     * and pass it here.
+     *
+     * @param templateWorkbook template workbook (mutated in place)
+     * @return a writer that renders the template against a context
+     */
+    public ExcelTemplateWriter templateWriter(Workbook templateWorkbook) {
+        return DefaultExcelTemplateWriter.create(templateWorkbook);
     }
 
 }
