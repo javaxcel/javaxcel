@@ -30,6 +30,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFComment;
+import org.apache.xmlbeans.XmlCursor;
 import org.jspecify.annotations.Nullable;
 
 import com.github.javaxcel.core.internal.util.ExcelUtils;
@@ -51,6 +53,15 @@ import com.github.javaxcel.core.internal.util.ExcelUtils;
  *       root) by the same containment rule.</li>
  * </ol>
  *
+ * <p>As a side effect of identifying a {@code jxc:} directive, the directive
+ * comment is removed from its source cell during the same iteration step. This
+ * is required so the rendered output workbook does not carry template metadata,
+ * and it has to happen during the scan (not in a later pass) because sheets
+ * backed by {@link org.apache.poi.xssf.streaming.SXSSFWorkbook SXSSFWorkbook}
+ * flush rows older than the sliding window to a temporary file — a later pass
+ * would not be able to re-open those rows to remove the comment. Non-directive
+ * (user-authored) comments are left untouched.
+ *
  * @since 0.x
  */
 public final class TemplateScanner {
@@ -60,6 +71,14 @@ public final class TemplateScanner {
     private TemplateScanner() {
     }
 
+    /**
+     * Scans every sheet of {@code workbook} and returns one
+     * {@link SheetTemplate} per sheet.
+     *
+     * <p><strong>This call mutates the input workbook:</strong> every cell
+     * comment recognised as a {@code jxc:} directive is removed from its source
+     * cell. See the class-level Javadoc for the SXSSF rationale.
+     */
     public static List<SheetTemplate> scan(Workbook workbook) {
         List<SheetTemplate> templates = new ArrayList<>();
         for (Sheet sheet : ExcelUtils.getSheets(workbook)) {
@@ -127,10 +146,39 @@ public final class TemplateScanner {
                 DirectiveParser.parse(text).ifPresent(spec -> {
                     CellRangeAddress range = computeRange(sheet, cell, spec);
                     blocks.add(new DirectiveBlock(spec, range, new ArrayList<>()));
+                    // Consume the directive comment immediately so it is not
+                    // carried into the rendered output. Doing it here — while
+                    // the cell is still in the current sliding window — is the
+                    // only safe point for SXSSF-backed sheets.
+                    eraseDirectiveComment(cell);
                 });
             }
         }
         return blocks;
+    }
+
+    /**
+     * Fully detaches the directive comment from the workbook.
+     *
+     * <p>{@link Cell#removeCellComment()} alone is not sufficient for
+     * {@code SXSSFCell} — it clears only the cell-local property and leaves the
+     * underlying entry in the {@code commentsTable} (and the VML drawing shape)
+     * intact. On serialisation that orphan re-attaches to whichever cell now
+     * occupies the same coordinate. Dropping the {@code CTComment} XML element
+     * directly removes the entry from the serialised {@code commentsTable},
+     * which is the source of truth on reopen.
+     */
+    private static void eraseDirectiveComment(Cell cell) {
+        Comment comment = cell.getCellComment();
+        if (comment instanceof XSSFComment xc) {
+            XmlCursor cursor = xc.getCTComment().newCursor();
+            try {
+                cursor.removeXml();
+            } finally {
+                cursor.dispose();
+            }
+        }
+        cell.removeCellComment();
     }
 
     private static CellRangeAddress computeRange(Sheet sheet, Cell directiveCell, DirectiveSpec spec) {

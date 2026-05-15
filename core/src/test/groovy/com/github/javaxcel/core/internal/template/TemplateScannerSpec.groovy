@@ -144,6 +144,39 @@ class TemplateScannerSpec extends Specification {
         workbook.close()
     }
 
+    def "Removes the directive comment from a recognised jxc: cell during the scan"() {
+        given:
+        def workbook = new XSSFWorkbook()
+        def sheet = workbook.createSheet("cleanup")
+        def directiveCell = sheet.createRow(0).createCell(0)
+        directiveCell.setCellValue('${item}')
+        addDirectiveComment(workbook, sheet, directiveCell, "jxc: each items as item")
+
+        and: "A non-directive comment that must be preserved"
+        def noteCell = sheet.createRow(1).createCell(0)
+        noteCell.setCellValue("note row")
+        addDirectiveComment(workbook, sheet, noteCell, "reviewer note")
+
+        when:
+        def template = TemplateScanner.scanSheet(sheet)
+
+        then: "Directive comment is consumed"
+        directiveCell.getCellComment() == null
+
+        and: "Non-directive comment is preserved verbatim"
+        noteCell.getCellComment() != null
+        noteCell.getCellComment().getString().getString() == "reviewer note"
+
+        and: "Scan still surfaces the directive as an IterationBlock"
+        template.nodes().size() == 1
+        def block = template.nodes()[0] as TemplateNode.IterationBlock
+        block.collectionExpr() == "items"
+        block.varName() == "item"
+
+        cleanup:
+        workbook.close()
+    }
+
     def "scan(workbook) produces a SheetTemplate per sheet"() {
         given:
         def workbook = new XSSFWorkbook()

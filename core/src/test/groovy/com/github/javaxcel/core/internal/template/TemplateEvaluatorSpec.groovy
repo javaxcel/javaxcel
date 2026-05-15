@@ -24,6 +24,7 @@ import org.apache.poi.ss.usermodel.ClientAnchor
 import org.apache.poi.ss.usermodel.Comment
 import org.apache.poi.ss.usermodel.CreationHelper
 import org.apache.poi.ss.usermodel.Drawing
+import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -221,6 +222,35 @@ class TemplateEvaluatorSpec extends Specification {
 
         then: "After-row is shifted up to row 0"
         sheet.getRow(0).getCell(0).getStringCellValue() == "After"
+
+        cleanup:
+        workbook.close()
+    }
+
+    def "Evaluated sheet has no jxc: directive comments"() {
+        given:
+        def workbook = new XSSFWorkbook()
+        def sheet = workbook.createSheet("cleanup")
+        def each = sheet.createRow(0).createCell(0)
+        each.setCellValue('${item}')
+        addDirectiveComment(workbook, sheet, each, "jxc: each items as item")
+        def cond = sheet.createRow(1).createCell(0)
+        cond.setCellValue('tail: ${items.size()}')
+        addDirectiveComment(workbook, sheet, cond, "jxc: if items.size() > 0")
+
+        when:
+        new TemplateEvaluator().evaluate(workbook, [items: ["a", "b"]])
+
+        then: "No cell on the evaluated sheet carries a jxc: comment"
+        def remaining = []
+        for (Row row : sheet) {
+            for (Cell cell : row) {
+                if (cell != null && cell.getCellComment() != null) {
+                    remaining << cell.getCellComment().getString().getString()
+                }
+            }
+        }
+        remaining.every { !it.trim().toLowerCase().startsWith("jxc:") }
 
         cleanup:
         workbook.close()

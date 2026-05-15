@@ -195,6 +195,43 @@ class DefaultExcelTemplateWriterSpec extends Specification {
         result?.close()
     }
 
+    def "Rendered workbook contains no jxc: directive comments"() {
+        given: "SXSSF-backed template carrying both each and if directives"
+        def template = new SXSSFWorkbook()
+        def sheet = template.createSheet("cleanup")
+        def each = sheet.createRow(0).createCell(0)
+        each.cellValue = '${item}'
+        addDirectiveComment(template, sheet, each, "jxc: each items as item")
+
+        def cond = sheet.createRow(1).createCell(0)
+        cond.cellValue = 'shown when present'
+        addDirectiveComment(template, sheet, cond, "jxc: if items.size() > 0")
+
+        and:
+        def out = new ByteArrayOutputStream()
+
+        when:
+        Javaxcel.newInstance()
+                .templateWriter(template)
+                .write(out, [items: ["a", "b"]])
+
+        then: "No surviving comment on any cell starts with jxc:"
+        def result = WorkbookFactory.create(new ByteArrayInputStream(out.toByteArray()))
+        def s = result.getSheetAt(0)
+        def surviving = [] as List<String>
+        s.each { row ->
+            row.each { cell ->
+                if (cell?.cellComment != null) {
+                    surviving << cell.cellComment.string.string
+                }
+            }
+        }
+        surviving.every { !it.strip().toLowerCase().startsWith("jxc:") }
+
+        cleanup:
+        result?.close()
+    }
+
     def "Javaxcel.templateWriter rejects null workbook"() {
         when:
         Javaxcel.newInstance().templateWriter(null)
