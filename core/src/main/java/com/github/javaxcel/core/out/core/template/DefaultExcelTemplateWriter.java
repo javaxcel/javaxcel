@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.javaxcel.core.out.template.impl;
+package com.github.javaxcel.core.out.core.template;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -27,7 +27,6 @@ import io.github.imsejin.common.assertion.Asserts;
 
 import com.github.javaxcel.core.exception.WritingExcelException;
 import com.github.javaxcel.core.internal.template.TemplateEvaluator;
-import com.github.javaxcel.core.out.template.ExcelTemplateWriter;
 
 /**
  * Single template engine implementation. Holds the template {@link Workbook}

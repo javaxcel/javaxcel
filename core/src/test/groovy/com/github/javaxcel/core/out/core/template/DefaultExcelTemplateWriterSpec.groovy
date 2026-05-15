@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.javaxcel.core.out.template.impl
+package com.github.javaxcel.core.out.core.template
 
 import spock.lang.Specification
 import spock.lang.Subject
@@ -27,7 +27,7 @@ import org.apache.poi.ss.usermodel.Drawing
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.usermodel.WorkbookFactory
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.apache.poi.xssf.streaming.SXSSFWorkbook
 
 import com.github.javaxcel.core.Javaxcel
 
@@ -36,9 +36,9 @@ class DefaultExcelTemplateWriterSpec extends Specification {
 
     def "Builder-style with(name, value) accumulates variables"() {
         given:
-        def template = new XSSFWorkbook()
+        def template = new SXSSFWorkbook()
         def sheet = template.createSheet()
-        sheet.createRow(0).createCell(0).setCellValue('${greeting}, ${name}!')
+        sheet.createRow(0).createCell(0).cellValue = '${greeting}, ${name}!'
 
         and:
         def out = new ByteArrayOutputStream()
@@ -52,7 +52,7 @@ class DefaultExcelTemplateWriterSpec extends Specification {
 
         then:
         def result = WorkbookFactory.create(new ByteArrayInputStream(out.toByteArray()))
-        result.getSheetAt(0).getRow(0).getCell(0).getStringCellValue() == "Hello, World!"
+        result.getSheetAt(0).getRow(0).getCell(0).stringCellValue == "Hello, World!"
 
         cleanup:
         result?.close()
@@ -60,10 +60,10 @@ class DefaultExcelTemplateWriterSpec extends Specification {
 
     def "Map context renders SpEL expressions"() {
         given:
-        def template = new XSSFWorkbook()
+        def template = new SXSSFWorkbook()
         def sheet = template.createSheet()
-        sheet.createRow(0).createCell(0).setCellValue('${author.name}')
-        sheet.createRow(1).createCell(0).setCellValue('${total}')
+        sheet.createRow(0).createCell(0).cellValue = '${author.name}'
+        sheet.createRow(1).createCell(0).cellValue = '${total}'
 
         and:
         def out = new ByteArrayOutputStream()
@@ -75,8 +75,8 @@ class DefaultExcelTemplateWriterSpec extends Specification {
 
         then:
         def result = WorkbookFactory.create(new ByteArrayInputStream(out.toByteArray()))
-        result.getSheetAt(0).getRow(0).getCell(0).getStringCellValue() == "Carol"
-        result.getSheetAt(0).getRow(1).getCell(0).getNumericCellValue() == 99.0d
+        result.getSheetAt(0).getRow(0).getCell(0).stringCellValue == "Carol"
+        result.getSheetAt(0).getRow(1).getCell(0).numericCellValue == 99.0D
 
         cleanup:
         result?.close()
@@ -84,10 +84,10 @@ class DefaultExcelTemplateWriterSpec extends Specification {
 
     def "POJO context renders via reflection"() {
         given:
-        def template = new XSSFWorkbook()
+        def template = new SXSSFWorkbook()
         def sheet = template.createSheet()
-        sheet.createRow(0).createCell(0).setCellValue('${title}')
-        sheet.createRow(1).createCell(0).setCellValue('${total}')
+        sheet.createRow(0).createCell(0).cellValue = '${title}'
+        sheet.createRow(1).createCell(0).cellValue = '${total}'
 
         and:
         def out = new ByteArrayOutputStream()
@@ -100,8 +100,8 @@ class DefaultExcelTemplateWriterSpec extends Specification {
 
         then:
         def result = WorkbookFactory.create(new ByteArrayInputStream(out.toByteArray()))
-        result.getSheetAt(0).getRow(0).getCell(0).getStringCellValue() == "INV-001"
-        result.getSheetAt(0).getRow(1).getCell(0).getNumericCellValue() == 1234.0d
+        result.getSheetAt(0).getRow(0).getCell(0).stringCellValue == "INV-001"
+        result.getSheetAt(0).getRow(1).getCell(0).numericCellValue == 1234.0D
 
         cleanup:
         result?.close()
@@ -109,17 +109,17 @@ class DefaultExcelTemplateWriterSpec extends Specification {
 
     def "Each + aggregate row — invoice-like template round-trip"() {
         given:
-        def template = new XSSFWorkbook()
+        def template = new SXSSFWorkbook()
         def sheet = template.createSheet("Invoice")
         // Row 0: header
-        sheet.createRow(0).createCell(0).setCellValue('Invoice for ${author.name}')
+        sheet.createRow(0).createCell(0).cellValue = 'Invoice for ${author.name}'
         // Row 1: each (single-row block A2:B2)
         def each = sheet.createRow(1).createCell(0)
-        each.setCellValue('${item.name}')
+        each.cellValue = '${item.name}'
         addDirectiveComment(template, sheet, each, "jxc: each items as item, until: B2")
-        sheet.getRow(1).createCell(1).setCellValue('${item.price}')
+        sheet.getRow(1).createCell(1).cellValue = '${item.price}'
         // Row 2: footer
-        sheet.createRow(2).createCell(0).setCellValue('Total items: ${items.size()}')
+        sheet.createRow(2).createCell(0).cellValue = 'Total items: ${items.size()}'
 
         and:
         def out = new ByteArrayOutputStream()
@@ -140,14 +140,14 @@ class DefaultExcelTemplateWriterSpec extends Specification {
         then:
         def result = WorkbookFactory.create(new ByteArrayInputStream(out.toByteArray()))
         def s = result.getSheetAt(0)
-        s.getRow(0).getCell(0).getStringCellValue() == "Invoice for Bob"
-        s.getRow(1).getCell(0).getStringCellValue() == "Widget"
-        s.getRow(1).getCell(1).getNumericCellValue() == 10.0d
-        s.getRow(2).getCell(0).getStringCellValue() == "Gadget"
-        s.getRow(2).getCell(1).getNumericCellValue() == 25.0d
-        s.getRow(3).getCell(0).getStringCellValue() == "Doohickey"
-        s.getRow(3).getCell(1).getNumericCellValue() == 7.0d
-        s.getRow(4).getCell(0).getStringCellValue() == "Total items: 3"
+        s.getRow(0).getCell(0).stringCellValue == "Invoice for Bob"
+        s.getRow(1).getCell(0).stringCellValue == "Widget"
+        s.getRow(1).getCell(1).numericCellValue == 10.0D
+        s.getRow(2).getCell(0).stringCellValue == "Gadget"
+        s.getRow(2).getCell(1).numericCellValue == 25.0D
+        s.getRow(3).getCell(0).stringCellValue == "Doohickey"
+        s.getRow(3).getCell(1).numericCellValue == 7.0D
+        s.getRow(4).getCell(0).stringCellValue == "Total items: 3"
 
         cleanup:
         result?.close()
@@ -155,15 +155,15 @@ class DefaultExcelTemplateWriterSpec extends Specification {
 
     def "Nested each — items with children"() {
         given:
-        def template = new XSSFWorkbook()
+        def template = new SXSSFWorkbook()
         def sheet = template.createSheet()
         // Outer each: rows 0-1 (block A1:A2)
         def outer = sheet.createRow(0).createCell(0)
-        outer.setCellValue('${item.name}')
+        outer.cellValue = '${item.name}'
         addDirectiveComment(template, sheet, outer, "jxc: each items as item, until: A2")
         // Inner each on row 1 only — replicates row 1 per child of current item (block A2:A2)
         def inner = sheet.createRow(1).createCell(0)
-        inner.setCellValue('  - ${child.name}')
+        inner.cellValue = '  - ${child.name}'
         addDirectiveComment(template, sheet, inner, "jxc: each item.children as child, until: A2")
 
         and:
@@ -184,12 +184,12 @@ class DefaultExcelTemplateWriterSpec extends Specification {
         def result = WorkbookFactory.create(new ByteArrayInputStream(out.toByteArray()))
         def s = result.getSheetAt(0)
         // Outer iteration 1: Group A, then a1, a2
-        s.getRow(0).getCell(0).getStringCellValue() == "Group A"
-        s.getRow(1).getCell(0).getStringCellValue() == "  - a1"
-        s.getRow(2).getCell(0).getStringCellValue() == "  - a2"
+        s.getRow(0).getCell(0).stringCellValue == "Group A"
+        s.getRow(1).getCell(0).stringCellValue == "  - a1"
+        s.getRow(2).getCell(0).stringCellValue == "  - a2"
         // Outer iteration 2: Group B, then b1
-        s.getRow(3).getCell(0).getStringCellValue() == "Group B"
-        s.getRow(4).getCell(0).getStringCellValue() == "  - b1"
+        s.getRow(3).getCell(0).stringCellValue == "Group B"
+        s.getRow(4).getCell(0).stringCellValue == "  - b1"
 
         cleanup:
         result?.close()
@@ -204,16 +204,18 @@ class DefaultExcelTemplateWriterSpec extends Specification {
     }
 
     private static void addDirectiveComment(Workbook workbook, Sheet sheet, Cell cell, String text) {
-        CreationHelper helper = workbook.getCreationHelper()
+        CreationHelper helper = workbook.creationHelper
         Drawing drawing = sheet.createDrawingPatriarch()
+
         ClientAnchor anchor = helper.createClientAnchor()
-        anchor.setCol1(cell.getColumnIndex())
-        anchor.setCol2(cell.getColumnIndex() + 1)
-        anchor.setRow1(cell.getRowIndex())
-        anchor.setRow2(cell.getRowIndex() + 1)
+        anchor.col1 = cell.columnIndex
+        anchor.col2 = cell.columnIndex + 1
+        anchor.row1 = cell.rowIndex
+        anchor.row2 = cell.rowIndex + 1
+
         Comment comment = drawing.createCellComment(anchor)
-        comment.setString(helper.createRichTextString(text))
-        cell.setCellComment(comment)
+        comment.string = helper.createRichTextString(text)
+        cell.cellComment = comment
     }
 
     static class Invoice {

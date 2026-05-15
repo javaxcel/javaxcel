@@ -22,12 +22,12 @@ import spock.lang.Subject
 import org.apache.poi.ss.usermodel.Workbook
 
 import com.github.javaxcel.core.in.context.ExcelReadContext
-import com.github.javaxcel.core.in.core.impl.DefaultExcelReader
+import com.github.javaxcel.core.in.core.DefaultExcelReader
 import com.github.javaxcel.core.in.strategy.ExcelReadStrategy
 import com.github.javaxcel.core.in.strategy.impl.Limit
 import com.github.javaxcel.core.in.strategy.impl.Parallel
 import com.github.javaxcel.core.out.context.ExcelWriteContext
-import com.github.javaxcel.core.out.core.impl.DefaultExcelWriter
+import com.github.javaxcel.core.out.core.DefaultExcelWriter
 import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy
 import com.github.javaxcel.core.out.strategy.impl.AutoResizedColumns
 import com.github.javaxcel.core.out.strategy.impl.KeyNames

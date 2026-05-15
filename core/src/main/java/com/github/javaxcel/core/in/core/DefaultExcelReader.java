@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.javaxcel.core.in.core.impl;
+package com.github.javaxcel.core.in.core;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -42,7 +42,6 @@ import lombok.Getter;
 import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegistry;
 import com.github.javaxcel.core.exception.NoTargetedFieldException;
 import com.github.javaxcel.core.in.context.ExcelReadContext;
-import com.github.javaxcel.core.in.core.ExcelReader;
 import com.github.javaxcel.core.in.strategy.ExcelReadStrategy;
 import com.github.javaxcel.core.in.strategy.impl.KeyNames;
 import com.github.javaxcel.core.in.strategy.impl.Limit;
@@ -96,8 +95,7 @@ public class DefaultExcelReader<T> implements ExcelReader<T> {
                 .isNotNull();
 
         this.workbook = workbook;
-        this.context = new ExcelReadContext<>(
-                workbook, modelType, (Class<? extends ExcelReader<T>>) (Class<?>) DefaultExcelReader.class);
+        this.context = new ExcelReadContext<>(workbook, modelType, (Class<? extends ExcelReader<T>>) getClass());
         this.formulaEvaluator = resolveFormulaEvaluator(workbook);
         this.modelMode = modelMode;
         this.registry = registry;
@@ -148,8 +146,7 @@ public class DefaultExcelReader<T> implements ExcelReader<T> {
 
     @Override
     public ExcelReader<T> options(ExcelReadStrategy... strategies) {
-        Map<Class<? extends ExcelReadStrategy>, ExcelReadStrategy> map =
-                StrategyDedup.collect(strategies, this.context);
+        Map<Class<? extends ExcelReadStrategy>, ExcelReadStrategy> map = StrategyDedup.collect(strategies, this.context);
         this.context.setStrategyMap(map);
         return this;
     }

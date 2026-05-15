@@ -71,7 +71,8 @@ public final class ModelDescriptorFactory {
     public static <T> List<ColumnDescriptor<T>> forRead(
             Class<T> type,
             ExcelTypeHandlerRegistry registry,
-            Map<Class<? extends ExcelReadStrategy>, ExcelReadStrategy> strategies) {
+            Map<Class<? extends ExcelReadStrategy>, ExcelReadStrategy> strategies
+    ) {
         Asserts.that(type)
                 .describedAs("ModelDescriptorFactory.type is not allowed to be null")
                 .isNotNull();
@@ -95,7 +96,7 @@ public final class ModelDescriptorFactory {
             // Read direction ignores @ExcelColumn.name() because converters key by Field#getName().
             String headerName = field.getName();
 
-            descriptors.add(new FieldColumnDescriptor<T>(
+            descriptors.add(new FieldColumnDescriptor<>(
                     field,
                     headerName,
                     converter,
@@ -117,7 +118,8 @@ public final class ModelDescriptorFactory {
     public static <T> List<ColumnDescriptor<T>> forWrite(
             Class<T> type,
             ExcelTypeHandlerRegistry registry,
-            Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> strategies) {
+            Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> strategies
+    ) {
         Asserts.that(type)
                 .describedAs("ModelDescriptorFactory.type is not allowed to be null")
                 .isNotNull();

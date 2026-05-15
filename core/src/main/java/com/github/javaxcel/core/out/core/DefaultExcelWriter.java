@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.javaxcel.core.out.core.impl;
+package com.github.javaxcel.core.out.core;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -58,7 +58,6 @@ import com.github.javaxcel.core.internal.descriptor.StrategyDedup;
 import com.github.javaxcel.core.internal.util.ExcelUtils;
 import com.github.javaxcel.core.internal.util.FieldUtils;
 import com.github.javaxcel.core.out.context.ExcelWriteContext;
-import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 import com.github.javaxcel.core.out.strategy.impl.AutoResizedColumns;
 import com.github.javaxcel.core.out.strategy.impl.BodyStyles;
@@ -91,7 +90,8 @@ public class DefaultExcelWriter<T> implements ExcelWriter<T> {
 
     private final boolean modelMode;
 
-    private final @Nullable ExcelTypeHandlerRegistry registry;
+    @Nullable
+    private final ExcelTypeHandlerRegistry registry;
 
     private int @Nullable [] columnWidths;
 
@@ -110,11 +110,7 @@ public class DefaultExcelWriter<T> implements ExcelWriter<T> {
                 .isNotNull();
 
         this.workbook = workbook;
-        this.context = new ExcelWriteContext<>(
-                workbook,
-                modelType,
-                (Class<? extends ExcelWriter<T>>) (Class<?>) DefaultExcelWriter.class
-        );
+        this.context = new ExcelWriteContext<>(workbook, modelType, (Class<? extends ExcelWriter<T>>) getClass());
         this.modelMode = modelMode;
         this.registry = registry;
     }
@@ -145,8 +141,8 @@ public class DefaultExcelWriter<T> implements ExcelWriter<T> {
 
     @Override
     public final ExcelWriter<T> options(ExcelWriteStrategy... strategies) {
-        Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> map =
-                StrategyDedup.collect(strategies, this.context);
+        Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> map = StrategyDedup.collect(strategies,
+                this.context);
         this.context.setStrategyMap(map);
         return this;
     }
@@ -203,14 +199,14 @@ public class DefaultExcelWriter<T> implements ExcelWriter<T> {
 
     private List<ColumnDescriptor<T>> buildColumns(List<T> list) {
         if (this.modelMode) {
-            @SuppressWarnings("unchecked")
-            List<ColumnDescriptor<T>> columns = (List<ColumnDescriptor<T>>) (List<?>) ModelDescriptorFactory.forWrite(
+            return ModelDescriptorFactory.forWrite(
                     this.context.getModelType(), this.registry, this.context.getStrategyMap());
-            return columns;
         }
+
         @SuppressWarnings({"unchecked", "rawtypes"})
         List<ColumnDescriptor<T>> columns = (List<ColumnDescriptor<T>>) (List) MapDescriptorFactory.forWrite(
-                (List<? extends Map<String, ?>>) (List<?>) list, this.context.getStrategyMap());
+                (List<? extends Map<String, ?>>) list, this.context.getStrategyMap());
+
         return columns;
     }
 

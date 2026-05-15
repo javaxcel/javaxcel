@@ -48,7 +48,9 @@ public final class StrategyDedup {
     }
 
     public static Map<Class<? extends ExcelReadStrategy>, ExcelReadStrategy> collect(
-            ExcelReadStrategy[] strategies, ExcelReadContext<?> context) {
+            ExcelReadStrategy[] strategies,
+            ExcelReadContext<?> context
+    ) {
         Asserts.that(strategies)
                 .describedAs("strategies is not allowed to be null")
                 .isNotNull()
@@ -68,7 +70,9 @@ public final class StrategyDedup {
     }
 
     public static Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> collect(
-            ExcelWriteStrategy[] strategies, ExcelWriteContext<?> context) {
+            ExcelWriteStrategy[] strategies,
+            ExcelWriteContext<?> context
+    ) {
         Asserts.that(strategies)
                 .describedAs("strategies is not allowed to be null")
                 .isNotNull()

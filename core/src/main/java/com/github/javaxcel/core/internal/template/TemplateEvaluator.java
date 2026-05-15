@@ -362,7 +362,7 @@ public final class TemplateEvaluator {
             return n.doubleValue() != 0.0;
         }
         if (value instanceof CharSequence cs) {
-            return cs.length() > 0;
+            return !cs.isEmpty();
         }
         if (value instanceof Collection<?> c) {
             return !c.isEmpty();
@@ -504,7 +504,7 @@ public final class TemplateEvaluator {
     }
 
     /**
-     * Reflection-based POJO → Map converter for context normalisation.
+     * Reflection-based POJO → Map converter for context normalization.
      * Map values pass through unchanged; everything else gets every accessible
      * instance field projected as a {@code Map} entry.
      */

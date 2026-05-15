@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.javaxcel.core.out.template;
+package com.github.javaxcel.core.out.core.template;
 
 import java.io.OutputStream;
 import java.util.Map;

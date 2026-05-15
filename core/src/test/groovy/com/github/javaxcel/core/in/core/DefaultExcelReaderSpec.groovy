@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.javaxcel.core.in.core.impl
+package com.github.javaxcel.core.in.core
 
 import spock.lang.Specification
 import spock.lang.Subject

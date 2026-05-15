@@ -51,13 +51,17 @@ public final class FieldColumnDescriptor<T> implements ColumnDescriptor<T> {
 
     private final String name;
 
-    private final @Nullable ExcelReadConverter readConverter;
+    @Nullable
+    private final ExcelReadConverter readConverter;
 
-    private final @Nullable ExcelWriteConverter writeConverter;
+    @Nullable
+    private final ExcelWriteConverter writeConverter;
 
-    private final @Nullable ExcelStyleConfig headerStyle;
+    @Nullable
+    private final ExcelStyleConfig headerStyle;
 
-    private final @Nullable ExcelStyleConfig bodyStyle;
+    @Nullable
+    private final ExcelStyleConfig bodyStyle;
 
     private final List<ExcelColumnValidator> validators;
 
@@ -71,7 +75,8 @@ public final class FieldColumnDescriptor<T> implements ColumnDescriptor<T> {
      * {@code ExcelModelCreationProcessor}.
      */
     @Getter
-    private final @Nullable ExcelAnalysis analysis;
+    @Nullable
+    private final ExcelAnalysis analysis;
 
     public FieldColumnDescriptor(
             Field field,
@@ -82,7 +87,8 @@ public final class FieldColumnDescriptor<T> implements ColumnDescriptor<T> {
             @Nullable ExcelStyleConfig bodyStyle,
             @Nullable List<ExcelColumnValidator> validators,
             String @Nullable [] dropdownItems,
-            @Nullable ExcelAnalysis analysis) {
+            @Nullable ExcelAnalysis analysis
+    ) {
         Asserts.that(field)
                 .describedAs("FieldColumnDescriptor.field is not allowed to be null")
                 .isNotNull();

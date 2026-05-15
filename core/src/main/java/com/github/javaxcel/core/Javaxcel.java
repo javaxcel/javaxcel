@@ -25,11 +25,11 @@ import com.github.javaxcel.core.converter.handler.registry.ExcelTypeHandlerRegis
 import com.github.javaxcel.core.converter.handler.registry.impl.DefaultExcelTypeHandlerRegistry;
 import com.github.javaxcel.core.converter.handler.registry.impl.StrictExcelTypeHandlerRegistry;
 import com.github.javaxcel.core.in.core.ExcelReader;
-import com.github.javaxcel.core.in.core.impl.DefaultExcelReader;
+import com.github.javaxcel.core.in.core.DefaultExcelReader;
 import com.github.javaxcel.core.out.core.ExcelWriter;
-import com.github.javaxcel.core.out.core.impl.DefaultExcelWriter;
-import com.github.javaxcel.core.out.template.ExcelTemplateWriter;
-import com.github.javaxcel.core.out.template.impl.DefaultExcelTemplateWriter;
+import com.github.javaxcel.core.out.core.DefaultExcelWriter;
+import com.github.javaxcel.core.out.core.template.ExcelTemplateWriter;
+import com.github.javaxcel.core.out.core.template.DefaultExcelTemplateWriter;
 
 /**
  * Factory for creating the appropriate implementation of {@link ExcelWriter} and {@link ExcelReader}.

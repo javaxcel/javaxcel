@@ -15,6 +15,6 @@
  */
 
 @NullMarked
-package com.github.javaxcel.core.out.template.impl;
+package com.github.javaxcel.core.out.core.template;
 
 import org.jspecify.annotations.NullMarked;

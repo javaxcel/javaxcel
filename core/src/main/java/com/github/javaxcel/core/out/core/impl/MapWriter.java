@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Workbook;
 
+import com.github.javaxcel.core.out.core.DefaultExcelWriter;
 import com.github.javaxcel.core.out.core.ExcelWriter;
 import com.github.javaxcel.core.out.strategy.ExcelWriteStrategy;
 

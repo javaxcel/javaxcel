@@ -55,7 +55,8 @@ public final class MapDescriptorFactory {
     @SuppressWarnings("unchecked")
     public static List<ColumnDescriptor<Map<String, Object>>> forWrite(
             List<? extends Map<String, ?>> list,
-            Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> strategies) {
+            Map<Class<? extends ExcelWriteStrategy>, ExcelWriteStrategy> strategies
+    ) {
         Asserts.that(list)
                 .describedAs("MapDescriptorFactory.list is not allowed to be null")
                 .isNotNull();
@@ -77,7 +78,7 @@ public final class MapDescriptorFactory {
                 .doesNotHaveDuplicates();
 
         String defaultValue = resolveDefaultValue(strategies);
-        Map<String, Integer> orders = null;
+        Map<String, Integer> orders;
         List<String> displayNames = null;
 
         ExcelWriteStrategy keyNamesStrategy = strategies.get(KeyNames.class);
